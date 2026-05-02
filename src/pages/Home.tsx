@@ -28,7 +28,7 @@ export const Home = () => {
           >
             {/* label */}
             <span style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#A64B2A', fontWeight: 500 }}>
-              Notre Carte
+              Notre Menu
             </span>
 
             {/* heading */}
@@ -49,7 +49,7 @@ export const Home = () => {
 
             <p style={{ fontFamily: '"Inter",sans-serif', color: '#7A6A5A', maxWidth: '36rem', margin: '0 auto 3rem', lineHeight: 1.75, fontSize: '1.0625rem' }}>
               Pâtisseries fines, café d'exception et brunchs gourmands.
-              Consultez notre carte complète en ligne.
+              Consultez notre menu complet en ligne.
             </p>
           </motion.div>
 
