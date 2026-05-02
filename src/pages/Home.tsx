@@ -63,7 +63,7 @@ export const Home = () => {
             className="mt-14"
           >
             <Link to="/menu" id="home-full-menu-btn" className="btn-primary inline-flex">
-              Voir la Carte Complète
+              Voir le Menu Complet
             </Link>
           </motion.div>
         </div>

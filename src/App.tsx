@@ -26,7 +26,7 @@ function ScrollToHash() {
 
 export default function App() {
   return (
-    <Router basename="/madelina-coffeev5">
+    <Router basename="/madelina">
       <ScrollToHash />
       <div className="min-h-screen flex flex-col selection:bg-madelina-terracotta selection:text-white">
         <Routes>

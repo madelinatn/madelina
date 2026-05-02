@@ -122,7 +122,7 @@ const FoodCard = memo(({ item, onClick }: { item: MenuItem; onClick: () => void 
 
 // ── Local / GitHub Pages URL ──
 // We use the deployed file on GitHub Pages to avoid the 5-minute cache of raw.githubusercontent.com
-const MENU_RAW_URL = '/madelina-coffeev5/menu-data.html';
+const MENU_RAW_URL = '/madelina/menu-data.html';
 
 const MenuPage = () => {
   const [plats, setPlats] = useState<MenuItem[]>([]);
@@ -237,7 +237,7 @@ const MenuPage = () => {
           {/* Heading */}
           <div className="text-center mb-6 sm:mb-10 md:mb-16">
             <h2 className="text-5xl md:text-7xl mb-6 font-allenoire text-madelina-navy">
-              La carte <span className="text-madelina-terracotta font-allenoire">madélina</span>
+              Menu <span className="text-madelina-terracotta font-allenoire">madélina</span>
             </h2>
             <div className="h-1 w-24 bg-madelina-terracotta mx-auto" />
           </div>

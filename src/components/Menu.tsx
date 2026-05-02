@@ -34,7 +34,7 @@ function parseMenuHTML(html: string): MenuItem[] {
 
 // ── Local / GitHub Pages URL ──
 // We use the deployed file on GitHub Pages to avoid the 5-minute cache of raw.githubusercontent.com
-const MENU_RAW_URL = '/madelina-coffeev5/menu-data.html';
+const MENU_RAW_URL = '/madelina/menu-data.html';
 
 export const Menu = ({ isPreview = false }: { isPreview?: boolean }) => {
   const [plats, setPlats] = useState<MenuItem[]>([]);
@@ -120,7 +120,7 @@ export const Menu = ({ isPreview = false }: { isPreview?: boolean }) => {
               viewport={{ once: true }}
               className="text-5xl md:text-7xl mb-6 font-allenoire text-madelina-navy"
             >
-              La carte <span className="text-madelina-terracotta font-allenoire">madélina</span>
+              Menu <span className="text-madelina-terracotta font-allenoire">madélina</span>
             </motion.h2>
             <motion.div 
               initial={{ width: 0 }}

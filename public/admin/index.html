@@ -856,7 +856,7 @@
       </div>
       <div class="form-group" style="display:none;">
         <label>GitHub Repo</label>
-        <input id="gh-repo" placeholder="madelina-coffeev5" />
+        <input id="gh-repo" placeholder="madelina" />
       </div>
       <div class="form-group">
         <label>Token</label>
@@ -892,13 +892,13 @@
     // ── GITHUB CONFIG ──
     function getGH() {
       let savedRepo = localStorage.getItem('gh_repo');
-      if (savedRepo === 'madelina-coffee' || savedRepo === 'madelina-coffeev3') {
-        savedRepo = 'madelina-coffeev5';
+      if (savedRepo === 'madelina-coffee' || savedRepo === 'madelina-coffeev3' || savedRepo === 'madelina-coffeev5') {
+        savedRepo = 'madelina';
         localStorage.setItem('gh_repo', savedRepo);
       }
       return {
         owner: localStorage.getItem('gh_owner') || 'madelinatn',
-        repo: savedRepo || 'madelina-coffeev5',
+        repo: savedRepo || 'madelina',
         token: localStorage.getItem('gh_token') || '',
       };
     }
