@@ -1,20 +1,48 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Madelina
 
-# Run and deploy your AI Studio app
+A premium digital experience for **Madélina** — an artisan pastry shop and café in Bizerte, Tunisia.
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/abd226df-2e7f-46fe-9b9a-9f6688bc6784
+## Live Demo
 
-## Run Locally
+🌐 [madelinatn.github.io/madelina](https://madelinatn.github.io/madelina/)
 
-**Prerequisites:**  Node.js
+---
 
+## About the Project
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Madelina is a high-end website designed to reflect the elegance and authenticity of the Madélina brand. It serves as a digital showcase for the café's menu, story, and contact information — crafted with precision and attention to detail.
+
+---
+
+## Features
+
+- **Smooth UI** — Fluid animations and seamless transitions powered by Framer Motion
+- **Responsive Design** — Optimized for all screen sizes, from mobile to desktop
+- **Fast Performance** — Built with Vite for instant load times
+- **Dynamic Menu** — Live menu managed through a custom admin panel
+- **SEO Ready** — Structured data, Open Graph tags, and semantic HTML
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | React 19 + TypeScript |
+| Styling | Tailwind CSS v4 |
+| Bundler | Vite 6 |
+| Animations | Framer Motion |
+| Hosting | GitHub Pages |
+
+---
+
+## Contact
+
+**Mohamed Amine El Arbi**  
+medamineelarbi1@gmail.com
+
+---
+
+*Fait maison. Fait avec le cœur. Fait pour vous.*
