@@ -13,7 +13,7 @@ export const Footer = () => {
         <div className="flex flex-col items-center mb-16">
           <div className="relative p-0.5 md:p-1 rounded-xl bg-[#FAF7F4] transition-transform duration-500 hover:scale-105 border border-[#A64B2A]/10 shadow-md">
             <img
-              src="/madelina/logos/logo_madelina-1.png"
+              src="/logos/logo_madelina-1.png"
               alt="madélina par Haifa Ben Salem"
               className="h-24 md:h-32 w-auto object-contain rounded-lg"
               style={{ mixBlendMode: 'multiply' }}

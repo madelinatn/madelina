@@ -104,7 +104,7 @@ export const Hero = () => {
           >
             <div className="absolute inset-0 rounded-full border border-[#A64B2A]/20 scale-105" />
             <img
-              src="/madelina/logos/logo_madelina-4.png"
+              src="/logos/logo_madelina-4.png"
               alt="madélina — Fait maison. Fait avec le cœur."
               className="w-56 h-56 object-cover rounded-full shadow-[0_16px_40px_rgba(166,75,42,0.25)] border-[6px] border-white/60 bg-white"
             />

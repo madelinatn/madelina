@@ -122,7 +122,7 @@ const FoodCard = memo(({ item, onClick }: { item: MenuItem; onClick: () => void 
 
 // ── Local / GitHub Pages URL ──
 // We use the deployed file on GitHub Pages to avoid the 5-minute cache of raw.githubusercontent.com
-const MENU_RAW_URL = '/madelina/menu-data.html';
+const MENU_RAW_URL = '/menu-data.html';
 
 const MenuPage = () => {
   const [plats, setPlats] = useState<MenuItem[]>([]);

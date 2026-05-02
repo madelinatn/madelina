@@ -37,7 +37,7 @@ export const Header = () => {
           className="flex items-center group" 
           aria-label="madélina — Accueil"
           onClick={(e) => {
-            if (window.location.pathname === '/' || window.location.pathname === '/madelina/') {
+            if (window.location.pathname === '/') {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -45,7 +45,7 @@ export const Header = () => {
         >
           <div className="relative transition-transform duration-500 group-hover:scale-105 h-16 w-16 sm:h-20 sm:w-20 rounded-full overflow-hidden bg-white shadow-sm border border-[#A64B2A]/20 flex items-center justify-center">
             <img
-              src="/madelina/logos/logo_madelina-4.png"
+              src="/logos/logo_madelina-4.png"
               alt="madélina par Haifa Ben Salem"
               className="w-full h-full object-cover scale-[1.45]"
             />

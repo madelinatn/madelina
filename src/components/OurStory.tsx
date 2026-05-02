@@ -139,7 +139,7 @@ export const OurStory = () => {
 
             <div className="mt-16 relative z-20 flex flex-wrap gap-3 sm:justify-start lg:justify-end">
               <a
-                href="/madelina/#contact"
+                href="/#contact"
                 id="story-contact-btn"
                 className="btn-primary inline-flex"
               >

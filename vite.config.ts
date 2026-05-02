@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: '/madelina/',
+  base: '/',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, '.'),

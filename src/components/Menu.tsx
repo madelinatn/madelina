@@ -34,7 +34,7 @@ function parseMenuHTML(html: string): MenuItem[] {
 
 // ── Local / GitHub Pages URL ──
 // We use the deployed file on GitHub Pages to avoid the 5-minute cache of raw.githubusercontent.com
-const MENU_RAW_URL = '/madelina/menu-data.html';
+const MENU_RAW_URL = '/menu-data.html';
 
 export const Menu = ({ isPreview = false }: { isPreview?: boolean }) => {
   const [plats, setPlats] = useState<MenuItem[]>([]);
