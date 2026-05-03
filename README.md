@@ -4,9 +4,9 @@ A premium digital experience for **Madélina** — an artisan pastry shop and ca
 
 ---
 
-## Live Demo
+## Live
 
-🌐 [madelinatn.github.io/madelina](https://madelinatn.github.io/madelina/)
+🌐 [madelina.tn](madelina.tn)
 
 ---
 
