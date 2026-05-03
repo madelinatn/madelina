@@ -12,7 +12,22 @@ export const Hero = () => {
       id="hero"
       className="relative min-h-screen flex items-center overflow-hidden"
       style={{ background: '#FAF7F4' }}
+      aria-label="Madelina — Pâtisserie Artisanale et Café à Bizerte"
     >
+      {/* ── SEO h1 (visible to Google, visually styled as tagline) ── */}
+      <h1 style={{
+        position: 'absolute',
+        width: '1px',
+        height: '1px',
+        padding: 0,
+        margin: '-1px',
+        overflow: 'hidden',
+        clip: 'rect(0,0,0,0)',
+        whiteSpace: 'nowrap',
+        border: 0,
+      }}>
+        Madelina — Pâtisserie Artisanale &amp; Café à Bizerte, Tunisie | Fait maison par Haifa Ben Salem
+      </h1>
       {/* ── Parallax hero image ── */}
       <motion.div style={{ y: bgY }} className="absolute inset-0 z-0">
         <img
@@ -48,7 +63,7 @@ export const Hero = () => {
             <span className="w-6 h-px bg-[#A64B2A]" />
           </motion.span>
 
-          <motion.h1
+          <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
@@ -69,7 +84,7 @@ export const Hero = () => {
             <span style={{ color: '#A64B2A' }}>
               vous
             </span>
-          </motion.h1>
+          </motion.p>
 
           <motion.p
             initial={{ opacity: 0 }}

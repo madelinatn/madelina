@@ -18,4 +18,19 @@ export default defineConfig({
     port: 3000,
     hmr: process.env.DISABLE_HMR !== 'true',
   },
+  build: {
+    // Generate chunk manifest for better caching
+    manifest: true,
+    // Raise chunk warning limit (avoid noise for small apps)
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        // Split vendor libs into a separate cached chunk
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'motion-vendor': ['motion'],
+        },
+      },
+    },
+  },
 });
