@@ -5,8 +5,13 @@ import { Reviews }  from '../components/Reviews';
 import { ContactForm } from '../components/ContactForm';
 import { Link }     from 'react-router-dom';
 import { motion }   from 'framer-motion';
+import { useEffect } from 'react';
 
 export const Home = () => {
+  useEffect(() => {
+    document.title = "madelina";
+  }, []);
+
   return (
     <main className="flex-grow">
       <Hero />

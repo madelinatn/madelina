@@ -132,6 +132,10 @@ const MenuPage = () => {
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [, startTransition] = useTransition();
 
+  useEffect(() => {
+    document.title = "Menu - madelina";
+  }, []);
+
   // Fetch menu-data.html from GitHub Raw API on mount
   useEffect(() => {
     const fetchMenu = async () => {
@@ -237,7 +241,7 @@ const MenuPage = () => {
           {/* Heading */}
           <div className="text-center mb-6 sm:mb-10 md:mb-16">
             <h2 className="text-5xl md:text-7xl mb-6 font-allenoire text-madelina-navy">
-              Menu <span className="text-madelina-terracotta font-allenoire">madélina</span>
+              Menu
             </h2>
             <div className="h-1 w-24 bg-madelina-terracotta mx-auto" />
           </div>
