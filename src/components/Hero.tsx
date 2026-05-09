@@ -122,6 +122,9 @@ export const Hero = () => {
               src="/logos/logo_madelina-4.png"
               alt="madélina — Fait maison. Fait avec le cœur."
               className="w-56 h-56 object-cover rounded-full shadow-[0_16px_40px_rgba(166,75,42,0.25)] border-[6px] border-white/60 bg-white"
+              loading="eager"
+              fetchpriority="high"
+              decoding="sync"
             />
           </motion.div>
 

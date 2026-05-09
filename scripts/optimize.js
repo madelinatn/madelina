@@ -16,8 +16,8 @@ async function optimize() {
       const optimizedPath = file.replace(ext, `_opt${ext}`);
       
       await sharp(file)
-        .resize({ width: 1200, withoutEnlargement: true }) // resize large images
-        .png({ quality: 80, compressionLevel: 9 }) // optimize png
+        .resize({ width: 800, withoutEnlargement: true }) // resize to max 800px width
+        .png({ compressionLevel: 9 }) // optimize without quantization
         .toFile(optimizedPath);
         
       // Replace original with optimized

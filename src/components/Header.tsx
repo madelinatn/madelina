@@ -48,6 +48,9 @@ export const Header = () => {
               src="/logos/logo_madelina-4.png"
               alt="madélina par Haifa Ben Salem"
               className="w-full h-full object-cover scale-[1.45]"
+              loading="eager"
+              fetchpriority="high"
+              decoding="sync"
             />
           </div>
         </Link>
