@@ -133,7 +133,7 @@ const MenuPage = () => {
   const [, startTransition] = useTransition();
 
   useEffect(() => {
-    document.title = "Menu - madelina";
+    document.title = "menu - madelina";
   }, []);
 
   // Fetch menu-data.html from GitHub Raw API on mount
@@ -240,9 +240,9 @@ const MenuPage = () => {
         <div className="max-w-7xl mx-auto relative z-10 px-6">
           {/* Heading */}
           <div className="text-center mb-6 sm:mb-10 md:mb-16">
-            <h2 className="text-5xl md:text-7xl mb-6 font-allenoire text-madelina-navy">
+            <h1 className="text-5xl md:text-7xl mb-6 font-allenoire text-madelina-navy">
               Menu
-            </h2>
+            </h1>
             <div className="h-1 w-24 bg-madelina-terracotta mx-auto" />
           </div>
 
