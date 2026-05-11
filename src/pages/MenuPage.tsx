@@ -133,7 +133,41 @@ const MenuPage = () => {
   const [, startTransition] = useTransition();
 
   useEffect(() => {
-    document.title = "menu - madelina";
+    // ── Title ──
+    document.title = "Menu \u2014 madelina";
+
+    // ── Canonical ──
+    let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
+    }
+    canonical.href = 'https://madelina.tn/menu';
+
+    // ── BreadcrumbList JSON-LD ──
+    const breadcrumbId = 'ld-breadcrumb-menu';
+    if (!document.getElementById(breadcrumbId)) {
+      const script = document.createElement('script');
+      script.id = breadcrumbId;
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://madelina.tn/" },
+          { "@type": "ListItem", "position": 2, "name": "Menu",    "item": "https://madelina.tn/menu" }
+        ]
+      });
+      document.head.appendChild(script);
+    }
+
+    // Cleanup on unmount — restore home-page canonical
+    return () => {
+      const canon = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+      if (canon) canon.href = 'https://madelina.tn/';
+      document.getElementById(breadcrumbId)?.remove();
+    };
   }, []);
 
   // Fetch menu-data.html from GitHub Raw API on mount
