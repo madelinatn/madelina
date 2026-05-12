@@ -134,7 +134,7 @@ const MenuPage = () => {
 
   useEffect(() => {
     // ── Title ──
-    document.title = "Menu \u2014 madelina";
+    document.title = "menu - madelina";
 
     // ── Canonical ──
     let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
