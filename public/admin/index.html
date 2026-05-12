@@ -1254,16 +1254,19 @@
     }
 
     // ── UPLOAD IMAGE: WebP compress → ImgBB ──
-    // Converts to WebP on-device at serve-ready size before upload — no runtime proxy needed
-    function compressToWebP(file, maxWidth = 800, quality = 0.85) {
+    // Converts to WebP on-device at 1920px width (upscales small images) before upload
+    function compressToWebP(file, targetWidth = 1920, quality = 0.85) {
       return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = () => {
-          let w = img.naturalWidth, h = img.naturalHeight;
-          if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+          const w = targetWidth;
+          const h = Math.round(img.naturalHeight * targetWidth / img.naturalWidth);
           const canvas = document.createElement('canvas');
           canvas.width = w; canvas.height = h;
-          canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+          const ctx = canvas.getContext('2d');
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(img, 0, 0, w, h);
           canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Conversion échouée')), 'image/webp', quality);
         };
         img.onerror = () => reject(new Error('Lecture image échouée'));

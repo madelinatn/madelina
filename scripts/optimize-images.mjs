@@ -15,7 +15,7 @@ import sharp from 'sharp';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const MENU_FILE = path.join(__dirname, '..', 'public', 'menu-data.html');
 const IMGBB_KEY = '4c61de43c0b8a428d9d5c42e9006c051';
-const MAX_WIDTH = 800;
+const MAX_WIDTH = 1920;
 const QUALITY = 85;
 
 // ── Helpers ──────────────────────────────────────────────────
@@ -29,17 +29,9 @@ async function downloadImage(url) {
 }
 
 async function convertToWebP(buffer) {
-  const image = sharp(buffer);
-  const metadata = await image.metadata();
-  
-  let pipeline = image;
-  // Resize if wider than MAX_WIDTH
-  if (metadata.width && metadata.width > MAX_WIDTH) {
-    pipeline = pipeline.resize(MAX_WIDTH, null, { withoutEnlargement: true });
-  }
-  
-  return pipeline
-    .webp({ quality: QUALITY })
+  return sharp(buffer)
+    .resize(MAX_WIDTH, null, { fit: 'inside' })
+    .webp({ quality: QUALITY, effort: 6 })
     .toBuffer();
 }
 
