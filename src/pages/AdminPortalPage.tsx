@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
-// Inline PWA install button for admin (no provider dependency)
+// Inline PWA install button for admin — icon only, bottom sheet guide
 const AdminInstallButton = () => {
   const [canInstall, setCanInstall] = useState(false);
-  const [showIosGuide, setShowIosGuide] = useState(false);
+  const [showSheet, setShowSheet] = useState(false);
   const [isIos, setIsIos] = useState(false);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const AdminInstallButton = () => {
   }, []);
 
   const handleInstall = async () => {
-    if (isIos) { setShowIosGuide(v => !v); return; }
+    if (isIos) { setShowSheet(true); return; }
     const w = window as any;
     if (!w.__deferredInstallPrompt) return;
     w.__deferredInstallPrompt.prompt();
@@ -48,60 +48,105 @@ const AdminInstallButton = () => {
   if (!canInstall) return null;
 
   return (
-    <div className="relative">
+    <>
+      {/* Icon-only button — no text to get cramped */}
       <button
         id="admin-pwa-install-btn"
         onClick={handleInstall}
-        title="Ajouter l'app sur le téléphone"
-        className="flex items-center gap-1.5 font-sans text-[10px] sm:text-xs text-[#FAF7F4]/60 hover:text-[#FAF7F4] transition-colors uppercase tracking-wider cursor-pointer whitespace-nowrap group"
+        title="Installer l'app"
+        aria-label="Installer l'application Yucca"
+        className="relative flex items-center justify-center w-8 h-8 rounded-full border border-[#FAF7F4]/15 text-[#FAF7F4]/60 hover:text-[#FAF7F4] hover:border-[#FAF7F4]/30 transition-all duration-200 cursor-pointer flex-shrink-0"
       >
-        <svg
-          className="w-3.5 h-3.5 flex-shrink-0"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
           <line x1="12" y1="18" x2="12.01" y2="18" />
         </svg>
-        App
-        <span className="relative flex h-1.5 w-1.5">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-current opacity-60" />
-          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-current" />
+        {/* Pulse dot */}
+        <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FAF7F4] opacity-40" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FAF7F4]/70" />
         </span>
       </button>
-      {showIosGuide && isIos && (
-        <div
-          className="absolute top-full mt-3 right-0 z-[9999] w-60 bg-[#FAF7F4] text-[#2A2118] rounded-2xl shadow-2xl p-4 text-left border border-[#2e4b3d]/10"
-          style={{ animation: 'fadeInDown 0.22s cubic-bezier(0.22,1,0.36,1)' }}
-        >
-          <p className="font-sans text-[10px] font-bold uppercase tracking-widest text-[#56423c]/50 mb-3">Installer sur iPhone</p>
-          <ol className="space-y-2.5">
-            {[
-              "Appuie sur \u25b2 Partager dans Safari",
-              "Choisis \"Sur l'\u00e9cran d'accueil\"",
-              "Appuie sur \"Ajouter\""
-            ].map((step, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <span className="flex-shrink-0 w-4 h-4 rounded-full bg-[#2e4b3d]/10 text-[#2e4b3d] text-[9px] font-bold flex items-center justify-center mt-0.5">{i + 1}</span>
-                <span className="font-sans text-[12px] text-[#56423c] leading-snug">{step}</span>
-              </li>
-            ))}
-          </ol>
-          <button
-            onClick={() => setShowIosGuide(false)}
-            className="mt-3 w-full text-center font-sans text-[10px] font-bold uppercase tracking-widest text-[#56423c]/40 hover:text-[#56423c]/70 transition-colors cursor-pointer"
+
+      {/* iOS guide — fixed bottom sheet, covers full screen safely */}
+      {showSheet && isIos && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 z-[9998] bg-black/40 backdrop-blur-[2px]"
+            onClick={() => setShowSheet(false)}
+            style={{ animation: 'adminBackdropIn 0.25s ease-out forwards' }}
+          />
+          {/* Sheet */}
+          <div
+            className="fixed bottom-0 left-0 right-0 z-[9999] bg-[#FAF7F4] rounded-t-[28px] shadow-[0_-8px_40px_rgba(0,0,0,0.2)] px-6 pt-5 pb-[max(28px,env(safe-area-inset-bottom))]"
+            style={{ animation: 'adminSheetUp 0.32s cubic-bezier(0.32,0.94,0.6,1) forwards' }}
           >
-            Fermer
-          </button>
-          <style>{`@keyframes fadeInDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }`}</style>
-        </div>
+            {/* Handle */}
+            <div className="w-9 h-1 bg-[#2A2118]/15 rounded-full mx-auto mb-5" />
+
+            {/* Header */}
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-[#2A2118] flex items-center justify-center flex-shrink-0">
+                <svg className="w-5 h-5 text-[#FAF7F4]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                  <line x1="12" y1="18" x2="12.01" y2="18" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-sans font-bold text-[15px] text-[#2A2118]">Installer l'app Admin</p>
+                <p className="font-sans text-[12px] text-[#56423c]/60 mt-0.5">Accès rapide depuis l'écran d'accueil</p>
+              </div>
+            </div>
+
+            <div className="h-px bg-[#2e4b3d]/8 mb-5" />
+
+            {/* Steps */}
+            <ol className="space-y-4 mb-6">
+              {[
+                {
+                  icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-5 h-5 text-[#2A2118]"><path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>,
+                  label: "Appuie sur ↑ Partager",
+                  detail: "Bouton en bas de Safari",
+                },
+                {
+                  icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-5 h-5 text-[#2A2118]"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>,
+                  label: '"Sur l\'écran d\'accueil"',
+                  detail: "Fais défiler dans le menu Partager",
+                },
+                {
+                  icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-5 h-5 text-[#2A2118]"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>,
+                  label: "Appuie sur \"Ajouter\"",
+                  detail: "L'icône apparaîtra sur ton écran",
+                },
+              ].map((step, i) => (
+                <li key={i} className="flex items-start gap-3.5">
+                  <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-[#2A2118]/8 flex items-center justify-center mt-0.5">
+                    {step.icon}
+                  </div>
+                  <div>
+                    <p className="font-sans font-semibold text-[14px] text-[#2A2118]">{step.label}</p>
+                    <p className="font-sans text-[12px] text-[#56423c]/60 mt-0.5">{step.detail}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+
+            <button
+              onClick={() => setShowSheet(false)}
+              className="w-full py-3.5 bg-[#2A2118] text-[#FAF7F4] rounded-xl font-sans text-[12px] font-bold uppercase tracking-[0.15em] active:scale-[0.98] transition-transform cursor-pointer"
+            >
+              Compris !
+            </button>
+          </div>
+
+          <style>{`
+            @keyframes adminBackdropIn { from { opacity: 0; } to { opacity: 1; } }
+            @keyframes adminSheetUp { from { transform: translateY(100%); opacity: 0.6; } to { transform: translateY(0); opacity: 1; } }
+          `}</style>
+        </>
       )}
-    </div>
+    </>
   );
 };
 
