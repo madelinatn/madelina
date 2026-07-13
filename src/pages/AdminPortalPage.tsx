@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -10,21 +11,21 @@ const AdminIosPopup = ({ onClose }: { onClose: () => void }) => {
     return () => window.removeEventListener('scroll', onScroll);
   }, [onClose]);
 
-  return (
+  return createPortal(
     <>
-      {/* Invisible backdrop */}
-      <div className="fixed inset-0 z-[9998]" onClick={onClose} />
+      {/* Semi-transparent backdrop */}
+      <div className="fixed inset-0 z-[9998] bg-black/20 backdrop-blur-[0.5px]" onClick={onClose} />
 
-      {/* Small centered popup */}
+      {/* Small centered popup at bottom */}
       <div
-        className="fixed top-[72px] left-1/2 -translate-x-1/2 z-[9999] w-[min(290px,calc(100vw-32px))]
-                   bg-[#FAF7F4] text-[#2A2118] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.18)] p-4
+        className="fixed bottom-[calc(80px+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-[9999] w-[min(290px,calc(100vw-32px))]
+                   bg-[#FAF7F4] text-[#2A2118] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.22)] p-4
                    border border-[#2e4b3d]/8"
         style={{ animation: 'adminPopupIn 0.22s cubic-bezier(0.22,1,0.36,1) forwards' }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Arrow up */}
-        <div className="absolute -top-[7px] left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-[#FAF7F4] rotate-45 rounded-sm border-l border-t border-[#2e4b3d]/8" />
+        {/* Arrow down pointing to Safari share bar */}
+        <div className="absolute -bottom-[6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-[#FAF7F4] rotate-45 rounded-sm border-r border-b border-[#2e4b3d]/8" />
 
         <p className="font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-[#56423c]/40 mb-3 text-center">
           Installer sur iPhone
@@ -55,11 +56,12 @@ const AdminIosPopup = ({ onClose }: { onClose: () => void }) => {
 
       <style>{`
         @keyframes adminPopupIn {
-          from { opacity: 0; transform: translateX(-50%) translateY(-6px) scale(0.97); }
+          from { opacity: 0; transform: translateX(-50%) translateY(12px) scale(0.97); }
           to   { opacity: 1; transform: translateX(-50%) translateY(0)      scale(1);    }
         }
       `}</style>
-    </>
+    </>,
+    document.body
   );
 };
 

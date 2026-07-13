@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useLanguage } from '../context/LanguageContext';
 
 declare global {
@@ -29,22 +30,21 @@ const IosPopup = ({ onClose, t }: { onClose: () => void; t: (fr: string, en: str
 
   return (
     <>
-      {/* Invisible backdrop — click outside to close */}
+      {/* Semi-transparent backdrop — click anywhere outside the card to close */}
       <div
-        className="fixed inset-0 z-[9998]"
+        className="fixed inset-0 z-[9998] bg-black/20 backdrop-blur-[0.5px]"
         onClick={onClose}
       />
 
-      {/* Popup card — centered horizontally, near top of screen */}
+      {/* Popup card — centered horizontally, near bottom of screen where Safari controls are */}
       <div
-        className="fixed top-[72px] left-1/2 -translate-x-1/2 z-[9999] w-[min(300px,calc(100vw-32px))]
-                   bg-[#2A2118] text-[#FAF7F4] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.28)] p-4"
+        className="fixed bottom-[calc(80px+env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-[9999] w-[min(290px,calc(100vw-32px))]
+                   bg-[#2A2118] text-[#FAF7F4] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.35)] p-4"
         style={{ animation: 'iosPopupIn 0.22s cubic-bezier(0.22,1,0.36,1) forwards' }}
-        // Stop propagation so clicking inside the popup doesn't close it
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Small arrow pointing up */}
-        <div className="absolute -top-[7px] left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-[#2A2118] rotate-45 rounded-sm" />
+        {/* Small arrow pointing down toward the Safari Share button */}
+        <div className="absolute -bottom-[6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-[#2A2118] rotate-45 rounded-sm" />
 
         {/* Title */}
         <p className="font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-[#FAF7F4]/40 mb-3 text-center">
@@ -87,7 +87,7 @@ const IosPopup = ({ onClose, t }: { onClose: () => void; t: (fr: string, en: str
 
       <style>{`
         @keyframes iosPopupIn {
-          from { opacity: 0; transform: translateX(-50%) translateY(-6px) scale(0.97); }
+          from { opacity: 0; transform: translateX(-50%) translateY(12px) scale(0.97); }
           to   { opacity: 1; transform: translateX(-50%) translateY(0)      scale(1);    }
         }
       `}</style>
@@ -152,7 +152,7 @@ export const InstallAppButton = ({ variant = 'default' }: { variant?: 'default' 
         title={t("Ajouter à l'écran d'accueil", "Add to Home Screen")}
         aria-label={t("Installer l'application Yucca", "Install Yucca app")}
         className={`
-          group inline-flex items-center gap-2 cursor-pointer select-none
+          group inline-flex items-center gap-2 cursor-pointer select-none self-start
           transition-all duration-300
           ${variant === 'subtle'
             ? 'px-3.5 py-2 rounded-full border border-[#2e4b3d]/20 bg-[#FAF7F4]/80 hover:bg-[#2e4b3d] hover:border-[#2e4b3d] hover:text-[#FAF7F4] text-[#2e4b3d] text-[10px] font-sans font-bold uppercase tracking-[0.18em] shadow-sm hover:shadow-md'
@@ -172,8 +172,9 @@ export const InstallAppButton = ({ variant = 'default' }: { variant?: 'default' 
       </button>
 
       {/* iOS guide popup — centered, auto-closes on scroll/outside click */}
-      {showPopup && isIosDevice && (
-        <IosPopup onClose={() => setShowPopup(false)} t={t} />
+      {showPopup && isIosDevice && createPortal(
+        <IosPopup onClose={() => setShowPopup(false)} t={t} />,
+        document.body
       )}
     </>
   );
