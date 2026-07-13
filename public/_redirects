@@ -1,0 +1,4 @@
+# Redirect old /commander/ page to /menu (301 permanent)
+/commander       /menu  301
+/commander/      /menu  301
+/commander/*     /menu  301

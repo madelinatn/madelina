@@ -1,152 +1,111 @@
-import { MapPin, Clock, Phone } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Reveal } from './Reveal';
+import { useLanguage } from '../context/LanguageContext';
 
-const infoItems = [
-  {
-    icon: <MapPin size={18} strokeWidth={1.5} />,
-    label: 'Adresse',
-    value: 'Sidi Salem, Bizerte, Tunisie',
-  },
-  {
-    icon: <Phone size={18} strokeWidth={1.5} />,
-    label: 'Téléphone',
-    value: '72 413 676',
-    href: 'tel:72413676',
-  },
-  {
-    icon: <Clock size={18} strokeWidth={1.5} />,
-    label: 'Horaires',
-    value: '07:00 — 23:00 · Mar—Dim',
-  },
-];
+export const ContactForm = () => {
+  const { t } = useLanguage();
 
-export const ContactForm = () => (
-  <section
-    id="contact"
-    style={{ background: '#F2E9E1', paddingTop: '4rem', paddingBottom: '7rem', paddingLeft: '1.5rem', paddingRight: '1.5rem', position: 'relative', overflow: 'hidden' }}
-  >
-    {/* background circle accent */}
-    <div
-      style={{
-        position: 'absolute', top: '50%', left: '50%',
-        transform: 'translate3d(-50%,-50%,0)',
-        willChange: 'transform',
-        width: '56rem', height: '56rem',
-        background: 'rgba(166,75,42,0.04)',
-        borderRadius: '9999px',
-        filter: 'blur(80px)',
-        pointerEvents: 'none',
-      }}
-    />
+  return (
+    <section id="contact" className="py-24 md:py-36 bg-surface-container-low">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-[80px]">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-[24px]">
+          
+          {/* Left column: Info & Contact Details */}
+          <div className="md:col-span-5 space-y-10 text-left">
+            <div>
+              <span className="text-terracotta font-sans text-[12px] font-semibold uppercase tracking-widest block mb-6">
+                {t("Nous Rejoindre", "Find Us")}
+              </span>
+              <h2 className="font-sans text-[32px] md:text-[40px] leading-tight text-charcoal-text font-medium mb-8">
+                {t("Un cadre d'exception pour travailler & se détendre.", "An exceptional setting to work & relax.")}
+              </h2>
+            </div>
 
-    <div className="max-w-7xl mx-auto" style={{ position: 'relative', zIndex: 1 }}>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-
-        {/* ── Left: info ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <span style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#A64B2A', fontWeight: 500 }}>
-            Nous Trouver
-          </span>
-
-          <h2 style={{ fontFamily: '"Allenoire",serif', fontSize: 'clamp(2rem,5vw,3.5rem)', color: '#2A2118', marginTop: '0.875rem', marginBottom: '1.25rem', lineHeight: 1.1 }}>
-            Venez nous
-            <br />
-            <span style={{ color: '#A64B2A' }}>Rendre Visite</span>
-          </h2>
-
-          {/* divider */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-            <span style={{ height: '1px', width: '3rem', background: '#A64B2A', opacity: 0.25 }} />
-            <svg width="16" height="21" viewBox="0 0 100 130" fill="none" aria-hidden="true">
-              <path d="M10 130 V52 Q10 10 50 10 Q90 10 90 52 V130 Z" stroke="#A64B2A" strokeWidth="7" fill="none" opacity="0.4"/>
-            </svg>
-            <span style={{ height: '1px', flex: 1, background: '#A64B2A', opacity: 0.25 }} />
-          </div>
-
-          <p style={{ fontFamily: '"Inter",sans-serif', color: '#7A6A5A', fontSize: '1.0625rem', lineHeight: 1.8, maxWidth: '30rem', marginBottom: '2.5rem' }}>
-            Une commande spéciale, une réservation ou simplement l&rsquo;envie de partager un moment gourmand ? Passez nous voir ou appelez-nous.
-          </p>
-
-          {/* Info cards */}
-          <div className="space-y-4">
-            {infoItems.map((item) => (
-              <div
-                key={item.label}
-                id={`contact-${item.label.toLowerCase()}`}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1.25rem',
-                  padding: '1.25rem 1.5rem',
-                  background: '#FAF7F4',
-                  borderRadius: '1rem',
-                  border: '1px solid rgba(166,75,42,0.1)',
-                }}
-              >
-                <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '0.75rem', background: 'rgba(166,75,42,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#A64B2A', flexShrink: 0 }}>
-                  {item.icon}
+            {/* Contact Info Card */}
+            <div className="bg-surface-container-lowest p-8 luxury-border shadow-sm space-y-6">
+              <h3 className="font-sans text-[20px] md:text-[24px] text-charcoal-text font-medium mb-4">
+                {t("Contact & Accès", "Contact & Access")}
+              </h3>
+              
+              <div className="space-y-4 font-sans text-on-surface-variant text-sm">
+                <div className="flex items-start gap-4">
+                  <span className="material-symbols-outlined text-terracotta mt-0.5">location_on</span>
+                  <div>
+                    <span className="font-bold block text-charcoal-text">{t("Adresse", "Address")}</span>
+                    <span>
+                       {t("Avenue Hédi Nouira, Ennasr 2, Ariana 2037, Tunisie", "Avenue Hédi Nouira, Ennasr 2, Ariana 2037, Tunisia")}
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <p style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(42,33,24,0.4)', marginBottom: '0.2rem' }}>{item.label}</p>
-                  {item.href
-                    ? <a href={item.href} style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.9375rem', color: '#2A2118', fontWeight: 500 }}>{item.value}</a>
-                    : <p style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.9375rem', color: '#2A2118', fontWeight: 500 }}>{item.value}</p>
-                  }
+                
+                <div className="flex items-start gap-4">
+                  <span className="material-symbols-outlined text-terracotta mt-0.5">phone</span>
+                  <div>
+                    <span className="font-bold block text-charcoal-text">{t("Téléphone", "Phone")}</span>
+                    <a href="tel:28299999" className="hover:text-terracotta transition-colors">28 299 999</a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <span className="material-symbols-outlined text-terracotta mt-0.5">mail</span>
+                  <div>
+                    <span className="font-bold block text-charcoal-text">{t("E-mail", "Email")}</span>
+                    <a href="mailto:yucca.cafe.tn@gmail.com" className="hover:text-terracotta transition-colors">yucca.cafe.tn@gmail.com</a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 pt-4 border-t border-outline-variant/30">
+                  <span className="material-symbols-outlined text-terracotta mt-0.5">schedule</span>
+                  <div>
+                    <span className="font-bold block text-charcoal-text">{t("Horaires", "Hours")}</span>
+                    <p>{t("Tous les jours : 06h00 – 00h00", "Every day: 06:00 AM – 00:00")}</p>
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
+
           </div>
 
-          {/* CTA */}
-          <div style={{ marginTop: '2.5rem' }}>
-            <a
-              href="tel:72413676"
-              id="contact-call-btn"
-              className="btn-primary inline-flex"
+          {/* Right column: Interactive Map UI */}
+          <Reveal
+            scale={0.95}
+            duration={0.8}
+            className="md:col-start-7 md:col-span-6 h-[500px] md:h-[600px] luxury-border relative group overflow-hidden bg-surface-container-highest"
+          >
+            {/* Real Google Maps Iframe */}
+            <iframe
+              src="https://maps.google.com/maps?q=36.850937,10.157833&hl=fr&z=16&output=embed"
+              className="w-full h-full border-0 absolute inset-0 z-0"
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Café Yucca Location Map"
+            />
+
+            {/* Overlaid UI */}
+            <a 
+              href="https://www.google.com/maps/place/Caf%C3%A9+Yucca/data=!4m2!3m1!1s0x0:0xfd4bfc9d611d9406?sa=X&ved=1t:2428&ictx=111"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute top-8 left-8 bg-[#2e4b3d]/90 hover:bg-[#2e4b3d] backdrop-blur-sm p-4 shadow-lg luxury-border text-left block transition-colors z-10"
             >
-              <Phone size={16} strokeWidth={1.5} />
-              Appeler Maintenant
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-[#f7f0de] flex items-center justify-center rounded-sm overflow-hidden">
+                  <img src="/logos/logo1.svg" alt="Café Yucca" className="w-8 h-8 object-contain" />
+                </div>
+                <div>
+                  <span className="block text-xs font-bold text-off-white uppercase">Café Yucca</span>
+                  <span className="block text-[10px] text-off-white/70">
+                    {t("Ouvert jusqu'à 00:00", "Open until 00:00")}
+                  </span>
+                </div>
+              </div>
             </a>
-          </div>
-        </motion.div>
+          </Reveal>
 
-        {/* ── Right: Google Map ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ delay: 0.1, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            borderRadius: '2rem',
-            overflow: 'hidden',
-            height: '520px',
-            boxShadow: '0 24px 80px rgba(42,33,24,0.12)',
-            border: '6px solid #FAF7F4',
-            transform: 'translateZ(0)',
-            willChange: 'transform, opacity'
-          }}
-          className="group relative"
-        >
-          <div className="absolute inset-0 bg-[#2A2118]/5 group-hover:bg-transparent transition-colors duration-700 pointer-events-none z-10" />
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3184.862413481232!2d9.87020031530733!3d37.28678007985145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12e31f004e47d6bb%3A0xc204697bd9860a29!2smadelina%20%F0%9F%A7%A1!5e0!3m2!1sen!2stn!4v1711910452000!5m2!1sen!2stn"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Localisation madélina — Sidi Salem, Bizerte"
-            className="transition-transform duration-700"
-          />
-        </motion.div>
+        </div>
 
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
+

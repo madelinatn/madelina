@@ -1,160 +1,72 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 export const Hero = () => {
-  const { scrollY } = useScroll();
-  const bgY     = useTransform(scrollY, [0, 600], [0, 160]);
-  const opacity = useTransform(scrollY, [0, 350], [1, 0]);
+  const { t } = useLanguage();
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center overflow-hidden"
-      style={{ background: '#FAF7F4' }}
-      aria-label="Madelina — Pâtisserie Artisanale et Café à Bizerte"
+      className="relative h-[90vh] flex items-center justify-center md:justify-start overflow-hidden px-6 md:px-[80px] pt-16 md:pt-20 bg-[#2e4b3d]"
+      aria-label={t("Café Yucca — Café de Spécialité et Espace Hybride", "Café Yucca — Specialty Coffee and Hybrid Space")}
     >
-      {/* ── SEO h1 (visible to Google, visually styled as tagline) ── */}
-      <h1 style={{
-        position: 'absolute',
-        width: '1px',
-        height: '1px',
-        padding: 0,
-        margin: '-1px',
-        overflow: 'hidden',
-        clip: 'rect(0,0,0,0)',
-        whiteSpace: 'nowrap',
-        border: 0,
-      }}>
-        Madelina — Pâtisserie Artisanale &amp; Café à Bizerte, Tunisie | Fait maison par Haifa Ben Salem
-      </h1>
-      {/* ── Parallax hero image ── */}
-      <motion.div style={{ y: bgY }} className="absolute inset-0 z-0">
-        <img
-          src="https://i.ibb.co/NdDBpDYh/11.jpg"
-          alt="L'Atelier madélina — Pâtisserie artisanale"
-          className="w-full h-full object-cover scale-110"
-          loading="eager"
-          fetchPriority="high"
-          decoding="async"
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'linear-gradient(105deg, rgba(250,247,244,0.97) 0%, rgba(250,247,244,0.82) 50%, rgba(250,247,244,0.10) 100%)',
-          }}
-        />
-      </motion.div>
-
-      {/* ── Content ── */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full pt-16 sm:pt-28 pb-20 flex items-center justify-between">
-
-        {/* Left — text */}
-        <div className="max-w-2xl">
-          <motion.span
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="inline-flex items-center gap-2 mb-4 text-[10px] uppercase tracking-[0.3em] text-[#A64B2A] font-medium"
-          >
-            <span className="w-6 h-px bg-[#A64B2A]" />
-            L&rsquo;Art de Vivre à Bizerte
-            <span className="w-6 h-px bg-[#A64B2A]" />
-          </motion.span>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="font-allenoire mb-8 leading-[0.92] whitespace-nowrap"
-            style={{ fontSize: 'clamp(2.2rem, 5.5vw, 5rem)', color: '#2A2118' }}
-          >
-            Fait{' '}
-            <span style={{ color: '#A64B2A' }}>
-              maison
-            </span>
-            <br />
-            Fait avec le{' '}
-            <span style={{ color: '#A64B2A' }}>
-              cœur
-            </span>
-            <br />
-            Fait pour{' '}
-            <span style={{ color: '#A64B2A' }}>
-              vous
-            </span>
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.65 }}
-            className="text-lg leading-relaxed mb-12 text-balance"
-            style={{ color: '#7A6A5A', maxWidth: '36rem' }}
-          >
-            Une pâtisserie artisanale, du café bien fait et des brunchs généreux, voilà l&rsquo;esprit madélina.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.85 }}
-            className="flex flex-wrap gap-4"
-          >
-            <Link to="/menu" id="hero-menu-btn" className="btn-primary">
-              Découvrir le Menu
-            </Link>
-            <Link to="/#contact" id="hero-reserve-btn" className="btn-outline">
-              Réserver une Table
-            </Link>
-          </motion.div>
+      {/* Background image & overlay */}
+      <div className="absolute inset-0 z-0">
+        {/* Image wrapper: covers full screen on mobile, right-aligned on desktop */}
+        <div className="absolute inset-0 md:left-auto md:w-[58vw] h-full overflow-hidden">
+          <img
+            src="/images/hero-bg.webp"
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover scale-105"
+            style={{ objectPosition: 'center 45%' }}
+            width="886"
+            height="1600"
+            fetchPriority="high"
+            decoding="async"
+          />
+          {/* Mobile dark overlay */}
+          <div className="absolute inset-0 bg-black/40 md:hidden animate-fadeIn" />
         </div>
-
-        {/* Right — real sticker badge PNG */}
-        <div className="hidden lg:flex flex-col items-center gap-8 pr-8">
-          {/* Floating sticker badge — real brand asset */}
-          <motion.div
-            className="select-none relative animate-float"
-          >
-            <div className="absolute inset-0 rounded-full border border-[#A64B2A]/20 scale-105" />
-            <img
-              src="/logos/logo_madelina-4.png"
-              alt="madélina — Fait maison. Fait avec le cœur."
-              className="w-56 h-56 object-cover rounded-full shadow-[0_16px_40px_rgba(166,75,42,0.25)] border-[6px] border-white/60 bg-white"
-              loading="eager"
-              fetchpriority="high"
-              decoding="sync"
-            />
-          </motion.div>
-
-          {/* Glass rating card */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
-            className="glass-card rounded-2xl px-6 py-4 flex items-center gap-4"
-          >
-            <span style={{ fontFamily: '"Playfair Display",serif', fontSize: '2rem', color: '#A64B2A', lineHeight: 1 }}>4.8</span>
-            <div>
-              <p style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: '#7A6A5A' }}>Google Rating</p>
-              <p style={{ fontFamily: '"Playfair Display",serif', fontSize: '0.875rem', color: '#2A2118' }}>Excellent</p>
-            </div>
-          </motion.div>
-        </div>
+        
+        {/* Desktop: deep gradient from solid green into the image — no harsh edge */}
+        <div className="hidden md:block absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-[#2e4b3d] via-[#2e4b3d]/95 via-35% to-transparent to-85% pointer-events-none" />
+        {/* Extra subtle vignette on the far right so image doesn't end abruptly */}
+        <div className="hidden md:block absolute inset-y-0 right-0 w-[12vw] bg-gradient-to-l from-[#2e4b3d]/30 to-transparent pointer-events-none" />
       </div>
 
-      {/* ── Scroll indicator ── */}
-      <motion.div
-        style={{ opacity }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer animate-bounce"
-        onClick={() => document.getElementById('our-story')?.scrollIntoView({ behavior: 'smooth' })}
-      >
-        <span style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.6rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(42,33,24,0.35)' }}>
-          Découvrir
+      {/* Content area: Centered on mobile, left-aligned on desktop */}
+      <div className="relative z-10 text-center md:text-left text-off-white max-w-3xl md:max-w-[48%] curtain-reveal">
+        {/* Eyebrow */}
+        <span className="block font-sans text-[11px] uppercase tracking-[0.35em] text-off-white/60 mb-4">
+          {t("Tunis · Café de Spécialité", "Tunis · Specialty Coffee")}
         </span>
-        <ArrowDown size={14} color="#A64B2A" strokeWidth={1.5} />
-      </motion.div>
+
+        {/* Brand name as hero statement */}
+        <h1 className="font-sans font-semibold text-[44px] xs:text-[52px] sm:text-[72px] md:text-[88px] lg:text-[104px] leading-tight tracking-[0.06em] mb-5 uppercase text-off-white">
+          YUCCA CAFÉ
+        </h1>
+
+        {/* Thin divider */}
+        <div className="w-12 h-[1px] bg-off-white/40 mb-6 mx-auto md:mx-0" />
+
+        <p className="font-sans text-[15px] md:text-[16px] max-w-sm opacity-75 mb-8 leading-[1.7]">
+          {t(
+            "L'équilibre parfait entre café de spécialité et espace de travail optimisé.",
+            "The perfect balance between specialty coffee and an optimized work space."
+          )}
+        </p>
+        <div className="flex justify-center md:justify-start gap-6">
+          <Link 
+            to="/menu" 
+            id="hero-discover-btn"
+            className="border border-off-white/70 px-10 py-4 font-sans font-semibold text-[11px] uppercase tracking-[0.18em] hover:bg-off-white hover:text-[#2e4b3d] transition-all duration-400"
+          >
+            {t("Découvrir la Carte", "Discover the Menu")}
+          </Link>
+        </div>
+      </div>
     </section>
   );
 };
+

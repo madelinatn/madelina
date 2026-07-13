@@ -19,18 +19,36 @@ export default defineConfig({
     hmr: process.env.DISABLE_HMR !== 'true',
   },
   build: {
-    // Generate chunk manifest for better caching
-    manifest: true,
-    // Raise chunk warning limit (avoid noise for small apps)
-    chunkSizeWarningLimit: 600,
+    // Target modern browsers — removes unused polyfills
+    target: 'es2017',
+    chunkSizeWarningLimit: 400,
+    // Terser for better dead-code elimination
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,      // Remove all console.* calls in production
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.warn', 'console.info'],
+        passes: 2,               // 2 passes = more aggressive tree-shaking
+      },
+    },
+    cssCodeSplit: true,          // Split CSS per-route — faster first paint
     rollupOptions: {
+      treeshake: {
+        moduleSideEffects: false, // Aggressive tree-shaking
+        preset: 'recommended',
+      },
       output: {
-        // Split vendor libs into a separate cached chunk
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'motion-vendor': ['motion'],
+        // Split vendor libs — browser caches them separately
+        manualChunks(id) {
+          if (id.includes('react-router-dom') || id.includes('react-dom') || id.includes('/react/')) {
+            return 'react-vendor';
+          }
+          if (id.includes('motion') || id.includes('framer')) {
+            return 'motion-vendor';
+          }
         },
       },
     },
   },
-});
+});

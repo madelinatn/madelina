@@ -1,18 +1,18 @@
-# Madelina
+# Café Yucca
 
-A premium digital experience for **Madélina** — an artisan pastry shop and café in Bizerte, Tunisia.
+A premium digital experience for **Café Yucca** — an artisan pastry shop and café.
 
 ---
 
 ## Live
 
-🌐 [madelina.tn](madelina.tn)
+🌐 [yucca-cafe.tn](https://yucca-cafe.tn)
 
 ---
 
 ## About the Project
 
-Madelina is a high-end website designed to reflect the elegance and authenticity of the Madélina brand. It serves as a digital showcase for the café's menu, story, and contact information — crafted with precision and attention to detail.
+Café Yucca is a high-end website designed to reflect the elegance and authenticity of the Café Yucca brand. It serves as a digital showcase for the café's menu, story, and contact information — crafted with precision and attention to detail.
 
 ---
 
@@ -34,7 +34,7 @@ Madelina is a high-end website designed to reflect the elegance and authenticity
 | Styling | Tailwind CSS v4 |
 | Bundler | Vite 6 |
 | Animations | Framer Motion |
-| Hosting | GitHub Pages |
+| Hosting | Cloudflare Pages |
 
 ---
 
@@ -46,3 +46,4 @@ medamineelarbi1@gmail.com
 ---
 
 *Fait maison. Fait avec le cœur. Fait pour vous.*
+

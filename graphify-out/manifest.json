@@ -1,0 +1,277 @@
+{
+  "functions/api/_types.ts": {
+    "mtime": 1780896173.8684866,
+    "ast_hash": "95a28f0ccc106069ed7ef4d65862f595",
+    "semantic_hash": ""
+  },
+  "functions/api/admin/franchise.ts": {
+    "mtime": 1781546274.7312992,
+    "ast_hash": "2c572e3c2dbb2785e90c9c4ac185b281",
+    "semantic_hash": ""
+  },
+  "functions/api/admin/menu.ts": {
+    "mtime": 1783688831.945374,
+    "ast_hash": "a14bdae2779cabcbbe8ae846d1cba2a1",
+    "semantic_hash": ""
+  },
+  "functions/api/admin/upload.ts": {
+    "mtime": 1783688815.0484335,
+    "ast_hash": "98e5f4003960d87025f9132108fb1a09",
+    "semantic_hash": ""
+  },
+  "functions/api/auth/check.ts": {
+    "mtime": 1780897199.5642192,
+    "ast_hash": "abaf1a169e5ad1104443e6ca41e8a596",
+    "semantic_hash": ""
+  },
+  "functions/api/auth/login.ts": {
+    "mtime": 1780897211.2697155,
+    "ast_hash": "453a12d0fe59a516c66a8e8279b3b6a7",
+    "semantic_hash": ""
+  },
+  "functions/api/auth/logout.ts": {
+    "mtime": 1780896173.8662045,
+    "ast_hash": "e0a82fbd89e415fba3c50dada05079ce",
+    "semantic_hash": ""
+  },
+  "functions/api/images/menu/[filename].ts": {
+    "mtime": 1780896173.8668246,
+    "ast_hash": "d57c3fecc5be578d94d78af925b10b7b",
+    "semantic_hash": ""
+  },
+  "functions/api/menu.ts": {
+    "mtime": 1780896173.8681684,
+    "ast_hash": "ed86f4adb31daf67fbdec994930172d5",
+    "semantic_hash": ""
+  },
+  "package.json": {
+    "mtime": 1783720110.7726898,
+    "ast_hash": "dd7efc42e92881e124118f3ad050bf1c",
+    "semantic_hash": ""
+  },
+  "public/_routes.json": {
+    "mtime": 1780896173.8615267,
+    "ast_hash": "a69055b72f296b724bb3564bf3f60e9f",
+    "semantic_hash": ""
+  },
+  "schema.sql": {
+    "mtime": 1783723004.1920152,
+    "ast_hash": "1ca15e5a91bb8d373001687e3f039e4f",
+    "semantic_hash": ""
+  },
+  "src/App.tsx": {
+    "mtime": 1783719742.683164,
+    "ast_hash": "0d9d5f98ec5efb3e71f01a6bd12ee1da",
+    "semantic_hash": ""
+  },
+  "src/components/ContactForm.tsx": {
+    "mtime": 1783053073.942589,
+    "ast_hash": "0f1bd476492f97527d6ac2aa5c37a9fa",
+    "semantic_hash": ""
+  },
+  "src/components/Footer.tsx": {
+    "mtime": 1781546469.3563488,
+    "ast_hash": "d8a1484936f00929bf0e9a1e46dcd37a",
+    "semantic_hash": ""
+  },
+  "src/components/FranchiseBanner.tsx": {
+    "mtime": 1783053081.6512196,
+    "ast_hash": "adc957f7ff55db453b4ddf1ab205f41f",
+    "semantic_hash": ""
+  },
+  "src/components/Header.tsx": {
+    "mtime": 1783727170.9778023,
+    "ast_hash": "e75ceb35742216402366cd84b4855fe0",
+    "semantic_hash": ""
+  },
+  "src/components/Hero.tsx": {
+    "mtime": 1783053059.8817086,
+    "ast_hash": "b0162d72d2dc0bf8a84eea839d314e42",
+    "semantic_hash": ""
+  },
+  "src/components/Menu.tsx": {
+    "mtime": 1783690075.474608,
+    "ast_hash": "a9e60c6e216fba2745f2826adcc9e079",
+    "semantic_hash": ""
+  },
+  "src/components/OurStory.tsx": {
+    "mtime": 1783053066.3815715,
+    "ast_hash": "93ed498dc8f3356f1957a5a7e74b4265",
+    "semantic_hash": ""
+  },
+  "src/components/Reveal.tsx": {
+    "mtime": 1783582887.001952,
+    "ast_hash": "71ebe30d9d21c5c0562cc55be8d6462f",
+    "semantic_hash": ""
+  },
+  "src/components/Reviews.tsx": {
+    "mtime": 1783053025.029311,
+    "ast_hash": "7b6620e58ba67e4a60ceb504d35f6918",
+    "semantic_hash": ""
+  },
+  "src/components/ScrollToTopButton.tsx": {
+    "mtime": 1783053086.7750587,
+    "ast_hash": "80bb9773b5e8684f677230148c9c7ab6",
+    "semantic_hash": ""
+  },
+  "src/context/LanguageContext.tsx": {
+    "mtime": 1780897191.706526,
+    "ast_hash": "0974a1cf6f0d7ee68d79e12e36c7be58",
+    "semantic_hash": ""
+  },
+  "src/main.tsx": {
+    "mtime": 1780896174.012831,
+    "ast_hash": "7325846c69cf3a622e010b660524e45c",
+    "semantic_hash": ""
+  },
+  "src/pages/AdminFranchisePage.tsx": {
+    "mtime": 1783940377.3105206,
+    "ast_hash": "ad7811274dec754340e2a23074ed702d",
+    "semantic_hash": ""
+  },
+  "src/pages/AdminPortalPage.tsx": {
+    "mtime": 1783940370.9689355,
+    "ast_hash": "63863fbbbb6fd025724d9d5e94172fda",
+    "semantic_hash": ""
+  },
+  "src/pages/FranchisePage.tsx": {
+    "mtime": 1783514686.8929257,
+    "ast_hash": "1b617c75ad9daf4f3210d8287f380819",
+    "semantic_hash": ""
+  },
+  "src/pages/Home.tsx": {
+    "mtime": 1783053055.807105,
+    "ast_hash": "6525148df8496b31780bc2e2000cae94",
+    "semantic_hash": ""
+  },
+  "src/pages/MenuPage.tsx": {
+    "mtime": 1783727155.181198,
+    "ast_hash": "a3c7dab1671ac1bedef0638a45fd8baa",
+    "semantic_hash": ""
+  },
+  "tsconfig.json": {
+    "mtime": 1780896173.8688173,
+    "ast_hash": "cad5596adcc26c41db19c61d7fb8a5d8",
+    "semantic_hash": ""
+  },
+  "vite.config.ts": {
+    "mtime": 1781559306.856017,
+    "ast_hash": "1ff85248fa31efcc0c7d7d6ae57a804a",
+    "semantic_hash": ""
+  },
+  ".agents/rules/graphify.md": {
+    "mtime": 1781557413.296573,
+    "ast_hash": "f1e53ecc9194573d3c28fc116c743a2e",
+    "semantic_hash": ""
+  },
+  ".agents/workflows/graphify.md": {
+    "mtime": 1781557413.2967782,
+    "ast_hash": "0bc020d491fca99550c1ea3de0a5f862",
+    "semantic_hash": ""
+  },
+  ".github/workflows/deploy.yml": {
+    "mtime": 1780896173.8648577,
+    "ast_hash": "7cbfd4bf50ebed5a2c651926d0256998",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1780897252.4720874,
+    "ast_hash": "c13eca9565207b6aa1d98b80ad1f6c9d",
+    "semantic_hash": ""
+  },
+  "index.html": {
+    "mtime": 1781552507.5356913,
+    "ast_hash": "0fac79ca6c23946832bb5c893c49bbea",
+    "semantic_hash": ""
+  },
+  "public/admin-menu/index.html": {
+    "mtime": 1783946669.0209384,
+    "ast_hash": "4c076eb68b222ec7d510bf9aa7714d09",
+    "semantic_hash": ""
+  },
+  "public/google069bd8dd72736ac3.html": {
+    "mtime": 1780896173.8567977,
+    "ast_hash": "ff45205c958af3d77a4d197a9d30ad2c",
+    "semantic_hash": ""
+  },
+  "public/llms.txt": {
+    "mtime": 1780897245.7644873,
+    "ast_hash": "196119801882e233a397947f6a0d0e89",
+    "semantic_hash": ""
+  },
+  "public/robots.txt": {
+    "mtime": 1780897231.3547602,
+    "ast_hash": "33d13751151c986f2a02910e36cb6bde",
+    "semantic_hash": ""
+  },
+  "public/android-chrome-192x192.png": {
+    "mtime": 1780898862.0975657,
+    "ast_hash": "9b4d47825a537c5589965de37b88b802",
+    "semantic_hash": ""
+  },
+  "public/android-chrome-512x512.png": {
+    "mtime": 1780898862.100163,
+    "ast_hash": "c95acf6d066c9c7992ac5b584344d59a",
+    "semantic_hash": ""
+  },
+  "public/apple-touch-icon.png": {
+    "mtime": 1780898862.0949845,
+    "ast_hash": "1f085179c5746e944e64262ee1d7d1bb",
+    "semantic_hash": ""
+  },
+  "public/favicon-96x96.png": {
+    "mtime": 1780898862.0917857,
+    "ast_hash": "f1545d27af2159ec015e7083852cf6fc",
+    "semantic_hash": ""
+  },
+  "public/favicon.svg": {
+    "mtime": 1780898862.0875256,
+    "ast_hash": "a3cc1aec511dbd028b2be4aca7e86fdf",
+    "semantic_hash": ""
+  },
+  "public/images/hero-bg.webp": {
+    "mtime": 1781053523.9565804,
+    "ast_hash": "a513fca90aa73cb05f6150d517f396c4",
+    "semantic_hash": ""
+  },
+  "public/images/our-concept.webp": {
+    "mtime": 1781049844.4202783,
+    "ast_hash": "c1c6d2bd5cda530d6939b7c6d6f73c37",
+    "semantic_hash": ""
+  },
+  "public/logos/logo1.svg": {
+    "mtime": 1780899237.1602147,
+    "ast_hash": "50be744948f129fb8a0204426755a0b8",
+    "semantic_hash": ""
+  },
+  "public/logos/logo1.webp": {
+    "mtime": 1780899237.1550593,
+    "ast_hash": "bfb57aef30d425dd31cf8b6c72dc2c4e",
+    "semantic_hash": ""
+  },
+  "functions/api/franchise/apply.ts": {
+    "mtime": 1783514783.756451,
+    "ast_hash": "cd7c3a4ef194f2f3ff93fa87eab58c93",
+    "semantic_hash": ""
+  },
+  "functions/api/franchise/index.ts": {
+    "mtime": 1783514780.0174966,
+    "ast_hash": "c39a56ced37c07b43132b0bf45d486ac",
+    "semantic_hash": ""
+  },
+  "functions/api/admin/orders.ts": {
+    "mtime": 1783724922.6423733,
+    "ast_hash": "6895776c8a244354dcbd279ec8cdf2d2",
+    "semantic_hash": ""
+  },
+  "functions/api/orders.ts": {
+    "mtime": 1783723022.6443095,
+    "ast_hash": "f2949765e433fefddb0a86ad4c96f487",
+    "semantic_hash": ""
+  },
+  "src/pages/AdminLoginPage.tsx": {
+    "mtime": 1783719671.6356814,
+    "ast_hash": "e221e0c0f7098f91e4bd534817afc4fb",
+    "semantic_hash": ""
+  }
+}

@@ -1,157 +1,116 @@
-import { Star, Quote } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Reveal } from './Reveal';
+import { useLanguage } from '../context/LanguageContext';
 
-const reviews = [
-  {
-    name: 'Tia Maria',
-    text: 'Un endroit magnifique, une décoration soignée et des pâtisseries dignes des plus grands salons parisiens. Le fraisier est à tomber !',
-    rating: 5,
-    date: 'Il y a 2 mois',
-  },
-  {
-    name: 'Houyem',
-    text: "Le meilleur brunch de Bizerte. L'accueil est chaleureux et l'ambiance vintage avec les vinyles est juste parfaite.",
-    rating: 5,
-    date: 'Il y a 3 semaines',
-  },
-  {
-    name: 'Ahmed B.',
-    text: 'Une expérience authentique. On sent le goût du fait maison dans chaque bouchée. Je recommande vivement la tarte au citron.',
-    rating: 4,
-    date: 'Il y a 1 mois',
-  },
-];
+export const Reviews = () => {
+  const { t } = useLanguage();
 
-export const Reviews = () => (
-  <section
-    id="reviews"
-    style={{ background: '#2A2118', paddingTop: '7rem', paddingBottom: '2.5rem', paddingLeft: '1.5rem', paddingRight: '1.5rem', position: 'relative', overflow: 'hidden' }}
-  >
-    {/* Subtle ambient glow */}
-    <div
-      style={{
-        position: 'absolute', top: '-12rem', left: '-12rem',
-        width: '30rem', height: '30rem',
-        background: 'rgba(166,75,42,0.08)', borderRadius: '9999px',
-        filter: 'blur(100px)', pointerEvents: 'none',
-      }}
-    />
-    <div
-      style={{
-        position: 'absolute', bottom: '-12rem', right: '-12rem',
-        width: '30rem', height: '30rem',
-        background: 'rgba(166,75,42,0.05)', borderRadius: '9999px',
-        filter: 'blur(100px)', pointerEvents: 'none',
-      }}
-    />
+  const reviews = [
+    {
+      name: 'Mehdi Skikdi',
+      initials: 'M.S',
+      badge: t('Local Guide · 108 avis', 'Local Guide · 108 reviews'),
+      time: t('Il y a 4 mois', '4 months ago'),
+      text: t(
+        "Super endroit, propre et bien organisé (avec le concept de self-service) mais surtout... politique non-fumeur stricte (assez rare dans la région)",
+        "Great place, clean and well organised (with self service concept) but most importantly... strict non-smoking policy (quiet rare in the area)"
+      ),
+      rating: 5,
+    },
+    {
+      name: 'Mohamed Slim KASSIS',
+      initials: 'M.K',
+      badge: t('Local Guide · 5 avis', 'Local Guide · 5 reviews'),
+      time: '',
+      text: t(
+        "Le concept de self-service est vraiment excellent : c'est simple à utiliser, efficace et vous donne la liberté de choisir exactement ce dont vous avez besoin, à votre propre rythme.",
+        "The self-service concept is truly excellent: it’s simple to use, efficient, and gives you the freedom to choose exactly what you need, at your own pace."
+      ),
+      rating: 5,
+    },
+    {
+      name: 'Marwa Djebbi',
+      initials: 'M.D',
+      badge: t('Local Guide · 50 avis · 372 photos', 'Local Guide · 50 reviews · 372 photos'),
+      time: t('Il y a 2 mois', '2 months ago'),
+      text: t(
+        "Mon endroit préféré pour travailler et étudier. Et le mieux, c'est que l'intérieur est une zone non-fumeur. Le personnel est incroyable et propose de nombreux choix de boissons et de nourriture.",
+        "My fav place to work and study. And the best thing is the interior is a non smoking area. The staff are amazing and they do have multiple choices for drinks and food"
+      ),
+      rating: 5,
+    },
+  ];
 
-    <div className="max-w-7xl mx-auto" style={{ position: 'relative', zIndex: 1 }}>
-
-      {/* Header row */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-12 mb-20">
-
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "150px" }}
-          transition={{ duration: 0.6 }}
-        >
-          <span style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#A64B2A', fontWeight: 500 }}>
-            Témoignages
+  return (
+    <section id="experiences" className="py-24 md:py-36 max-w-[1440px] mx-auto px-6 md:px-[80px]">
+      <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+        <div className="max-w-2xl text-left">
+          <span className="text-terracotta font-sans text-[12px] font-semibold uppercase tracking-widest block mb-4">
+            {t("Expériences", "Experiences")}
           </span>
-          <h2 style={{ fontFamily: '"Allenoire",serif', fontSize: 'clamp(2rem,5vw,3.5rem)', color: '#F2E9E1', marginTop: '0.75rem', lineHeight: 1.1 }}>
-            L&rsquo;expérience{' '}
-            <span style={{ color: '#A64B2A' }}>madélina</span>
-            <br />vue par vous
+          <h2 className="font-sans text-[32px] md:text-[40px] leading-tight text-charcoal-text font-medium">
+            {t("Ce que nos visiteurs racontent de leurs instants chez nous.", "What our visitors say about their moments with us.")}
           </h2>
-        </motion.div>
-
-        {/* Rating badge */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.92 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "150px" }}
-          transition={{ delay: 0.1, duration: 0.6 }}
-          style={{
-            background: 'rgba(255,255,255,0.04)',
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(166,75,42,0.2)',
-            borderRadius: '1.5rem',
-            padding: '1.5rem 2.25rem',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '1.5rem',
-          }}
-        >
-          <div style={{ textAlign: 'center' }}>
-            <div style={{ fontFamily: '"Playfair Display",serif', fontSize: '3rem', color: '#A64B2A', lineHeight: 1 }}>4.8</div>
-            <div style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.6rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(242,233,225,0.35)', marginTop: '0.2rem' }}>Sur 5</div>
-          </div>
-          <div style={{ width: '1px', height: '3rem', background: 'rgba(166,75,42,0.2)' }} />
-          <div>
-            <div style={{ display: 'flex', gap: '0.2rem', marginBottom: '0.5rem' }}>
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={16} fill="#A64B2A" color="#A64B2A" />
-              ))}
-            </div>
-            <div style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(242,233,225,0.4)' }}>Google Reviews</div>
-          </div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Review cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
         {reviews.map((review, i) => (
-          <motion.article
+          <Reveal
             key={i}
-            id={`review-card-${i + 1}`}
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "150px" }}
-            transition={{ delay: i * 0.1, duration: 0.5 }}
-            style={{
-              background: 'rgba(255,255,255,0.03)',
-              border: '1px solid rgba(166,75,42,0.15)',
-              borderRadius: '2rem',
-              padding: '2.5rem',
-              display: 'flex',
-              flexDirection: 'column',
-              height: '100%',
-              transition: 'background 0.5s, border-color 0.5s',
-              cursor: 'default',
-            }}
-            whileHover={{ backgroundColor: 'rgba(255,255,255,0.06)' }}
+            delay={i * 0.1}
+            y={30}
+            className="testimonial-card p-8 bg-surface-container-lowest"
           >
-            {/* Quote icon + date */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.75rem' }}>
-              <div style={{ width: '2.5rem', height: '2.5rem', borderRadius: '0.75rem', background: 'rgba(166,75,42,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Quote size={16} color="#A64B2A" strokeWidth={1.5} />
-              </div>
-              <span style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(242,233,225,0.25)' }}>
-                {review.date}
-              </span>
+            {/* Stars */}
+            <div className="flex gap-1 text-terracotta mb-6">
+              {[...Array(review.rating)].map((_, starIdx) => (
+                <span 
+                  key={starIdx} 
+                  className="material-symbols-outlined text-sm" 
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
+                  star
+                </span>
+              ))}
             </div>
 
             {/* Text */}
-            <p style={{ fontFamily: '"Lora","Playfair Display",serif', fontSize: '1rem', color: 'rgba(242,233,225,0.8)', lineHeight: 1.8, fontStyle: 'italic', flexGrow: 1, marginBottom: '2rem' }}>
-              &ldquo;{review.text}&rdquo;
+            <p className="font-sans text-on-surface-variant italic mb-8 leading-relaxed">
+              "{review.text}"
             </p>
 
-            {/* Author + stars */}
-            <div style={{ borderTop: '1px solid rgba(166,75,42,0.12)', paddingTop: '1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <p style={{ fontFamily: '"Playfair Display",serif', fontSize: '0.975rem', color: '#F2E9E1' }}>{review.name}</p>
-                <p style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(242,233,225,0.3)', marginTop: '0.15rem' }}>Client vérifié</p>
+            {/* Author */}
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-terracotta/12 flex items-center justify-center font-sans text-xs font-semibold text-terracotta">
+                {review.initials}
               </div>
-              <div style={{ display: 'flex', gap: '0.2rem' }}>
-                {[...Array(5)].map((_, j) => (
-                  <Star key={j} size={11} fill={j < review.rating ? '#A64B2A' : 'none'} color="#A64B2A" strokeWidth={1.5} />
-                ))}
+              <div>
+                <span className="block font-sans text-[12px] font-semibold text-charcoal-text uppercase tracking-wide">
+                  {review.name}
+                </span>
+                <span className="block text-[10px] text-on-surface-variant uppercase tracking-tighter">
+                  {review.badge}{review.time ? ` • ${review.time}` : ''}
+                </span>
               </div>
             </div>
-          </motion.article>
+          </Reveal>
         ))}
       </div>
-    </div>
-  </section>
-);
+
+      {/* Leave a review button */}
+      <div className="flex flex-col items-center justify-center mt-12 md:mt-16 text-center">
+        <a
+          href="https://search.google.com/local/writereview?placeid=ChIJjwOPdQAz_RIRBpQdYZ38S_0"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-outline inline-flex items-center gap-3 border-[#2A2118] text-[#2A2118] hover:bg-[#2A2118] hover:text-[#FAF7F4] transition-all duration-300"
+        >
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114-3.478 0-6.3-2.823-6.3-6.3 0-3.478 2.822-6.3 6.3-6.3 1.63 0 3.11.618 4.24 1.636l3.056-3.056C19.16 2.502 15.9 1 12.24 1 6.033 1 1 6.033 1 12.24s5.033 11.24 11.24 11.24c6.478 0 11.24-4.54 11.24-11.24 0-.76-.078-1.5-.22-2.195H12.24z"/>
+          </svg>
+          {t("Laisser un avis Google", "Leave a Google Review")}
+        </a>
+      </div>
+    </section>
+  );
+};

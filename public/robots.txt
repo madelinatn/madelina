@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 
-Sitemap: https://madelina.tn/sitemap.xml
+Sitemap: https://yucca-cafe.tn/sitemap.xml

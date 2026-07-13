@@ -6,7 +6,7 @@
 
   <!-- Home -->
   <url>
-    <loc>https://madelina.tn/</loc>
+    <loc>https://yucca-cafe.tn/</loc>
     <lastmod>2026-05-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -14,10 +14,11 @@
 
   <!-- Menu -->
   <url>
-    <loc>https://madelina.tn/menu</loc>
+    <loc>https://yucca-cafe.tn/menu</loc>
     <lastmod>2026-05-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
 </urlset>
+

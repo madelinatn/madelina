@@ -1,0 +1,13 @@
+name = "yucca-cafe"
+pages_build_output_dir = "dist"
+compatibility_date = "2024-05-13"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "yucca-db"
+database_id = "9568252b-958b-4780-9f9b-f82616eb3e6a"
+
+[[kv_namespaces]]
+binding = "IMAGES"
+id = "8200e049397441e59f23e0f9d139f90c"
+
