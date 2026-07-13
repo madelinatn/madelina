@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useMemo, memo, useTransition } from '
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { useLanguage } from '../context/LanguageContext';
-import { InstallAppButton } from '../components/InstallAppButton';
 
 interface MenuItem {
   id: string;
@@ -449,10 +448,7 @@ const MenuPage = () => {
             <h1 className="text-5xl md:text-7xl mb-6 font-sans font-light tracking-tighter text-charcoal-text">
               {t("Le Menu", "The Menu")}
             </h1>
-            <div className="h-px w-20 bg-terracotta mx-auto opacity-60 mb-5" />
-            <div className="flex justify-center">
-              <InstallAppButton variant="subtle" />
-            </div>
+            <div className="h-px w-20 bg-terracotta mx-auto opacity-60" />
           </div>
 
           {/* ── Category Pills Layout — beautifully wrapping, fully visible ── */}

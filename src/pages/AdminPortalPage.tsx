@@ -2,10 +2,71 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
-// Inline PWA install button for admin — icon only, bottom sheet guide
+// Small iOS popup for admin (auto-closes on scroll / outside click)
+const AdminIosPopup = ({ onClose }: { onClose: () => void }) => {
+  useEffect(() => {
+    const onScroll = () => onClose();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [onClose]);
+
+  return (
+    <>
+      {/* Invisible backdrop */}
+      <div className="fixed inset-0 z-[9998]" onClick={onClose} />
+
+      {/* Small centered popup */}
+      <div
+        className="fixed top-[72px] left-1/2 -translate-x-1/2 z-[9999] w-[min(290px,calc(100vw-32px))]
+                   bg-[#FAF7F4] text-[#2A2118] rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.18)] p-4
+                   border border-[#2e4b3d]/8"
+        style={{ animation: 'adminPopupIn 0.22s cubic-bezier(0.22,1,0.36,1) forwards' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Arrow up */}
+        <div className="absolute -top-[7px] left-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-[#FAF7F4] rotate-45 rounded-sm border-l border-t border-[#2e4b3d]/8" />
+
+        <p className="font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-[#56423c]/40 mb-3 text-center">
+          Installer sur iPhone
+        </p>
+
+        <ol className="space-y-2.5 mb-3.5">
+          {[
+            "Appuie sur ↑ en bas de Safari",
+            "Choisis \"Sur l'écran d'accueil\"",
+            "Appuie sur \"Ajouter\"",
+          ].map((text, i) => (
+            <li key={i} className="flex items-start gap-2.5">
+              <span className="flex-shrink-0 w-4 h-4 rounded-full bg-[#2A2118]/8 text-[#2A2118]/60 text-[9px] font-bold flex items-center justify-center mt-0.5">
+                {i + 1}
+              </span>
+              <span className="font-sans text-[12.5px] text-[#2A2118]/80 leading-snug">{text}</span>
+            </li>
+          ))}
+        </ol>
+
+        <button
+          onClick={onClose}
+          className="w-full text-center font-sans text-[10px] font-bold uppercase tracking-[0.18em] text-[#56423c]/30 hover:text-[#56423c]/60 transition-colors cursor-pointer pt-2 border-t border-[#2e4b3d]/8"
+        >
+          Fermer
+        </button>
+      </div>
+
+      <style>{`
+        @keyframes adminPopupIn {
+          from { opacity: 0; transform: translateX(-50%) translateY(-6px) scale(0.97); }
+          to   { opacity: 1; transform: translateX(-50%) translateY(0)      scale(1);    }
+        }
+      `}</style>
+    </>
+  );
+};
+
+// Inline PWA install button for admin — icon only, small popup guide
 const AdminInstallButton = () => {
   const [canInstall, setCanInstall] = useState(false);
-  const [showSheet, setShowSheet] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
   const [isIos, setIsIos] = useState(false);
 
   useEffect(() => {
@@ -34,7 +95,7 @@ const AdminInstallButton = () => {
   }, []);
 
   const handleInstall = async () => {
-    if (isIos) { setShowSheet(true); return; }
+    if (isIos) { setShowPopup(v => !v); return; }
     const w = window as any;
     if (!w.__deferredInstallPrompt) return;
     w.__deferredInstallPrompt.prompt();
@@ -49,7 +110,7 @@ const AdminInstallButton = () => {
 
   return (
     <>
-      {/* Icon-only button — no text to get cramped */}
+      {/* Icon-only button */}
       <button
         id="admin-pwa-install-btn"
         onClick={handleInstall}
@@ -61,90 +122,14 @@ const AdminInstallButton = () => {
           <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
           <line x1="12" y1="18" x2="12.01" y2="18" />
         </svg>
-        {/* Pulse dot */}
         <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FAF7F4] opacity-40" />
           <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FAF7F4]/70" />
         </span>
       </button>
 
-      {/* iOS guide — fixed bottom sheet, covers full screen safely */}
-      {showSheet && isIos && (
-        <>
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 z-[9998] bg-black/40 backdrop-blur-[2px]"
-            onClick={() => setShowSheet(false)}
-            style={{ animation: 'adminBackdropIn 0.25s ease-out forwards' }}
-          />
-          {/* Sheet */}
-          <div
-            className="fixed bottom-0 left-0 right-0 z-[9999] bg-[#FAF7F4] rounded-t-[28px] shadow-[0_-8px_40px_rgba(0,0,0,0.2)] px-6 pt-5 pb-[max(28px,env(safe-area-inset-bottom))]"
-            style={{ animation: 'adminSheetUp 0.32s cubic-bezier(0.32,0.94,0.6,1) forwards' }}
-          >
-            {/* Handle */}
-            <div className="w-9 h-1 bg-[#2A2118]/15 rounded-full mx-auto mb-5" />
-
-            {/* Header */}
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-xl bg-[#2A2118] flex items-center justify-center flex-shrink-0">
-                <svg className="w-5 h-5 text-[#FAF7F4]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-                  <line x1="12" y1="18" x2="12.01" y2="18" />
-                </svg>
-              </div>
-              <div>
-                <p className="font-sans font-bold text-[15px] text-[#2A2118]">Installer l'app Admin</p>
-                <p className="font-sans text-[12px] text-[#56423c]/60 mt-0.5">Accès rapide depuis l'écran d'accueil</p>
-              </div>
-            </div>
-
-            <div className="h-px bg-[#2e4b3d]/8 mb-5" />
-
-            {/* Steps */}
-            <ol className="space-y-4 mb-6">
-              {[
-                {
-                  icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-5 h-5 text-[#2A2118]"><path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>,
-                  label: "Appuie sur ↑ Partager",
-                  detail: "Bouton en bas de Safari",
-                },
-                {
-                  icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-5 h-5 text-[#2A2118]"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>,
-                  label: '"Sur l\'écran d\'accueil"',
-                  detail: "Fais défiler dans le menu Partager",
-                },
-                {
-                  icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-5 h-5 text-[#2A2118]"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>,
-                  label: "Appuie sur \"Ajouter\"",
-                  detail: "L'icône apparaîtra sur ton écran",
-                },
-              ].map((step, i) => (
-                <li key={i} className="flex items-start gap-3.5">
-                  <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-[#2A2118]/8 flex items-center justify-center mt-0.5">
-                    {step.icon}
-                  </div>
-                  <div>
-                    <p className="font-sans font-semibold text-[14px] text-[#2A2118]">{step.label}</p>
-                    <p className="font-sans text-[12px] text-[#56423c]/60 mt-0.5">{step.detail}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-
-            <button
-              onClick={() => setShowSheet(false)}
-              className="w-full py-3.5 bg-[#2A2118] text-[#FAF7F4] rounded-xl font-sans text-[12px] font-bold uppercase tracking-[0.15em] active:scale-[0.98] transition-transform cursor-pointer"
-            >
-              Compris !
-            </button>
-          </div>
-
-          <style>{`
-            @keyframes adminBackdropIn { from { opacity: 0; } to { opacity: 1; } }
-            @keyframes adminSheetUp { from { transform: translateY(100%); opacity: 0.6; } to { transform: translateY(0); opacity: 1; } }
-          `}</style>
-        </>
+      {showPopup && isIos && (
+        <AdminIosPopup onClose={() => setShowPopup(false)} />
       )}
     </>
   );
