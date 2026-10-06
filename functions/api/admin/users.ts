@@ -11,7 +11,7 @@ export async function onRequestGet(context: EventContext<Env, any, any>) {
 
   try {
     const { results } = await context.env.DB.prepare(
-      'SELECT id, username, name, role, allowed_categories, is_active, created_at FROM users ORDER BY created_at ASC'
+      'SELECT id, username, name, role, allowed_categories, is_active, created_at, CASE WHEN password_hash IS NOT NULL AND password_hash != \'\' THEN 1 ELSE 0 END as has_password FROM users ORDER BY created_at ASC'
     ).all();
 
     return new Response(JSON.stringify({ users: results }), {
