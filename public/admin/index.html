@@ -7726,18 +7726,24 @@
     // ██  AUTH GATE LOGIC                     ██
     // ══════════════════════════════════════════
     async function unlockGate() {
-      const user = document.getElementById('gate-user').value.trim();
-      const pass = document.getElementById('gate-pass').value;
+      const userEl = document.getElementById('gate-user');
+      const passEl = document.getElementById('gate-pass');
+      const user = userEl ? userEl.value.trim() : '';
+      const pass = passEl ? passEl.value : '';
       const errorEl = document.getElementById('gate-error');
       const btn = document.getElementById('gate-btn');
 
       if (!user || !pass) {
-        errorEl.textContent = 'Veuillez saisir l\'identifiant et le mot de passe';
+        if (errorEl) errorEl.textContent = 'Veuillez saisir l\'identifiant et le mot de passe';
         return;
       }
 
-      errorEl.textContent = 'Vérification en cours...';
-      if (btn) btn.disabled = true;
+      if (errorEl) errorEl.textContent = '';
+      const origBtnText = btn ? btn.textContent : 'Se connecter';
+      if (btn) {
+        btn.textContent = '⏳ Connexion...';
+        btn.disabled = true;
+      }
 
       try {
         const res = await fetch('/api/auth/login', {
@@ -7749,17 +7755,23 @@
         if (data.success) {
           currentUser = data.user;
           try { localStorage.setItem('madelina_admin_user', JSON.stringify(data.user)); } catch(e){}
-          document.getElementById('gate').style.display = 'none';
-          document.getElementById('app').style.display = 'block';
-          applyUserPermissions();
-          initApp();
+          const gateEl = document.getElementById('gate');
+          const appEl = document.getElementById('app');
+          if (gateEl) gateEl.style.display = 'none';
+          if (appEl) appEl.style.display = 'block';
+          try { applyUserPermissions(); } catch(e) { console.error('applyUserPermissions error:', e); }
+          try { initApp(); } catch(e) { console.error('initApp error:', e); }
         } else {
-          errorEl.textContent = data.error || 'Identifiant ou mot de passe incorrect';
+          if (errorEl) errorEl.textContent = data.error || 'Identifiant ou mot de passe incorrect';
         }
       } catch (err) {
-        errorEl.textContent = 'Erreur de connexion. Vérifiez votre réseau.';
+        console.error('Login error:', err);
+        if (errorEl) errorEl.textContent = 'Erreur de connexion. Vérifiez votre réseau ou réessayez.';
       } finally {
-        if (btn) btn.disabled = false;
+        if (btn) {
+          btn.textContent = origBtnText;
+          btn.disabled = false;
+        }
       }
     }
 
