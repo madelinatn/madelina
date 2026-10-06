@@ -57,7 +57,7 @@ async function handleAdjust(context: EventContext<Env, any, any>) {
         const isInfinite = qtyBefore >= INFINITE_STOCK_THRESHOLD;
         const qtyAfter = isInfinite
           ? qtyBefore
-          : Math.max(0, Math.round((qtyBefore + reqItem.delta) * 1000) / 1000);
+          : Math.round((qtyBefore + reqItem.delta) * 1000) / 1000;
         const actualChange = Math.round(reqItem.delta * 1000) / 1000;
         const histId = 'sh_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
 
@@ -123,7 +123,7 @@ async function handleAdjust(context: EventContext<Env, any, any>) {
     const isInfinite = qtyBefore >= INFINITE_STOCK_THRESHOLD;
     const qtyAfter = isInfinite
       ? qtyBefore
-      : Math.max(0, Math.round((qtyBefore + body.delta) * 1000) / 1000);
+      : Math.round((qtyBefore + body.delta) * 1000) / 1000;
     const actualChange = Math.round(body.delta * 1000) / 1000;
 
     const histId = 'sh_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);

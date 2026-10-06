@@ -757,7 +757,7 @@
 
       const curQty = parseFloat(item.stock_qty) || 0;
       const signedDelta = stockAdjustMode === 'add' ? deltaQty : -deltaQty;
-      const newQty = Math.max(0, Math.round((curQty + signedDelta) * 1000) / 1000);
+      const newQty = Math.round((curQty + signedDelta) * 1000) / 1000;
 
       const deltaBadge = document.getElementById('stk-adj-preview-delta');
       const curSpan = document.getElementById('stk-adj-preview-current');
@@ -7187,32 +7187,103 @@
 
         <!-- MODE CONTROLS BOX -->
         <div class="calc-box">
-          <!-- 1. DIMENSIONS MODE -->
+          <!-- 1. DIMENSIONS MODE (Conversion Précise Moule Initial ➔ Moule Cible) -->
           <div id="calc-panel-dimensions">
-            <div style="display:flex;gap:14px;align-items:center;margin-bottom:12px;">
-              <span style="font-size:11px;font-weight:700;color:var(--text-muted);">FORME DU MOULE :</span>
-              <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;cursor:pointer;">
-                <input type="radio" name="calc-shape" value="rect" checked onchange="calculateScale()" /> Carré / Rectangle
-              </label>
-              <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;cursor:pointer;">
-                <input type="radio" name="calc-shape" value="round" onchange="calculateScale()" /> Rond (Diamètre)
-              </label>
-            </div>
-            
-            <div class="form-row" style="margin-bottom:0;" id="calc-dim-rect-fields">
-              <div class="form-group">
-                <label>NOUVELLE LARGEUR (CM)</label>
-                <input type="number" id="calc-target-w" min="1" step="0.5" value="30" oninput="calculateScale()" />
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:12px;margin-bottom:6px;">
+              <!-- SECTION A: MOULE INITIAL (RECETTE DE BASE) -->
+              <div style="background:#FFFFFF;border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <span style="font-size:11px;font-weight:800;color:var(--navy);letter-spacing:0.04em;">1. MOULE INITIAL (BASE)</span>
+                  <span id="calc-src-area-badge" style="font-size:10.5px;font-weight:700;color:var(--terracotta);background:rgba(166,75,42,0.1);padding:2px 7px;border-radius:6px;">-- cm²</span>
+                </div>
+                <div style="display:flex;gap:12px;align-items:center;margin-bottom:10px;">
+                  <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:pointer;">
+                    <input type="radio" name="calc-src-shape" value="round" checked onchange="onCalcSrcShapeChange()" /> ⭕ Rond
+                  </label>
+                  <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:pointer;">
+                    <input type="radio" name="calc-src-shape" value="rect" onchange="onCalcSrcShapeChange()" /> ⬛ Carré / Rect
+                  </label>
+                </div>
+                <!-- Initial Round -->
+                <div id="calc-src-round-fields" class="form-group" style="margin-bottom:0;">
+                  <label style="font-size:10.5px;">DIAMÈTRE D1 (CM)</label>
+                  <input type="number" id="calc-src-diam" min="1" step="0.5" value="22" oninput="calculateScale()" style="padding:6px 10px;font-size:13px;font-weight:600;" />
+                </div>
+                <!-- Initial Rect -->
+                <div id="calc-src-rect-fields" class="form-row" style="margin-bottom:0;display:none;">
+                  <div class="form-group">
+                    <label style="font-size:10.5px;">LARGEUR a1 (CM)</label>
+                    <input type="number" id="calc-src-w" min="1" step="0.5" value="20" oninput="calculateScale()" style="padding:6px 8px;font-size:13px;font-weight:600;" />
+                  </div>
+                  <div class="form-group">
+                    <label style="font-size:10.5px;">LONGUEUR b1 (CM)</label>
+                    <input type="number" id="calc-src-l" min="1" step="0.5" value="20" oninput="calculateScale()" style="padding:6px 8px;font-size:13px;font-weight:600;" />
+                  </div>
+                </div>
               </div>
-              <div class="form-group">
-                <label>NOUVELLE LONGUEUR (CM)</label>
-                <input type="number" id="calc-target-l" min="1" step="0.5" value="30" oninput="calculateScale()" />
+
+              <!-- SECTION B: MOULE CIBLE (NOUVELLE FORME DÉSIRÉE) -->
+              <div style="background:#FFFFFF;border:1.5px solid var(--terracotta);border-radius:12px;padding:12px 14px;box-shadow:0 3px 10px rgba(166,75,42,0.06);">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                  <span style="font-size:11px;font-weight:800;color:var(--terracotta);letter-spacing:0.04em;">2. NOUVEAU MOULE (CIBLE)</span>
+                  <span id="calc-target-area-badge" style="font-size:10.5px;font-weight:700;color:#1E6091;background:rgba(30,96,145,0.1);padding:2px 7px;border-radius:6px;">-- cm²</span>
+                </div>
+                <div style="display:flex;gap:12px;align-items:center;margin-bottom:10px;">
+                  <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:pointer;">
+                    <input type="radio" name="calc-target-shape" value="round" checked onchange="onCalcTargetShapeChange()" /> ⭕ Rond
+                  </label>
+                  <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:pointer;">
+                    <input type="radio" name="calc-target-shape" value="rect" onchange="onCalcTargetShapeChange()" /> ⬛ Carré / Rect
+                  </label>
+                </div>
+                <!-- Target Round -->
+                <div id="calc-target-round-fields" class="form-group" style="margin-bottom:0;">
+                  <label style="font-size:10.5px;">NOUVEAU DIAMÈTRE D2 (CM)</label>
+                  <input type="number" id="calc-target-diam" min="1" step="0.5" value="26" oninput="calculateScale()" style="padding:6px 10px;font-size:13px;font-weight:700;color:var(--terracotta);" />
+                </div>
+                <!-- Target Rect -->
+                <div id="calc-target-rect-fields" class="form-row" style="margin-bottom:0;display:none;">
+                  <div class="form-group">
+                    <label style="font-size:10.5px;">LARGEUR a2 (CM)</label>
+                    <input type="number" id="calc-target-w" min="1" step="0.5" value="25" oninput="calculateScale()" style="padding:6px 8px;font-size:13px;font-weight:700;color:var(--terracotta);" />
+                  </div>
+                  <div class="form-group">
+                    <label style="font-size:10.5px;">LONGUEUR b2 (CM)</label>
+                    <input type="number" id="calc-target-l" min="1" step="0.5" value="25" oninput="calculateScale()" style="padding:6px 8px;font-size:13px;font-weight:700;color:var(--terracotta);" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- OPTION HAUTEUR / VOLUME (REMARQUE 1 : POUR MOULES DE HAUTEURS DIFFÉRENTES) -->
+            <div style="margin-top:10px;padding:9px 12px;background:#FAF7F4;border:1px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+              <label style="display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--navy);cursor:pointer;margin:0;">
+                <input type="checkbox" id="calc-enable-height" onchange="toggleCalcHeight()" style="accent-color:var(--terracotta);width:15px;height:15px;cursor:pointer;" />
+                <span>📏 Ajuster aussi la hauteur / épaisseur (Volume)</span>
+              </label>
+              <span style="font-size:11px;color:var(--text-muted);font-style:italic;">Optionnel (standard si même hauteur)</span>
+            </div>
+
+            <!-- CHAMPS HAUTEURS CACHÉS PAR DÉFAUT -->
+            <div id="calc-height-panel" style="display:none;margin-top:8px;padding:10px 14px;background:#FFFFFF;border:1.5px solid var(--border);border-radius:12px;">
+              <div class="form-row" style="margin-bottom:0;">
+                <div class="form-group" style="margin-bottom:0;">
+                  <label style="font-size:10.5px;font-weight:700;color:var(--text-muted);">HAUTEUR INITIALE h1 (CM)</label>
+                  <input type="number" id="calc-src-h" min="0.5" step="0.5" value="4.5" oninput="calculateScale()" style="padding:6px 10px;font-size:13px;font-weight:600;" />
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                  <label style="font-size:10.5px;font-weight:700;color:var(--terracotta);">NOUVELLE HAUTEUR h2 (CM)</label>
+                  <input type="number" id="calc-target-h" min="0.5" step="0.5" value="4.5" oninput="calculateScale()" style="padding:6px 10px;font-size:13px;font-weight:700;color:var(--terracotta);" />
+                </div>
               </div>
             </div>
 
-            <div class="form-group" style="display:none;margin-bottom:0;" id="calc-dim-round-fields">
-              <label>NOUVEAU DIAMÈTRE DÉSIRÉ (CM)</label>
-              <input type="number" id="calc-target-diam" min="1" step="0.5" value="26" oninput="calculateScale()" />
+            <!-- DÉTAILS DE LA FORMULE ET PRÉCISION π (REMARQUE 2) -->
+            <div id="calc-formula-detail-tag" style="font-size:11px;color:var(--text-muted);margin-top:8px;padding:6px 10px;background:rgba(42,33,24,0.03);border-radius:8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span>📐 <strong>Formule :</strong></span>
+                <span id="calc-formula-text" style="font-weight:600;color:var(--navy);">Facteur = Surface Cible / Surface Initiale</span>
+              </div>
+              <span style="font-size:10px;color:var(--terracotta);font-weight:600;">(Haute précision π = 3.14159...)</span>
             </div>
           </div>
 
@@ -9129,26 +9200,53 @@
 
       // (ingredient mode removed)
 
-      // Set shape in calculator according to recipe
-      const calcShapeRadios = document.getElementsByName('calc-shape');
-      calcShapeRadios.forEach(r => r.checked = (r.value === (isRound ? 'round' : 'rect')));
+      // Set initial shape & dims from recipe
+      const srcShapeRadios = document.getElementsByName('calc-src-shape');
+      srcShapeRadios.forEach(r => r.checked = (r.value === (isRound ? 'round' : 'rect')));
 
-      // Base values (stay at default standard recipe size initially)
+      const targetShapeRadios = document.getElementsByName('calc-target-shape');
+      targetShapeRadios.forEach(r => r.checked = (r.value === (isRound ? 'round' : 'rect')));
+
+      // Source Base values
       const baseW = rec.base_dim1 || 20;
       const baseL = (rec.base_dim2 && Number(rec.base_dim2) > 0) ? Number(rec.base_dim2) : baseW;
       const baseDiam = rec.base_dim1 || 22;
       const baseP = rec.base_portions || 6;
 
+      const srcDiamInp = document.getElementById('calc-src-diam');
+      const srcWInp = document.getElementById('calc-src-w');
+      const srcLInp = document.getElementById('calc-src-l');
+      if (srcDiamInp) srcDiamInp.value = baseDiam;
+      if (srcWInp) srcWInp.value = baseW;
+      if (srcLInp) srcLInp.value = baseL;
+
+      // Target Initial values (start matching base)
+      const targetDiamInp = document.getElementById('calc-target-diam');
+      const targetWInp = document.getElementById('calc-target-w');
+      const targetLInp = document.getElementById('calc-target-l');
+      if (targetDiamInp) targetDiamInp.value = baseDiam;
+      if (targetWInp) targetWInp.value = baseW;
+      if (targetLInp) targetLInp.value = baseL;
+
+      onCalcSrcShapeChange();
+      onCalcTargetShapeChange();
+
       document.getElementById('calc-base-portions-val').value = baseP;
       document.getElementById('calc-target-portions').value = baseP;
-      document.getElementById('calc-target-w').value = baseW;
-      document.getElementById('calc-target-l').value = baseL;
-      document.getElementById('calc-target-diam').value = baseDiam;
 
       const directInput = document.getElementById('calc-direct-input');
       if (directInput) directInput.value = '1.00';
       currentFactor = 1.0;
       updateQuickButtons(1.0);
+
+      const heightChk = document.getElementById('calc-enable-height');
+      if (heightChk) heightChk.checked = false;
+      const heightPanel = document.getElementById('calc-height-panel');
+      if (heightPanel) heightPanel.style.display = 'none';
+      const srcHInp = document.getElementById('calc-src-h');
+      const targetHInp = document.getElementById('calc-target-h');
+      if (srcHInp) srcHInp.value = '4.5';
+      if (targetHInp) targetHInp.value = '4.5';
 
       // Default mode
       if (rec.base_type === 'portion') {
@@ -9162,6 +9260,31 @@
 
     function closeScalingModal() {
       document.getElementById('scaling-modal-overlay').classList.remove('open');
+    }
+
+    function onCalcSrcShapeChange() {
+      const srcShape = document.querySelector('input[name="calc-src-shape"]:checked')?.value || 'round';
+      const roundFields = document.getElementById('calc-src-round-fields');
+      const rectFields = document.getElementById('calc-src-rect-fields');
+      if (roundFields) roundFields.style.display = (srcShape === 'round') ? 'block' : 'none';
+      if (rectFields) rectFields.style.display = (srcShape === 'rect') ? 'grid' : 'none';
+      calculateScale();
+    }
+
+    function onCalcTargetShapeChange() {
+      const targetShape = document.querySelector('input[name="calc-target-shape"]:checked')?.value || 'round';
+      const roundFields = document.getElementById('calc-target-round-fields');
+      const rectFields = document.getElementById('calc-target-rect-fields');
+      if (roundFields) roundFields.style.display = (targetShape === 'round') ? 'block' : 'none';
+      if (rectFields) rectFields.style.display = (targetShape === 'rect') ? 'grid' : 'none';
+      calculateScale();
+    }
+
+    function toggleCalcHeight() {
+      const chk = document.getElementById('calc-enable-height');
+      const panel = document.getElementById('calc-height-panel');
+      if (panel) panel.style.display = chk && chk.checked ? 'block' : 'none';
+      calculateScale();
     }
 
     function setScalingMode(mode) {
@@ -9215,49 +9338,91 @@
       let ratioText = '';
 
       if (scalingMode === 'dimensions') {
-        const shape = document.querySelector('input[name="calc-shape"]:checked')?.value || 'rect';
-        const rectFields = document.getElementById('calc-dim-rect-fields');
-        const roundFields = document.getElementById('calc-dim-round-fields');
+        const srcShape = document.querySelector('input[name="calc-src-shape"]:checked')?.value || 'round';
+        const targetShape = document.querySelector('input[name="calc-target-shape"]:checked')?.value || 'round';
 
-        if (shape === 'rect') {
-          rectFields.style.display = 'grid';
-          roundFields.style.display = 'none';
+        let s1 = 0; // Surface moule initial (cm²)
+        let s2 = 0; // Surface moule cible (cm²)
+        let srcLabel = '';
+        let targetLabel = '';
+        let formulaLabel = '';
 
-          const baseW = rec.base_dim1 || 20;
-          const baseL = (rec.base_dim2 && Number(rec.base_dim2) > 0) ? Number(rec.base_dim2) : baseW;
-          const targetW = parseFloat(document.getElementById('calc-target-w').value) || baseW;
-          const targetL = parseFloat(document.getElementById('calc-target-l').value) || baseL;
-
-          const baseArea = baseW * baseL;
-          const targetArea = targetW * targetL;
-
-          factor = targetArea / (baseArea || 1);
-          const percentChange = Math.round((factor - 1) * 100);
-          if (percentChange === 0) {
-            ratioText = `Surface initiale : ${baseArea} cm² (Taille de base standard)`;
-          } else {
-            const sign = percentChange > 0 ? '+' : '';
-            ratioText = `Surface : ${baseArea} cm² ➔ ${targetArea} cm² (${sign}${percentChange}%)`;
-          }
+        // 1. Calcul Surface Initiale (S1)
+        if (srcShape === 'round') {
+          const d1 = parseFloat(document.getElementById('calc-src-diam')?.value) || 22;
+          s1 = Math.PI * Math.pow(d1 / 2, 2);
+          srcLabel = 'Rond Ø' + d1 + ' cm';
         } else {
-          rectFields.style.display = 'none';
-          roundFields.style.display = 'block';
-
-          const baseDiam = rec.base_dim1 || 22;
-          const targetDiam = parseFloat(document.getElementById('calc-target-diam').value) || baseDiam;
-
-          const baseArea = Math.PI * Math.pow(baseDiam / 2, 2);
-          const targetArea = Math.PI * Math.pow(targetDiam / 2, 2);
-
-          factor = targetArea / (baseArea || 1);
-          const percentChange = Math.round((factor - 1) * 100);
-          if (percentChange === 0) {
-            ratioText = `Diamètre initial : Ø${baseDiam} cm (Taille de base standard)`;
-          } else {
-            const sign = percentChange > 0 ? '+' : '';
-            ratioText = `Diamètre : Ø${baseDiam} cm ➔ Ø${targetDiam} cm (${sign}${percentChange}%)`;
-          }
+          const a1 = parseFloat(document.getElementById('calc-src-w')?.value) || 20;
+          const b1 = parseFloat(document.getElementById('calc-src-l')?.value) || a1;
+          s1 = a1 * b1;
+          srcLabel = (a1 === b1) ? ('Carré ' + a1 + '×' + b1 + ' cm') : ('Rect ' + a1 + '×' + b1 + ' cm');
         }
+
+        // 2. Calcul Surface Cible (S2)
+        if (targetShape === 'round') {
+          const d2 = parseFloat(document.getElementById('calc-target-diam')?.value) || 26;
+          s2 = Math.PI * Math.pow(d2 / 2, 2);
+          targetLabel = 'Rond Ø' + d2 + ' cm';
+        } else {
+          const a2 = parseFloat(document.getElementById('calc-target-w')?.value) || 25;
+          const b2 = parseFloat(document.getElementById('calc-target-l')?.value) || a2;
+          s2 = a2 * b2;
+          targetLabel = (a2 === b2) ? ('Carré ' + a2 + '×' + b2 + ' cm') : ('Rect ' + a2 + '×' + b2 + ' cm');
+        }
+
+        // Vérifier si l'utilisateur prend en compte la hauteur (Volume)
+        const useHeight = document.getElementById('calc-enable-height')?.checked;
+        const h1 = useHeight ? (parseFloat(document.getElementById('calc-src-h')?.value) || 4.5) : 1;
+        const h2 = useHeight ? (parseFloat(document.getElementById('calc-target-h')?.value) || 4.5) : 1;
+        const v1 = s1 * h1; // Volume initial (cm³) si actif, sinon = surface
+        const v2 = s2 * h2; // Volume cible (cm³) si actif, sinon = surface
+
+        // 3. Formule de conversion selon les 4 cas exacts :
+        // - Men Rond (D1) l-Rond (D2) : Facteur = (D2/D1)² * (h2/h1)
+        // - Men Carré/Rect (a1*b1) l-Carré/Rect (a2*b2) : Facteur = (a2*b2)/(a1*b1) * (h2/h1)
+        // - Men Rond (D) l-Carré/Rect (a*b) : Facteur = (a*b)/(π * (D/2)²) * (h2/h1)
+        // - Men Carré/Rect (a*b) l-Rond (D) : Facteur = (π * (D/2)²)/(a*b) * (h2/h1)
+        if (srcShape === 'round' && targetShape === 'round') {
+          const d1 = parseFloat(document.getElementById('calc-src-diam')?.value) || 22;
+          const d2 = parseFloat(document.getElementById('calc-target-diam')?.value) || 26;
+          const baseRatio = (d1 > 0) ? Math.pow(d2 / d1, 2) : 1.0;
+          factor = useHeight ? (baseRatio * (h2 / (h1 || 1))) : baseRatio;
+          formulaLabel = useHeight
+            ? ('Men Rond l Rond (Volume) : (' + d2 + '/' + d1 + ')² × (' + h2 + '/' + h1 + ')')
+            : ('Men Rond l Rond : (D2 / D1)² = (' + d2 + ' / ' + d1 + ')²');
+        } else if (srcShape === 'rect' && targetShape === 'rect') {
+          factor = (v1 > 0) ? (v2 / v1) : 1.0;
+          formulaLabel = useHeight
+            ? 'Men Carré/Rect l Carré/Rect (Volume) : (a2×b2×h2) / (a1×b1×h1)'
+            : 'Men Carré/Rect l Carré/Rect : (a2 × b2) / (a1 × b1)';
+        } else if (srcShape === 'round' && targetShape === 'rect') {
+          factor = (v1 > 0) ? (v2 / v1) : 1.0;
+          formulaLabel = useHeight
+            ? 'Men Rond l Carré/Rect (Volume) : (a×b×h2) / [π×(D/2)²×h1]'
+            : 'Men Rond l Carré/Rect : (a × b) / [π × (D/2)²]';
+        } else {
+          factor = (v1 > 0) ? (v2 / v1) : 1.0;
+          formulaLabel = useHeight
+            ? 'Men Carré/Rect l Rond (Volume) : [π×(D/2)²×h2] / (a×b×h1)'
+            : 'Men Carré/Rect l Rond : [π × (D/2)²] / (a × b)';
+        }
+
+        // Mise à jour des badges de surfaces / volumes
+        const srcBadge = document.getElementById('calc-src-area-badge');
+        const targetBadge = document.getElementById('calc-target-area-badge');
+        const formulaTag = document.getElementById('calc-formula-text');
+        if (srcBadge) srcBadge.textContent = useHeight ? (Math.round(s1) + ' cm² · ' + Math.round(v1) + ' cm³') : (Math.round(s1) + ' cm²');
+        if (targetBadge) targetBadge.textContent = useHeight ? (Math.round(s2) + ' cm² · ' + Math.round(v2) + ' cm³') : (Math.round(s2) + ' cm²');
+        if (formulaTag) formulaTag.textContent = formulaLabel;
+
+        const percentChange = Math.round((factor - 1) * 100);
+        const sign = percentChange > 0 ? '+' : '';
+        const unitMeasure = useHeight ? 'cm³' : 'cm²';
+        const val1 = useHeight ? Math.round(v1) : Math.round(s1);
+        const val2 = useHeight ? Math.round(v2) : Math.round(s2);
+        ratioText = srcLabel + ' (' + val1 + ' ' + unitMeasure + ') ➔ ' + targetLabel + ' (' + val2 + ' ' + unitMeasure + ') : ' + sign + percentChange + '%';
+
       } else if (scalingMode === 'portions') {
         const baseP = rec.base_portions || 6;
         const targetP = parseFloat(document.getElementById('calc-target-portions').value) || baseP;
@@ -9356,7 +9521,7 @@
 
       let scaleTitle = `Coefficient : × ${currentFactor.toFixed(2)}`;
       if (scalingMode === 'dimensions') {
-        const shape = document.querySelector('input[name="calc-shape"]:checked')?.value || 'rect';
+        const shape = document.querySelector('input[name="calc-target-shape"]:checked')?.value || 'rect';
         if (shape === 'rect') {
           const w = document.getElementById('calc-target-w').value;
           const l = document.getElementById('calc-target-l').value;
@@ -12093,10 +12258,13 @@ let menuItems = [];
         const qty = parseFloat(item.stock_qty) || 0;
         const price = parseFloat(item.price_per_unit) || 0;
         const isInfinite = qty >= 99999990;
-        const qtyClass = isInfinite ? 'infinite' : (qty === 0 ? 'low' : '');
+        const isNegative = !isInfinite && qty < 0;
+        const qtyClass = isInfinite ? 'infinite' : (isNegative ? 'negative' : (qty === 0 ? 'low' : ''));
         const qtyDisplay = isInfinite
           ? '<span class="stock-qty-cell infinite"><span>∞</span> Illimité</span>'
-          : '<span class="stock-qty-cell ' + qtyClass + '">' + qty.toLocaleString('fr-TN') + ' ' + escHtml(item.unit) + '</span>';
+          : (isNegative
+              ? '<span class="stock-qty-cell negative" style="color:#DC2626;font-weight:800;background:rgba(220,38,38,0.08);padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;">' + qty.toLocaleString('fr-TN') + ' ' + escHtml(item.unit) + ' <small style="font-size:10px;background:#DC2626;color:white;padding:1px 5px;border-radius:4px;font-weight:700;">Déficit</small></span>'
+              : '<span class="stock-qty-cell ' + qtyClass + '">' + qty.toLocaleString('fr-TN') + ' ' + escHtml(item.unit) + '</span>');
         const catBadge = item.category ? '<span class="stock-cat-badge">' + escHtml(item.category) + '</span>' : '<span style="color:var(--text-muted);font-size:12px;">—</span>';
         const priceLabel = getStockUnitLabel(item.unit);
         const priceFmt = price >= 0 ? '<span class="stock-price-cell">' + price.toLocaleString('fr-TN', { minimumFractionDigits: 0, maximumFractionDigits: 3 }) + ' <small style="font-weight:600;color:var(--text-muted);">TND ' + escHtml(priceLabel) + '</small></span>' : '<span style="color:var(--text-muted);font-size:12px;">—</span>';
@@ -12132,10 +12300,13 @@ let menuItems = [];
         const qty = parseFloat(item.stock_qty) || 0;
         const price = parseFloat(item.price_per_unit) || 0;
         const isInfinite = qty >= 99999990;
-        const isLow = !isInfinite && qty === 0;
+        const isNegative = !isInfinite && qty < 0;
+        const isLow = !isInfinite && qty <= 0;
         const mobileQtyDisplay = isInfinite
           ? '<span class="stock-qty-cell infinite" style="font-size:12px;">∞ Illimité</span>'
-          : (qty.toLocaleString('fr-TN') + ' <span class="stock-stat-unit">' + escHtml(item.unit) + '</span>');
+          : (isNegative
+              ? ('<span style="color:#DC2626;font-weight:800;">' + qty.toLocaleString('fr-TN') + ' <span class="stock-stat-unit" style="color:#DC2626;">' + escHtml(item.unit) + '</span></span> <span style="font-size:10px;background:#DC2626;color:white;padding:1px 5px;border-radius:4px;font-weight:700;margin-left:3px;">Déficit</span>')
+              : (qty.toLocaleString('fr-TN') + ' <span class="stock-stat-unit">' + escHtml(item.unit) + '</span>'));
         const priceLabel = getStockUnitLabel(item.unit);
         const priceFmt = price >= 0 ? (price.toLocaleString('fr-TN', { minimumFractionDigits: 0, maximumFractionDigits: 3 }) + ' TND') : '—';
         const safeItemJson = escHtml(JSON.stringify(item));
