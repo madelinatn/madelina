@@ -262,16 +262,16 @@
         const recName = extractRecipeName(item.note);
         let detailCell = '';
         if (recName) {
-          detailCell = '<button type="button" class="stock-hist-recipe-badge" onclick="openStockHistoryDetailModal(\'' + escHtml(item.id) + '\')" title="Cliquer pour voir la recette et tous les ingrédients déduits">' +
-            '<span>👨‍🍳</span> <strong>' + escHtml(recName) + '</strong> <span class="stock-hist-view-link">Détails</span>' +
-          '</button>';
+          detailCell = '<div class="hist-recipe-cell">' +
+            '<span class="hist-recipe-tag">Recette</span>' +
+            '<strong class="hist-recipe-title">' + escHtml(recName) + '</strong>' +
+          '</div>';
         } else {
           detailCell = '<span style="color:var(--text-muted);font-size:12.5px;">' + (item.note ? escHtml(item.note) : '—') + '</span>';
         }
 
-        const actionBtn = '<button type="button" class="btn-hist-details" onclick="openStockHistoryDetailModal(\'' + escHtml(item.id) + '\')" title="Voir tous les détails">' +
-          '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> ' +
-          'Détails</button>';
+        const actionBtn = '<button type="button" class="btn-clean-details" onclick="openStockHistoryDetailModal(\'' + escHtml(item.id) + '\')" title="Voir les détails complets">' +
+          'Détails →</button>';
 
         return '<tr>' +
           '<td style="white-space:nowrap;font-size:12.5px;color:var(--text-muted);">' + formatHistDate(item.created_at) + '</td>' +
@@ -316,9 +316,15 @@
           '<div style="font-size:12px;color:var(--text-muted);margin-top:4px;">' +
             'Stock : ' + before + ' ➔ <strong style="color:var(--navy);">' + after + ' ' + escHtml(item.unit || '') + '</strong>' +
           '</div>' +
-          (recName ? '<button type="button" class="stock-hist-recipe-badge" style="width:100%;margin-top:8px;justify-content:space-between;" onclick="openStockHistoryDetailModal(\'' + escHtml(item.id) + '\')"><span>👨‍🍳 <strong>' + escHtml(recName) + '</strong></span> <span class="stock-hist-view-link">👁️ Voir détails</span></button>' : (item.note ? '<div class="stock-history-card-note">' + escHtml(item.note) + '</div>' : '')) +
+          (recName ? '<div style="margin-top:8px;padding:8px 12px;background:#FAF7F4;border-radius:10px;border-left:3px solid var(--terracotta);display:flex;align-items:center;justify-content:space-between;">' +
+            '<div class="hist-recipe-cell">' +
+              '<span class="hist-recipe-tag">Recette</span>' +
+              '<strong class="hist-recipe-title">' + escHtml(recName) + '</strong>' +
+            '</div>' +
+            '<button type="button" class="btn-clean-details" onclick="openStockHistoryDetailModal(\'' + escHtml(item.id) + '\')">Détails →</button>' +
+          '</div>' : (item.note ? '<div class="stock-history-card-note">' + escHtml(item.note) + '</div>' : '')) +
           '<div style="margin-top:8px;text-align:right;">' +
-            '<button type="button" class="btn-hist-details" onclick="openStockHistoryDetailModal(\'' + escHtml(item.id) + '\')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg> Voir tous les détails</button>' +
+            '<button type="button" class="btn-clean-details" onclick="openStockHistoryDetailModal(\'' + escHtml(item.id) + '\')">Détails →</button>' +
           '</div>' +
         '</div>';
       }).join('');
@@ -354,7 +360,7 @@
       if (!item) return;
       activeHistDetailItem = item;
 
-      const overlay = document.getElementById('stock-history-detail-modal-overlay');
+      const overlay = document.getElementById('stock-history-detail-modal-overlay', 'cook-deduct-modal-overlay');
       const titleEl = document.getElementById('shd-title');
       const dateEl = document.getElementById('shd-date');
       const iconEl = document.getElementById('shd-type-icon');
@@ -362,8 +368,8 @@
       const openRecipeBtn = document.getElementById('shd-open-recipe-btn');
 
       const isRecipe = item.action_type === 'recipe' || (/recette/i.test(item.note || ''));
-      titleEl.textContent = isRecipe ? 'Détails de la Déduction Recette' : 'Détails de l\'Ajustement de Stock';
-      iconEl.textContent = isRecipe ? '👨‍🍳' : '⚙️';
+      titleEl.textContent = isRecipe ? 'Détails de la Préparation' : 'Détails du Mouvement';
+      if (iconEl) iconEl.style.display = 'none';
       
       let dateFormatted = item.created_at || '—';
       try {
@@ -436,18 +442,15 @@
         const portions = matchedRecipe ? (matchedRecipe.base_portions || '') : '';
 
         htmlContent += `
-          <div style="background:#FFFFFF;border:1.5px solid rgba(166,75,42,0.25);border-radius:14px;padding:14px;box-shadow:0 2px 10px rgba(166,75,42,0.06);">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-              <div style="display:flex;align-items:center;gap:6px;">
-                <span style="font-size:16px;">📖</span>
-                <span style="font-size:11px;font-weight:800;color:var(--terracotta);letter-spacing:0.06em;text-transform:uppercase;">FICHE TECHNIQUE DE LA RECETTE</span>
-              </div>
-              ${catName ? '<span class="cat-chip" style="background:#FDF1E8;color:#9A3E1E;font-size:10.5px;padding:2px 8px;">' + escHtml(catName) + '</span>' : ''}
+          <div style="background:#FFFFFF;border:1.5px solid rgba(166,75,42,0.2);border-radius:14px;padding:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <span class="hist-recipe-tag">RECETTE MADÉLINA</span>
+              ${catName ? '<span class="cat-chip" style="background:#FAF0E8;color:var(--terracotta);font-size:11px;font-weight:700;padding:2px 8px;">' + escHtml(catName) + '</span>' : ''}
             </div>
-            <div style="font-size:18px;font-weight:800;color:var(--navy);margin-bottom:4px;">${escHtml(displayRecTitle)}</div>
-            ${item.note ? '<div style="font-size:12px;color:var(--text-muted);margin-bottom:6px;">' + escHtml(item.note) + '</div>' : ''}
+            <div style="font-size:19px;font-weight:800;color:var(--navy);margin-bottom:4px;">${escHtml(displayRecTitle)}</div>
+            ${item.note ? '<div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">' + escHtml(item.note) + '</div>' : ''}
             ${matchedRecipe && matchedRecipe.description ? '<p style="font-size:12.5px;color:var(--navy);margin:6px 0;line-height:1.4;">' + escHtml(matchedRecipe.description) + '</p>' : ''}
-            ${portions ? '<div style="font-size:12px;color:var(--text-muted);margin-top:6px;">📐 <strong>Portions / Base :</strong> ' + portions + ' portions</div>' : ''}
+            ${portions ? '<div style="font-size:12px;color:var(--text-muted);margin-top:6px;">Portions / Base : <strong>' + portions + '</strong></div>' : ''}
           </div>
         `;
 
@@ -5647,6 +5650,98 @@
     .stock-type-pill.adjust { background: #EEF2F6; color: #2C486B; }
     .stock-type-pill.recipe { background: #FDF1E8; color: #9A3E1E; }
 
+    
+    /* Cook Check All Button */
+    .btn-cook-check-all {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--terracotta);
+      background: #FAF0E8;
+      border: 1px solid rgba(166,75,42,0.25);
+      border-radius: 20px;
+      padding: 3px 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-cook-check-all:hover {
+      background: var(--terracotta);
+      color: #FFFFFF;
+      border-color: var(--terracotta);
+    }
+
+    /* Deduct Mode Confirmation Card */
+    .deduct-mode-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      background: #FFFFFF;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .deduct-mode-card.active {
+      border-color: var(--terracotta);
+      background: #FAF0E8;
+    }
+    #cook-deduct-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(42,33,24,0.55);
+      backdrop-filter: blur(4px);
+      z-index: 1050;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    #cook-deduct-modal-overlay.open {
+      display: flex;
+    }
+
+    /* Clean Stock History Recipe Cell */
+    .hist-recipe-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .hist-recipe-tag {
+      display: inline-block;
+      font-size: 9.5px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--terracotta);
+      text-transform: uppercase;
+    }
+    .hist-recipe-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .btn-clean-details {
+      background: #FFFFFF;
+      color: var(--navy);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-clean-details:hover {
+      border-color: var(--terracotta);
+      color: var(--terracotta);
+      background: #FAF7F4;
+    }
+
     .stock-qty-cell.infinite {
       display: inline-flex;
       align-items: center;
@@ -7195,6 +7290,57 @@
   <!-- ══════════════════════════════════════════ -->
   <!-- STOCK HISTORY DETAIL MODAL                 -->
   <!-- ══════════════════════════════════════════ -->
+  
+  <!-- ══════════════════════════════════════════ -->
+  <!-- COOK DEDUCT CONFIRMATION MODAL (BLAKA)     -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="cook-deduct-modal-overlay">
+    <div class="modal" style="max-width:500px;max-height:90vh;display:flex;flex-direction:column;">
+      <button type="button" class="modal-close-btn" onclick="closeCookDeductModal()" aria-label="Fermer" title="Fermer">✕</button>
+      <div class="modal-pull-handle"></div>
+
+      <div style="margin-bottom:14px;">
+        <h3 style="font-size:20px;font-weight:800;color:var(--navy);margin:0 0 4px;">Déduire du Stock</h3>
+        <p style="font-size:12.5px;color:var(--text-muted);margin:0;" id="cdm-recipe-sub">Sélectionnez les ingrédients à déduire</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+        <!-- Option 1: ALL (défaut / moktharia all) -->
+        <label class="deduct-mode-card active" id="deduct-mode-card-all" onclick="setDeductChoice('all')">
+          <input type="radio" name="deduct-choice" id="cdm-choice-all" value="all" checked style="accent-color:var(--terracotta);width:17px;height:17px;" />
+          <div style="flex:1;">
+            <div style="font-size:13.5px;font-weight:700;color:var(--navy);">Tous les ingrédients de la recette <span style="font-size:11px;font-weight:700;color:var(--terracotta);margin-left:4px;">(Recommandé)</span></div>
+            <div style="font-size:11.5px;color:var(--text-muted);" id="cdm-count-all-desc">Tous les ingrédients de la fiche seront déduits</div>
+          </div>
+        </label>
+
+        <!-- Option 2: CHECKED ONLY -->
+        <label class="deduct-mode-card" id="deduct-mode-card-checked" onclick="setDeductChoice('checked')">
+          <input type="radio" name="deduct-choice" id="cdm-choice-checked" value="checked" style="accent-color:var(--terracotta);width:17px;height:17px;" />
+          <div style="flex:1;">
+            <div style="font-size:13.5px;font-weight:700;color:var(--navy);">Uniquement les ingrédients pesés / cochés</div>
+            <div style="font-size:11.5px;color:var(--text-muted);" id="cdm-count-checked-desc">Seuls les ingrédients validés seront déduits</div>
+          </div>
+        </label>
+      </div>
+
+      <!-- Preview Header & List -->
+      <div style="font-size:11px;font-weight:800;letter-spacing:0.06em;color:var(--text-muted);text-transform:uppercase;margin-bottom:6px;">
+        RÉCAPITULATIF DES INGRÉDIENTS (<span id="cdm-items-count">0</span>)
+      </div>
+      <div id="cdm-ingredients-list" style="overflow-y:auto;max-height:190px;background:#FAF7F4;border:1px solid var(--border);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:5px;flex:1;">
+        <!-- Populated dynamically -->
+      </div>
+
+      <div style="margin-top:16px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--border);padding-top:14px;">
+        <button type="button" class="btn btn-secondary" onclick="closeCookDeductModal()">Annuler</button>
+        <button type="button" class="btn btn-primary" id="cdm-confirm-btn" onclick="executeCookDeduction()">
+          Confirmer la déduction
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div id="stock-history-detail-modal-overlay">
     <div class="modal" style="max-width:560px;max-height:90vh;display:flex;flex-direction:column;">
       <button type="button" class="modal-close-btn" onclick="closeStockHistoryDetailModal()" aria-label="Fermer" title="Fermer">✕</button>
@@ -9413,6 +9559,29 @@
       if (flowContainer) flowContainer.scrollTop = 0;
     }
 
+
+    function toggleCookPartAll(partIdx, startIdx, count) {
+      if (!cookCheckedIndices) cookCheckedIndices = new Set();
+      let allChecked = true;
+      for (let i = 0; i < count; i++) {
+        if (!cookCheckedIndices.has(startIdx + i)) {
+          allChecked = false;
+          break;
+        }
+      }
+
+      for (let i = 0; i < count; i++) {
+        const idx = startIdx + i;
+        if (allChecked) {
+          cookCheckedIndices.delete(idx);
+        } else {
+          cookCheckedIndices.add(idx);
+        }
+      }
+
+      renderCookMode();
+    }
+
     function setCookPartSubView(view) {
       currentCookPartView = view;
       renderCurrentCookPart();
@@ -9485,7 +9654,14 @@
                 <span class="cook-part-pill">${partPillText}</span>
                 <h3 class="cook-part-name">${part.name || `Partie ${partIdx + 1}`}</h3>
               </div>
-              <span class="cook-part-meta">${partCheckedCount} / ${partIngs.length} pesé(s)</span>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="cook-part-meta">${partCheckedCount} / ${partIngs.length} pesé(s)</span>
+                ${partIngs.length > 0 ? `
+                  <button type="button" class="btn-cook-check-all" onclick="toggleCookPartAll(${partIdx}, ${globalStartIdx}, ${partIngs.length})" title="Cocher ou décocher tous les ingrédients de cette partie">
+                    ${partCheckedCount === partIngs.length ? 'Tout décocher' : 'Tout cocher'}
+                  </button>
+                ` : ''}
+              </div>
             </div>
             ${part.note ? `<div class="cook-part-note">${part.note}</div>` : ''}
 
@@ -9714,6 +9890,10 @@
         console.error('loadUsers error:', err);
       }
     }
+
+
+    const SVG_EYE_OPEN = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    const SVG_EYE_CLOSED = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
 
     function toggleUserPasswordRow(userId, btn) {
       const u = usersList.find(x => x.id === userId);
@@ -12048,51 +12228,142 @@ let menuItems = [];
       }
     }
 
-    // ── DÉDUIRE DU STOCK (from cook mode) ──
-    async function deductCheckedFromStock() {
+    // ── DÉDUIRE DU STOCK AVEC MODALE DE CONFIRMATION (Point 3) ──
+    let cookDeductAllItems = [];
+    let cookDeductCheckedItems = [];
+    let currentDeductChoice = 'all';
+
+    function deductCheckedFromStock() {
       if (!activeCookParts || activeCookParts.length === 0) return;
 
-      const toDeduct = [];
+      cookDeductAllItems = [];
+      cookDeductCheckedItems = [];
       let globalIdx = 0;
-      const hasSpecificChecks = (cookCheckedIndices && cookCheckedIndices.size > 0);
 
       for (const part of activeCookParts) {
         for (const ing of (part.ingredients || [])) {
-          if (!hasSpecificChecks || cookCheckedIndices.has(globalIdx)) {
-            const scaledQty = Math.round((parseFloat(ing.quantity) || 0) * currentCookFactor * 100) / 100;
-            if (scaledQty > 0) {
-              toDeduct.push({ name: ing.name, unit: ing.unit, qty: scaledQty });
+          const scaledQty = Math.round((parseFloat(ing.quantity) || 0) * currentCookFactor * 100) / 100;
+          if (scaledQty > 0) {
+            const entry = { name: ing.name, unit: ing.unit, qty: scaledQty, partName: part.name || '' };
+            cookDeductAllItems.push(entry);
+            if (cookCheckedIndices && cookCheckedIndices.has(globalIdx)) {
+              cookDeductCheckedItems.push(entry);
             }
           }
           globalIdx++;
         }
       }
 
-      if (toDeduct.length === 0) {
+      if (cookDeductAllItems.length === 0) {
         toast('Aucun ingrédient à déduire', 'warning');
         return;
       }
 
+      openCookDeductModal();
+    }
+
+    function openCookDeductModal() {
+      const overlay = document.getElementById('cook-deduct-modal-overlay');
+      const sub = document.getElementById('cdm-recipe-sub');
+      const recipeName = (currentCookRecipe && currentCookRecipe.name) ? currentCookRecipe.name : '';
       const factorText = currentCookFactor !== 1.0 ? (' (Facteur ×' + currentCookFactor.toFixed(2) + ')') : '';
-      const confirmMsg = hasSpecificChecks
-        ? ('Confirmer la déduction de ' + toDeduct.length + ' ingrédient(s) coché(s)' + factorText + ' du stock ?')
-        : ('Confirmer la déduction de tous les ingrédients de cette recette (' + toDeduct.length + ' ingrédients' + factorText + ') du stock ?');
+      
+      if (sub) sub.textContent = recipeName ? (recipeName + factorText) : 'Préparation recette';
 
-      if (!confirm(confirmMsg)) return;
+      // Descriptions
+      const descAll = document.getElementById('cdm-count-all-desc');
+      if (descAll) descAll.textContent = cookDeductAllItems.length + ' ingrédient(s) au total dans la recette';
 
-      const btn = document.getElementById('cook-final-deduct-btn');
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = '<span>Déduction en cours...</span>';
+      const descChecked = document.getElementById('cdm-count-checked-desc');
+      if (descChecked) descChecked.textContent = cookDeductCheckedItems.length + ' ingrédient(s) pesé(s) / coché(s)';
+
+      // Default: ALL (moktharia all)
+      currentDeductChoice = 'all';
+      setDeductChoice('all');
+
+      if (overlay) overlay.classList.add('open');
+    }
+
+    function closeCookDeductModal() {
+      const overlay = document.getElementById('cook-deduct-modal-overlay');
+      if (overlay) overlay.classList.remove('open');
+    }
+
+    function setDeductChoice(choice) {
+      currentDeductChoice = choice;
+      const cardAll = document.getElementById('deduct-mode-card-all');
+      const cardChecked = document.getElementById('deduct-mode-card-checked');
+      const radioAll = document.getElementById('cdm-choice-all');
+      const radioChecked = document.getElementById('cdm-choice-checked');
+
+      if (cardAll) cardAll.classList.toggle('active', choice === 'all');
+      if (cardChecked) cardChecked.classList.toggle('active', choice === 'checked');
+      if (radioAll) radioAll.checked = (choice === 'all');
+      if (radioChecked) radioChecked.checked = (choice === 'checked');
+
+      renderCookDeductPreview();
+    }
+
+    function renderCookDeductPreview() {
+      const listEl = document.getElementById('cdm-ingredients-list');
+      const countEl = document.getElementById('cdm-items-count');
+      const confirmBtn = document.getElementById('cdm-confirm-btn');
+      if (!listEl) return;
+
+      const items = (currentDeductChoice === 'checked') ? cookDeductCheckedItems : cookDeductAllItems;
+      if (countEl) countEl.textContent = items.length;
+
+      if (items.length === 0) {
+        listEl.innerHTML = '<div style="padding:14px;text-align:center;color:var(--text-muted);font-size:12.5px;">Aucun ingrédient sélectionné. Cochez des ingrédients ou choisissez « Tous les ingrédients ».</div>';
+        if (confirmBtn) confirmBtn.disabled = true;
+        return;
       }
 
+      if (confirmBtn) confirmBtn.disabled = false;
+
+      listEl.innerHTML = items.map(entry => {
+        const stockItem = findStockItemForIngredient(entry.name, stockData);
+        const stockQty = stockItem ? (parseFloat(stockItem.stock_qty) || 0) : null;
+        const isInf = stockQty !== null && stockQty >= 99999990;
+        const stockStatus = stockItem
+          ? (isInf ? '<span style="color:#1E6091;font-weight:700;">∞ Illimité</span>' : (stockQty.toLocaleString('fr-TN') + ' ' + escHtml(entry.unit) + ' en stock'))
+          : '<span style="color:var(--text-muted);font-style:italic;">Non répertorié</span>';
+
+        return `
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#FFFFFF;border-radius:8px;font-size:12.5px;border:1px solid rgba(42,33,24,0.06);">
+            <div>
+              <strong>${escHtml(entry.name)}</strong>
+              <div style="font-size:11px;color:var(--text-muted);">${stockStatus}</div>
+            </div>
+            <div style="font-weight:800;color:var(--terracotta);font-size:13px;">
+              -${entry.qty.toLocaleString('fr-TN')} ${escHtml(entry.unit)}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function executeCookDeduction() {
+      const itemsToProcess = (currentDeductChoice === 'checked') ? cookDeductCheckedItems : cookDeductAllItems;
+      if (itemsToProcess.length === 0) {
+        toast('Aucun ingrédient à déduire', 'warning');
+        return;
+      }
+
+      const confirmBtn = document.getElementById('cdm-confirm-btn');
+      if (confirmBtn) {
+        confirmBtn.disabled = true;
+        confirmBtn.textContent = 'Déduction en cours...';
+      }
+
+      const factorText = currentCookFactor !== 1.0 ? (' (Facteur ×' + currentCookFactor.toFixed(2) + ')') : '';
       const recipeName = (currentCookRecipe && currentCookRecipe.name) ? currentCookRecipe.name : '';
       const note = recipeName ? ('Recette : ' + recipeName + factorText) : 'Déduction recette';
 
       const batchItems = [];
       const notFoundNames = [];
 
-      for (const entry of toDeduct) {
+      for (const entry of itemsToProcess) {
         const stockItem = findStockItemForIngredient(entry.name, stockData);
         if (!stockItem) {
           notFoundNames.push(entry.name);
@@ -12110,7 +12381,6 @@ let menuItems = [];
 
       if (batchItems.length > 0) {
         try {
-          // BATCH API: Single fast HTTP request to Cloudflare D1!
           const res = await fetch('/api/admin/stock-adjust', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -12130,6 +12400,9 @@ let menuItems = [];
         activeStockView === 'history' ? loadStockHistory() : Promise.resolve()
       ]);
 
+      closeCookDeductModal();
+
+      const btn = document.getElementById('cook-final-deduct-btn');
       if (btn) {
         btn.disabled = true;
         btn.style.background = '#4E8A5E';
@@ -12139,7 +12412,7 @@ let menuItems = [];
       }
 
       if (deductedCount > 0) {
-        let msg = '✅ ' + deductedCount + ' ingrédient' + (deductedCount > 1 ? 's' : '') + ' déduit' + (deductedCount > 1 ? 's' : '') + ' instantanément du stock !';
+        let msg = '✅ ' + deductedCount + ' ingrédient' + (deductedCount > 1 ? 's' : '') + ' déduit' + (deductedCount > 1 ? 's' : '') + ' du stock !';
         if (notFoundNames.length > 0) msg += ' (' + notFoundNames.length + ' non répertorié(s): ' + notFoundNames.slice(0, 3).join(', ') + ')';
         toast(msg, 'success');
       } else if (notFoundNames.length > 0) {
