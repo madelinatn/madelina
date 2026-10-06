@@ -7623,7 +7623,15 @@
           </div>
         `;
       }).join('');
+
+      // Recipe pagination bar
+      if (recipePagEl) {
+        renderPagination(recipePagEl, recipesPage, totalRecipePages, recipesPageSize, filtered.length, 'setRecipesPage', 'setRecipesPageSize');
+      }
     }
+
+    function setRecipesPage(p) { recipesPage = p; renderRecipes(); }
+    function setRecipesPageSize(s) { recipesPageSize = (s === 'all' ? 'all' : parseInt(s, 10)); recipesPage = 1; renderRecipes(); }
 
     function openRecipeModal(recipeId) {
       const modal = document.getElementById('recipe-modal-overlay');

@@ -46,31 +46,4 @@ export async function onRequestGet(context: EventContext<Env, any, any>) {
   }
 }
 
-// DELETE /api/admin/stock-history?before_days=90  — manual cleanup (admin only)
-export async function onRequestDelete(context: EventContext<Env, any, any>) {
-  if (!(await checkAuth(context.request, context.env))) {
-    return new Response(JSON.stringify({ error: 'Non autorisé' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
 
-  try {
-    const url = new URL(context.request.url);
-    const beforeDays = Math.max(parseInt(url.searchParams.get('before_days') || '90', 10), 7);
-
-    const { meta } = await context.env.DB.prepare(
-      `DELETE FROM stock_history WHERE created_at < datetime('now', '-' || ? || ' days')`
-    ).bind(beforeDays).run();
-
-    return new Response(JSON.stringify({
-      success: true,
-      deleted: meta?.changes ?? 0,
-      before_days: beforeDays
-    }), {
-      headers: { 'Content-Type': 'application/json' }
-    });
-  } catch (e: any) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 500 });
-  }
-}
