@@ -491,8 +491,8 @@
           <div style="font-size:11px;font-weight:800;letter-spacing:0.06em;color:var(--navy);text-transform:uppercase;margin-bottom:8px;">
             INGRÉDIENTS DÉDUITS DANS CETTE MÊME PRÉPARATION (${session.items.length})
           </div>
-          <div style="background:#FFFFFF;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;">
-            <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <div style="background:#FFFFFF;border:1.5px solid var(--border);border-radius:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;">
+            <table style="width:100%;min-width:380px;border-collapse:collapse;font-size:13px;">
               <thead>
                 <tr style="background:#FAF7F4;border-bottom:1.5px solid var(--border);color:var(--text-muted);font-size:11px;font-weight:700;text-transform:uppercase;">
                   <th style="padding:10px 14px;text-align:left;">INGRÉDIENT</th>
@@ -5924,6 +5924,30 @@
     #stock-history-detail-modal-overlay.open {
       display: flex;
     }
+    @media (max-width: 640px) {
+      #stock-history-detail-modal-overlay {
+        padding: 8px !important;
+        align-items: flex-end !important;
+      }
+      #stock-history-detail-modal-overlay .modal {
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: 92vh !important;
+        border-radius: 20px 20px 0 0 !important;
+        padding: 16px 12px 14px !important;
+      }
+      #stock-history-detail-modal-overlay #shd-title {
+        font-size: 16.5px !important;
+      }
+      #stock-history-detail-modal-overlay #shd-content {
+        max-height: calc(92vh - 130px);
+      }
+      #stock-history-detail-modal-overlay table th,
+      #stock-history-detail-modal-overlay table td {
+        padding: 8px 8px !important;
+        font-size: 12px !important;
+      }
+    }
     .user-pw-display {
       display: inline-flex;
       align-items: center;
@@ -6491,7 +6515,7 @@
               </button>
               <button class="btn btn-primary btn-sm" onclick="openStockModal(null)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                + Ajouter
+                Ajouter
               </button>
             </div>
           </div>
@@ -7293,10 +7317,10 @@
         <!-- STOCK ILLIMITÉ / INÉPUISABLE TOGGLE -->
         <div style="margin-top:12px;background:#F0F7FF;border:1.5px solid #D0E4FF;border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="toggleStockInfiniteCheckbox()">
           <div style="display:flex;align-items:center;gap:10px;">
-            <span style="font-size:18px;">💧</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:rgba(30,86,160,0.12);color:#1E56A0;font-size:16px;font-weight:800;line-height:1;">∞</span>
             <div>
-              <div style="font-size:13px;font-weight:700;color:#1E56A0;">Stock illimité / Inépuisable (∞)</div>
-              <div style="font-size:11px;color:#4A6B82;">Ex: Eau du robinet (mée sabela), sel de table, glaçons... Jamais en rupture !</div>
+              <div style="font-size:13px;font-weight:700;color:#1E56A0;">Stock illimité (∞)</div>
+              <div style="font-size:11px;color:#4A6B82;">Ressource inépuisable (eau courante, sel fin, glaçons...). Jamais en rupture.</div>
             </div>
           </div>
           <input type="checkbox" id="stk-infinite" style="width:19px;height:19px;cursor:pointer;accent-color:#1E56A0;" onchange="handleStockInfiniteToggle(this.checked)" onclick="event.stopPropagation();" />
@@ -7578,6 +7602,7 @@
         const data = await res.json();
         if (data.success) {
           currentUser = data.user;
+          try { localStorage.setItem('madelina_admin_user', JSON.stringify(data.user)); } catch(e){}
           document.getElementById('gate').style.display = 'none';
           document.getElementById('app').style.display = 'block';
           applyUserPermissions();
@@ -7593,12 +7618,28 @@
     }
 
     async function checkExistingAuth() {
+      // 1. Instant hydration from localStorage for zero-flicker reload
+      try {
+        const cached = localStorage.getItem('madelina_admin_user');
+        if (cached) {
+          const u = JSON.parse(cached);
+          if (u && u.username) {
+            currentUser = u;
+            document.getElementById('gate').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            applyUserPermissions();
+          }
+        }
+      } catch (e) {}
+
+      // 2. Validate session cookie with server
       try {
         const res = await fetch('/api/auth/check');
         if (res.ok) {
           const data = await res.json();
           if (data.authenticated && data.user) {
             currentUser = data.user;
+            try { localStorage.setItem('madelina_admin_user', JSON.stringify(data.user)); } catch(e){}
             document.getElementById('gate').style.display = 'none';
             document.getElementById('app').style.display = 'block';
             applyUserPermissions();
@@ -7606,12 +7647,27 @@
             return;
           }
         }
+        // If not authenticated, clear session
+        if (currentUser) {
+          doLogout();
+        }
       } catch (e) {
         console.warn('Auth check skipped:', e);
+        if (currentUser) {
+          initApp();
+        }
       }
     }
 
+    // Call checkExistingAuth immediately at startup
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', checkExistingAuth);
+    } else {
+      checkExistingAuth();
+    }
+
     async function doLogout() {
+      try { localStorage.removeItem('madelina_admin_user'); } catch(e){}
       try {
         await fetch('/api/auth/logout', { method: 'POST' });
       } catch(e) {}
@@ -8488,12 +8544,11 @@
         });
       });
 
-      if (query && !exactMatchFound) {
-        const safeQuery = filterText.trim().replace(/"/g, '&quot;').replace(/'/g, "\\'");
+      if (totalMatches === 0) {
         html += `
-          <div class="ing-search-custom-opt" onmousedown="selectIngFromSearch(this, '${safeQuery}', 'g')">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            <span>Utiliser « <strong>${escHtml(filterText.trim())}</strong> » (Non répertorié)</span>
+          <div style="padding:14px 12px;text-align:center;color:var(--text-muted);font-size:12px;line-height:1.5;">
+            ⚠️ <strong>Aucun ingrédient correspondant en stock</strong><br>
+            <span style="font-size:11px;color:var(--terracotta);">Ajoutez d'abord cet ingrédient dans la section Stock.</span>
           </div>
         `;
       }
@@ -8525,12 +8580,26 @@
       }
       if (unitSelect && defaultUnit) {
         const norm = normalizeRecipeUnit(defaultUnit);
+        let found = false;
         for (let opt of unitSelect.options) {
           if (opt.value === norm) {
             unitSelect.value = norm;
+            found = true;
             break;
           }
         }
+        if (!found) {
+          const opt = document.createElement('option');
+          opt.value = norm;
+          opt.textContent = norm;
+          unitSelect.appendChild(opt);
+          unitSelect.value = norm;
+        }
+        // Lock unit select: it comes directly from stock
+        unitSelect.disabled = true;
+        unitSelect.style.background = '#F4EFEB';
+        unitSelect.style.cursor = 'not-allowed';
+        unitSelect.title = "L'unité est fixée selon le stock (" + norm + ")";
       }
 
       closeAllIngSearchDropdowns();
@@ -8653,10 +8722,12 @@
           <div class="ing-search-dropdown" style="display:none;"></div>
         </div>
         <input type="number" placeholder="Quantité" step="any" min="0" value="${qty !== undefined && qty !== null ? qty : ''}" class="ing-input-qty" oninput="updateRecipeFormCostPreview()" required />
-        <select class="ing-input-unit" onchange="updateRecipeFormCostPreview()">
+        <select class="ing-input-unit" onchange="updateRecipeFormCostPreview()" ${(stockData || []).some(s => normalizeIngLookup(s.name) === normalizeIngLookup(name)) ? 'disabled style="background:#F4EFEB;cursor:not-allowed;" title="L\'unité est fixée selon le stock"' : ''}>
           <option value="g" ${normUnit === 'g' ? 'selected' : ''}>g (Gramme)</option>
           <option value="ml" ${normUnit === 'ml' ? 'selected' : ''}>ml (Millilitre)</option>
           <option value="pcs" ${normUnit === 'pcs' ? 'selected' : ''}>pcs (Pièce / Unité)</option>
+          <option value="boîte" ${normUnit === 'boîte' ? 'selected' : ''}>boîte</option>
+          <option value="sachet" ${normUnit === 'sachet' ? 'selected' : ''}>sachet</option>
           <option value="c.à.s" ${normUnit === 'c.à.s' ? 'selected' : ''}>c.à.s (Cuillère à soupe)</option>
           <option value="c.à.c" ${normUnit === 'c.à.c' ? 'selected' : ''}>c.à.c (Cuillère à café)</option>
           <option value="pn" ${normUnit === 'pn' ? 'selected' : ''}>pn (pincée)</option>
@@ -8742,10 +8813,20 @@
         const ingRows = card.querySelectorAll('.part-ingredients-container .ing-editor-row');
         const partIngs = [];
 
-        ingRows.forEach((row, iIdx) => {
+        for (let iIdx = 0; iIdx < ingRows.length; iIdx++) {
+          const row = ingRows[iIdx];
           const name = row.querySelector('.ing-input-name')?.value.trim();
           const qty = parseFloat(row.querySelector('.ing-input-qty')?.value) || 0;
           const unit = row.querySelector('.ing-input-unit')?.value || 'g';
+          if (name) {
+            const inStock = (stockData || []).some(s => normalizeIngLookup(s.name) === normalizeIngLookup(name));
+            if (!inStock) {
+              toast('⚠️ L\'ingrédient « ' + name + ' » n\'existe pas dans le stock. Veuillez le créer dans le Stock d\'abord.', 'warning');
+              saveBtn.disabled = false;
+              saveBtn.textContent = 'Enregistrer la recette';
+              return;
+            }
+          }
           if (name) {
             const ingObj = {
               id: `ing_${Date.now()}_${pIdx}_${iIdx}`,
@@ -8757,7 +8838,7 @@
             partIngs.push(ingObj);
             flatIngredients.push(ingObj);
           }
-        });
+        }
 
         parts.push({
           name: partTitle,
@@ -11934,7 +12015,7 @@ let menuItems = [];
       if (!tbody) return;
       if (!items || items.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:48px 20px;color:var(--text-muted);font-size:13.5px;">' +
-          (stockSearchQuery || activeStockFilter !== 'all' ? '🔍 Aucun ingrédient ne correspond aux critères.' : 'Aucun ingrédient en stock. Cliquez sur « + Ajouter » pour commencer.') +
+          (stockSearchQuery || activeStockFilter !== 'all' ? '🔍 Aucun ingrédient ne correspond aux critères.' : 'Aucun ingrédient en stock. Cliquez sur « Ajouter » pour commencer.') +
           '</td></tr>';
         return;
       }
