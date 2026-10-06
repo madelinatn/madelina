@@ -485,46 +485,36 @@
 
       let html = '';
 
-      // Tableau des Ingrédients Déduits — direct, sans en-tête redondant
+      // Liste des Ingrédients Déduits — ultra pro, 100% adaptée mobile et desktop
       html += `
         <div style="margin-top:4px;">
           <div style="font-size:11px;font-weight:800;letter-spacing:0.06em;color:var(--navy);text-transform:uppercase;margin-bottom:8px;">
             INGRÉDIENTS DÉDUITS DANS CETTE MÊME PRÉPARATION (${session.items.length})
           </div>
-          <div style="background:#FFFFFF;border:1.5px solid var(--border);border-radius:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;">
-            <table style="width:100%;min-width:380px;border-collapse:collapse;font-size:13px;">
-              <thead>
-                <tr style="background:#FAF7F4;border-bottom:1.5px solid var(--border);color:var(--text-muted);font-size:11px;font-weight:700;text-transform:uppercase;">
-                  <th style="padding:10px 14px;text-align:left;">INGRÉDIENT</th>
-                  <th style="padding:10px 14px;text-align:center;">DÉDUIT</th>
-                  <th style="padding:10px 14px;text-align:right;">STOCK AVANT ➔ APRÈS</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${session.items.map(it => {
-                  const d = parseFloat(it.qty_change) || 0;
-                  const b = parseFloat(it.qty_before) || 0;
-                  const a = parseFloat(it.qty_after) || 0;
-                  const beforeStr = b >= 99999990 ? '∞' : b.toLocaleString('fr-TN') + ' ' + escHtml(it.unit);
-                  const afterStr = a >= 99999990 ? '∞' : a.toLocaleString('fr-TN') + ' ' + escHtml(it.unit);
+          <div style="background:#FFFFFF;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;">
+            ${session.items.map(it => {
+              const d = parseFloat(it.qty_change) || 0;
+              const b = parseFloat(it.qty_before) || 0;
+              const a = parseFloat(it.qty_after) || 0;
+              const beforeStr = b >= 99999990 ? '∞' : b.toLocaleString('fr-TN') + ' ' + escHtml(it.unit);
+              const afterStr = a >= 99999990 ? '∞' : a.toLocaleString('fr-TN') + ' ' + escHtml(it.unit);
 
-                  return `
-                    <tr style="border-bottom:1px solid rgba(42,33,24,0.06);">
-                      <td style="padding:11px 14px;"><strong style="color:var(--navy);font-size:13.5px;">${escHtml(it.ingredient_name)}</strong></td>
-                      <td style="padding:11px 14px;text-align:center;">
-                        <span style="color:#C5221F;font-weight:800;background:#FDF1F0;padding:3px 9px;border-radius:6px;font-size:12.5px;">
-                          ${d.toLocaleString('fr-TN')} ${escHtml(it.unit)}
-                        </span>
-                      </td>
-                      <td style="padding:11px 14px;text-align:right;">
-                        <span style="color:var(--text-muted);font-size:12px;">${beforeStr} ➔ </span>
-                        <strong style="color:var(--navy);font-size:13px;">${afterStr}</strong>
-                      </td>
-                    </tr>
-                  `;
-                }).join('')}
-              </tbody>
-            </table>
+              return `
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(42,33,24,0.06);gap:12px;">
+                  <div style="min-width:0;flex:1;">
+                    <div style="font-size:13.5px;font-weight:700;color:var(--navy);line-height:1.3;">${escHtml(it.ingredient_name)}</div>
+                    <div style="font-size:11.5px;color:var(--text-muted);margin-top:3px;font-weight:500;">
+                      Stock : ${beforeStr} ➔ <strong style="color:var(--navy);font-weight:700;">${afterStr}</strong>
+                    </div>
+                  </div>
+                  <div style="flex-shrink:0;">
+                    <span style="display:inline-block;color:#C5221F;font-weight:800;background:#FDF1F0;border:1px solid rgba(197,34,31,0.12);padding:4px 10px;border-radius:8px;font-size:12.5px;white-space:nowrap;">
+                      -${Math.abs(d).toLocaleString('fr-TN')} ${escHtml(it.unit)}
+                    </span>
+                  </div>
+                </div>
+              `;
+            }).join('')}
           </div>
         </div>
       `;
@@ -2465,6 +2455,7 @@
       #stock-cat-overlay,
       #user-modal-overlay,
       #app-modal-overlay,
+      #stock-history-detail-modal-overlay,
       #cook-modal-overlay {
         align-items: flex-end !important;
         padding: 0 !important;
@@ -5925,27 +5916,8 @@
       display: flex;
     }
     @media (max-width: 640px) {
-      #stock-history-detail-modal-overlay {
-        padding: 8px !important;
-        align-items: flex-end !important;
-      }
-      #stock-history-detail-modal-overlay .modal {
-        width: 100% !important;
-        max-width: 100% !important;
-        max-height: 92vh !important;
-        border-radius: 20px 20px 0 0 !important;
-        padding: 16px 12px 14px !important;
-      }
       #stock-history-detail-modal-overlay #shd-title {
-        font-size: 16.5px !important;
-      }
-      #stock-history-detail-modal-overlay #shd-content {
-        max-height: calc(92vh - 130px);
-      }
-      #stock-history-detail-modal-overlay table th,
-      #stock-history-detail-modal-overlay table td {
-        padding: 8px 8px !important;
-        font-size: 12px !important;
+        font-size: 17px !important;
       }
     }
     .user-pw-display {
@@ -7279,8 +7251,6 @@
               <option value="g">g (grammes)</option>
               <option value="ml">ml (millilitres)</option>
               <option value="pcs">pcs (pièces)</option>
-              <option value="boîte">boîte</option>
-              <option value="sachet">sachet</option>
             </select>
           </div>
           <div class="form-group">
@@ -7309,7 +7279,7 @@
             <div style="display:flex;align-items:center;margin-bottom:6px;min-height:18px;">
               <label id="stk-price-label" style="margin-bottom:0;">PRIX (TND) *</label>
             </div>
-            <input type="number" id="stk-price" required min="0" step="0.001" placeholder="0.000" style="width:100%;height:43px;box-sizing:border-box;" />
+            <input type="number" id="stk-price" min="0" step="any" placeholder="0.000" style="width:100%;height:43px;box-sizing:border-box;" />
           </div>
         </div>
 
@@ -8691,7 +8661,7 @@
       updateRecipeFormCostPreview();
     }
 
-    function addPartIngredientRow(triggerEl, name = '', qty = '', unit = 'g') {
+    function addPartIngredientRow(triggerEl, name = '', qty = '', unit = '') {
       let container;
       if (triggerEl && triggerEl.classList && triggerEl.classList.contains('part-ingredients-container')) {
         container = triggerEl;
@@ -8722,12 +8692,11 @@
           <div class="ing-search-dropdown" style="display:none;"></div>
         </div>
         <input type="number" placeholder="Quantité" step="any" min="0" value="${qty !== undefined && qty !== null ? qty : ''}" class="ing-input-qty" oninput="updateRecipeFormCostPreview()" required />
-        <select class="ing-input-unit" onchange="updateRecipeFormCostPreview()" ${(stockData || []).some(s => normalizeIngLookup(s.name) === normalizeIngLookup(name)) ? 'disabled style="background:#F4EFEB;cursor:not-allowed;" title="L\'unité est fixée selon le stock"' : ''}>
+        <select class="ing-input-unit" onchange="updateRecipeFormCostPreview()" disabled style="background:#F4EFEB;color:var(--navy);cursor:not-allowed;font-weight:600;" title="L\'unité est automatiquement définie par le stock">
+          <option value="" ${!unit ? 'selected' : ''} disabled>UNITÉ DE MESURE</option>
           <option value="g" ${normUnit === 'g' ? 'selected' : ''}>g (Gramme)</option>
           <option value="ml" ${normUnit === 'ml' ? 'selected' : ''}>ml (Millilitre)</option>
-          <option value="pcs" ${normUnit === 'pcs' ? 'selected' : ''}>pcs (Pièce / Unité)</option>
-          <option value="boîte" ${normUnit === 'boîte' ? 'selected' : ''}>boîte</option>
-          <option value="sachet" ${normUnit === 'sachet' ? 'selected' : ''}>sachet</option>
+          <option value="pcs" ${normUnit === 'pcs' ? 'selected' : ''}>pcs (Pièce)</option>
           <option value="c.à.s" ${normUnit === 'c.à.s' ? 'selected' : ''}>c.à.s (Cuillère à soupe)</option>
           <option value="c.à.c" ${normUnit === 'c.à.c' ? 'selected' : ''}>c.à.c (Cuillère à café)</option>
           <option value="pn" ${normUnit === 'pn' ? 'selected' : ''}>pn (pincée)</option>
@@ -8738,7 +8707,7 @@
       updateRecipeFormCostPreview();
     }
 
-    function addIngredientRow(name = '', qty = '', unit = 'g') {
+    function addIngredientRow(name = '', qty = '', unit = '') {
       addPartIngredientRow(null, name, qty, unit);
     }
 
@@ -9841,11 +9810,6 @@
               </div>
               <div style="display:flex;align-items:center;gap:8px;">
                 <span class="cook-part-meta">${partCheckedCount} / ${partIngs.length} pesé(s)</span>
-                ${partIngs.length > 0 ? `
-                  <button type="button" class="btn-cook-check-all" onclick="toggleCookPartAll(${partIdx}, ${globalStartIdx}, ${partIngs.length})" title="Cocher ou décocher tous les ingrédients de cette partie">
-                    ${partCheckedCount === partIngs.length ? 'Tout décocher' : 'Tout cocher'}
-                  </button>
-                ` : ''}
               </div>
             </div>
             ${part.note ? `<div class="cook-part-note">${part.note}</div>` : ''}
@@ -11827,7 +11791,7 @@ let menuItems = [];
     }
 
     function getStockUnitLabel(unit) {
-      const map = { g: '/ 1000g', ml: '/ 1000ml', pcs: '/ 1000 pcs', 'boîte': '/ 1000 boîtes', 'sachet': '/ 1000 sachets' };
+      const map = { g: '/ 1000g', ml: '/ 1000ml', pcs: '/ 1000 pcs' };
       return map[unit] || ('/ 1000 ' + (unit || 'unités'));
     }
 
@@ -12030,7 +11994,7 @@ let menuItems = [];
           : '<span class="stock-qty-cell ' + qtyClass + '">' + qty.toLocaleString('fr-TN') + ' ' + escHtml(item.unit) + '</span>';
         const catBadge = item.category ? '<span class="stock-cat-badge">' + escHtml(item.category) + '</span>' : '<span style="color:var(--text-muted);font-size:12px;">—</span>';
         const priceLabel = getStockUnitLabel(item.unit);
-        const priceFmt = price > 0 ? '<span class="stock-price-cell">' + price.toLocaleString('fr-TN', { minimumFractionDigits: 0, maximumFractionDigits: 3 }) + ' <small style="font-weight:600;color:var(--text-muted);">TND ' + escHtml(priceLabel) + '</small></span>' : '<span style="color:var(--text-muted);font-size:12px;">—</span>';
+        const priceFmt = price >= 0 ? '<span class="stock-price-cell">' + price.toLocaleString('fr-TN', { minimumFractionDigits: 0, maximumFractionDigits: 3 }) + ' <small style="font-weight:600;color:var(--text-muted);">TND ' + escHtml(priceLabel) + '</small></span>' : '<span style="color:var(--text-muted);font-size:12px;">—</span>';
         const safeItemJson = escHtml(JSON.stringify(item));
         const safeName = escHtml(item.name).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 
@@ -12068,7 +12032,7 @@ let menuItems = [];
           ? '<span class="stock-qty-cell infinite" style="font-size:12px;">∞ Illimité</span>'
           : (qty.toLocaleString('fr-TN') + ' <span class="stock-stat-unit">' + escHtml(item.unit) + '</span>');
         const priceLabel = getStockUnitLabel(item.unit);
-        const priceFmt = price > 0 ? (price.toLocaleString('fr-TN', { minimumFractionDigits: 0, maximumFractionDigits: 3 }) + ' TND') : '—';
+        const priceFmt = price >= 0 ? (price.toLocaleString('fr-TN', { minimumFractionDigits: 0, maximumFractionDigits: 3 }) + ' TND') : '—';
         const safeItemJson = escHtml(JSON.stringify(item));
         const safeName = escHtml(item.name).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 
@@ -12220,15 +12184,19 @@ let menuItems = [];
         err.style.display = 'block';
         return;
       }
-      if (rawPrice === '' || isNaN(parseFloat(rawPrice))) {
-        err.textContent = 'Veuillez renseigner le prix unitaire.';
-        err.style.display = 'block';
-        return;
+      let price_per_unit = 0;
+      if (rawPrice !== '') {
+        const parsedP = parseFloat(rawPrice);
+        if (isNaN(parsedP) || parsedP < 0) {
+          err.textContent = 'Veuillez renseigner un prix valide (0 DT ou plus).';
+          err.style.display = 'block';
+          return;
+        }
+        price_per_unit = parsedP;
       }
 
       // Quantity is multiplied by pack count (mult), while price remains strictly for x1
       const stock_qty = parseFloat(rawQty) * mult;
-      const price_per_unit = parseFloat(rawPrice);
       const payload = { name, unit, category, stock_qty, price_per_unit };
       if (id) payload.id = id;
 
