@@ -1,9 +1,9 @@
-import { checkAuth } from '../auth/check';
+import { checkAuth, checkStaffAuth } from '../auth/check';
 import type { Env } from '../_types';
 
-// GET /api/admin/stock — list all stock ingredients
+// GET /api/admin/stock — list all stock ingredients (Accessible to Staff for recipe preparation and Admin)
 export async function onRequestGet(context: EventContext<Env, any, any>) {
-  if (!(await checkAuth(context.request, context.env))) {
+  if (!(await checkStaffAuth(context.request, context.env))) {
     return new Response(JSON.stringify({ error: 'Non autorisé' }), {
       status: 401, headers: { 'Content-Type': 'application/json' }
     });

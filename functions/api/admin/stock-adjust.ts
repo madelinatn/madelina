@@ -1,4 +1,4 @@
-import { checkAuth } from '../auth/check';
+import { checkStaffAuth } from '../auth/check';
 import type { Env } from '../_types';
 
 interface AdjustItem {
@@ -8,8 +8,10 @@ interface AdjustItem {
   action_type?: string;
 }
 
+const INFINITE_STOCK_THRESHOLD = 99999990;
+
 async function handleAdjust(context: EventContext<Env, any, any>) {
-  if (!(await checkAuth(context.request, context.env))) {
+  if (!(await checkStaffAuth(context.request, context.env))) {
     return new Response(JSON.stringify({ error: 'Non autorisé' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' }
@@ -52,8 +54,11 @@ async function handleAdjust(context: EventContext<Env, any, any>) {
         if (!dbItem) continue;
 
         const qtyBefore = parseFloat(dbItem.stock_qty) || 0;
-        const qtyAfter = Math.max(0, Math.round((qtyBefore + reqItem.delta) * 1000) / 1000);
-        const actualChange = Math.round((qtyAfter - qtyBefore) * 1000) / 1000;
+        const isInfinite = qtyBefore >= INFINITE_STOCK_THRESHOLD;
+        const qtyAfter = isInfinite
+          ? qtyBefore
+          : Math.max(0, Math.round((qtyBefore + reqItem.delta) * 1000) / 1000);
+        const actualChange = Math.round(reqItem.delta * 1000) / 1000;
         const histId = 'sh_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
 
         statements.push(
@@ -115,8 +120,11 @@ async function handleAdjust(context: EventContext<Env, any, any>) {
     }
 
     const qtyBefore = parseFloat(item.stock_qty) || 0;
-    const qtyAfter = Math.max(0, Math.round((qtyBefore + body.delta) * 1000) / 1000);
-    const actualChange = Math.round((qtyAfter - qtyBefore) * 1000) / 1000;
+    const isInfinite = qtyBefore >= INFINITE_STOCK_THRESHOLD;
+    const qtyAfter = isInfinite
+      ? qtyBefore
+      : Math.max(0, Math.round((qtyBefore + body.delta) * 1000) / 1000);
+    const actualChange = Math.round(body.delta * 1000) / 1000;
 
     const histId = 'sh_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
 

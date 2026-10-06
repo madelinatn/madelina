@@ -516,9 +516,7 @@
       }
       if (query) {
         filtered = filtered.filter(r =>
-          r.name.toLowerCase().includes(query) ||
-          (r.description || '').toLowerCase().includes(query) ||
-          (r.ingredients || []).some(i => i.name.toLowerCase().includes(query))
+          (r.name || '').toLowerCase().includes(query)
         );
       }
 

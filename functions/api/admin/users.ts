@@ -1,6 +1,14 @@
 import { checkAuth, hashPassword } from '../auth/check';
 import type { Env } from '../_types';
 
+async function ensurePlainPasswordColumn(db: D1Database) {
+  try {
+    await db.prepare('ALTER TABLE users ADD COLUMN plain_password TEXT').run();
+  } catch {
+    // Column already exists or error ignored
+  }
+}
+
 // GET /api/admin/users — list all users
 export async function onRequestGet(context: EventContext<Env, any, any>) {
   if (!(await checkAuth(context.request, context.env))) {
@@ -9,10 +17,21 @@ export async function onRequestGet(context: EventContext<Env, any, any>) {
     });
   }
 
+  await ensurePlainPasswordColumn(context.env.DB);
+
   try {
-    const { results } = await context.env.DB.prepare(
-      'SELECT id, username, name, role, allowed_categories, is_active, created_at, CASE WHEN password_hash IS NOT NULL AND password_hash != \'\' THEN 1 ELSE 0 END as has_password FROM users ORDER BY created_at ASC'
-    ).all();
+    let results: any[] = [];
+    try {
+      const q = await context.env.DB.prepare(
+        'SELECT id, username, name, role, allowed_categories, is_active, created_at, plain_password, CASE WHEN password_hash IS NOT NULL AND password_hash != \'\' THEN 1 ELSE 0 END as has_password FROM users ORDER BY created_at ASC'
+      ).all();
+      results = q.results || [];
+    } catch {
+      const qFallback = await context.env.DB.prepare(
+        'SELECT id, username, name, role, allowed_categories, is_active, created_at, CASE WHEN password_hash IS NOT NULL AND password_hash != \'\' THEN 1 ELSE 0 END as has_password FROM users ORDER BY created_at ASC'
+      ).all();
+      results = qFallback.results || [];
+    }
 
     return new Response(JSON.stringify({ users: results }), {
       headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
@@ -29,6 +48,8 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
       status: 401, headers: { 'Content-Type': 'application/json' }
     });
   }
+
+  await ensurePlainPasswordColumn(context.env.DB);
 
   try {
     const body = await context.request.json<{
@@ -75,10 +96,17 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
       }
     }
 
-    await context.env.DB.prepare(
-      `INSERT INTO users (id, username, password_hash, name, role, allowed_categories, is_active)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`
-    ).bind(id, username, passwordHash, name, role, allowedCats, isActive).run();
+    try {
+      await context.env.DB.prepare(
+        `INSERT INTO users (id, username, password_hash, plain_password, name, role, allowed_categories, is_active)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+      ).bind(id, username, passwordHash, password, name, role, allowedCats, isActive).run();
+    } catch {
+      await context.env.DB.prepare(
+        `INSERT INTO users (id, username, password_hash, name, role, allowed_categories, is_active)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`
+      ).bind(id, username, passwordHash, name, role, allowedCats, isActive).run();
+    }
 
     return new Response(JSON.stringify({ success: true, id }), {
       headers: { 'Content-Type': 'application/json' }
@@ -95,6 +123,8 @@ export async function onRequestPut(context: EventContext<Env, any, any>) {
       status: 401, headers: { 'Content-Type': 'application/json' }
     });
   }
+
+  await ensurePlainPasswordColumn(context.env.DB);
 
   try {
     const body = await context.request.json<{
@@ -141,10 +171,17 @@ export async function onRequestPut(context: EventContext<Env, any, any>) {
     if (role === 'admin') allowedCats = '*';
 
     if (body.password && body.password.trim()) {
-      const passwordHash = await hashPassword(body.password.trim());
-      await context.env.DB.prepare(
-        `UPDATE users SET name = ?, role = ?, allowed_categories = ?, is_active = ?, password_hash = ? WHERE id = ?`
-      ).bind(name, role, allowedCats, isActive, passwordHash, body.id).run();
+      const cleanPass = body.password.trim();
+      const passwordHash = await hashPassword(cleanPass);
+      try {
+        await context.env.DB.prepare(
+          `UPDATE users SET name = ?, role = ?, allowed_categories = ?, is_active = ?, password_hash = ?, plain_password = ? WHERE id = ?`
+        ).bind(name, role, allowedCats, isActive, passwordHash, cleanPass, body.id).run();
+      } catch {
+        await context.env.DB.prepare(
+          `UPDATE users SET name = ?, role = ?, allowed_categories = ?, is_active = ?, password_hash = ? WHERE id = ?`
+        ).bind(name, role, allowedCats, isActive, passwordHash, body.id).run();
+      }
     } else {
       await context.env.DB.prepare(
         `UPDATE users SET name = ?, role = ?, allowed_categories = ?, is_active = ? WHERE id = ?`
