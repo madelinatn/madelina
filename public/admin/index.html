@@ -9248,6 +9248,15 @@
       if (srcHInp) srcHInp.value = '4.5';
       if (targetHInp) targetHInp.value = '4.5';
 
+      const heightChk = document.getElementById('calc-enable-height');
+      if (heightChk) heightChk.checked = false;
+      const heightPanel = document.getElementById('calc-height-panel');
+      if (heightPanel) heightPanel.style.display = 'none';
+      const srcHInp = document.getElementById('calc-src-h');
+      const targetHInp = document.getElementById('calc-target-h');
+      if (srcHInp) srcHInp.value = '4.5';
+      if (targetHInp) targetHInp.value = '4.5';
+
       // Default mode
       if (rec.base_type === 'portion') {
         setScalingMode('portions');
@@ -9277,6 +9286,13 @@
       const rectFields = document.getElementById('calc-target-rect-fields');
       if (roundFields) roundFields.style.display = (targetShape === 'round') ? 'block' : 'none';
       if (rectFields) rectFields.style.display = (targetShape === 'rect') ? 'grid' : 'none';
+      calculateScale();
+    }
+
+    function toggleCalcHeight() {
+      const chk = document.getElementById('calc-enable-height');
+      const panel = document.getElementById('calc-height-panel');
+      if (panel) panel.style.display = chk && chk.checked ? 'block' : 'none';
       calculateScale();
     }
 
