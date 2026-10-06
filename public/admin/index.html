@@ -466,7 +466,7 @@
       const openRecipeBtn = document.getElementById('shd-open-recipe-btn');
 
       if (iconEl) iconEl.style.display = 'none';
-      if (titleEl) titleEl.textContent = 'Détails de la Préparation';
+      if (titleEl) titleEl.textContent = session.recipeName;
 
       let dateFormatted = session.created_at || '—';
       try {
@@ -476,24 +476,16 @@
             ' à ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
         }
       } catch(e) {}
-      if (dateEl) dateEl.textContent = 'Préparation enregistrée le ' + dateFormatted;
+      if (dateEl) dateEl.textContent = (session.factorText ? 'Proportions : ' + session.factorText + '  ·  ' : '') + 'Préparé le ' + dateFormatted;
+
+      // Show factor below title if present
+      if (titleEl && session.factorText) {
+        titleEl.textContent = session.recipeName;
+      }
 
       let html = '';
 
-      // En-tête recette épuré (Nom + Facteur) — SANS AUCUN PAVÉ DE TEXTE D'ÉTAPES
-      html += `
-        <div style="background:#FAF7F4;border:1.5px solid var(--border);border-radius:14px;padding:16px;">
-          <div style="font-size:10px;font-weight:800;color:var(--terracotta);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">
-            RECETTE PRÉPARÉE
-          </div>
-          <div style="font-size:20px;font-weight:800;color:var(--navy);">
-            ${escHtml(session.recipeName)}
-          </div>
-          ${session.factorText ? `<div style="font-size:12.5px;color:var(--text-muted);margin-top:4px;font-weight:600;">Proportions : ${escHtml(session.factorText)}</div>` : ''}
-        </div>
-      `;
-
-      // Tableau des Ingrédients Déduits (9adech kenou w 9adech walew)
+      // Tableau des Ingrédients Déduits — direct, sans en-tête redondant
       html += `
         <div style="margin-top:4px;">
           <div style="font-size:11px;font-weight:800;letter-spacing:0.06em;color:var(--navy);text-transform:uppercase;margin-bottom:8px;">
@@ -7472,7 +7464,7 @@
 
       <div style="margin-top:16px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--border);padding-top:14px;">
         <button type="button" class="btn btn-secondary" onclick="closeStockHistoryDetailModal()">Fermer</button>
-        <button type="button" class="btn btn-primary" id="shd-open-recipe-btn" style="display:none;" onclick="openRecipeFromHistory()">📖 Voir la recette</button>
+
       </div>
     </div>
   </div>
@@ -7769,7 +7761,7 @@
       const isAdm = currentUser.role === 'admin';
       const userBadge = document.getElementById('current-user-badge');
       if (userBadge) {
-        userBadge.innerHTML = `👤 <strong>${escHtml(currentUser.name || currentUser.username)}</strong>`;
+        userBadge.innerHTML = `◈ <strong>${escHtml(currentUser.name || currentUser.username)}</strong>`;
       }
 
       // Hide admin tabs in subnav if staff
@@ -10061,15 +10053,7 @@
           }
         }
 
-        const pwBlock = !isAdm ? `
-          <div class="user-pw-display" style="margin-top:5px;" title="Mot de passe collaborateur">
-            <span style="font-size:10px;color:var(--text-muted);font-weight:700;margin-right:2px;">MDP:</span>
-            <span class="user-pw-text" id="user-pw-${u.id}">••••••••</span>
-            <button type="button" class="btn-user-pw-eye" onclick="toggleUserPasswordRow('${u.id}', this)" title="Afficher le mot de passe">
-              ${SVG_EYE_OPEN}
-            </button>
-          </div>
-        ` : '';
+        const pwBlock = ''; // MDP display removed from table — only shown in edit modal
 
         return `
           <tr class="user-row">
