@@ -1,0 +1,5154 @@
+<!DOCTYPE html>
+<html lang="fr" translate="no">
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WELJFJ5WRP"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-WELJFJ5WRP');
+  </script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="google" content="notranslate" />
+  <title>Madelina | Admin</title>
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <!-- Scroll to Top Button -->
+  <button id="scrollToTopBtn" aria-label="Remonter en haut" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+    </svg>
+  </button>
+  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js" defer></script>
+  <style>
+    @font-face {
+      font-family: 'Allenoire';
+      src: url('../fonts/allenoire.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --terracotta: #A64B2A;
+      --madelina-dark: #2A2118;
+      --teal: #2A2118;
+      --teal-dark: #1a140f;
+      --navy: #2A2118;
+      --cream: #FAF7F4;
+      --warm: #FAF7F4;
+      --white: #ffffff;
+      --border: #EAE3DA;
+      --border-dark: #D6C9BD;
+      --danger: #e05252;
+      --success: #52a060;
+      --text-muted: #7A6A5A;
+      --primary: #2A2118;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--warm);
+      color: var(--navy);
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, h4, h5 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.01em;
+    }
+
+    /* ── AUTH GATE ── */
+    #gate {
+      position: fixed;
+      inset: 0;
+      background: var(--warm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .gate-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 24px;
+      padding: 48px 32px;
+      width: min(380px, calc(100vw - 32px));
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(42, 33, 24, 0.08);
+    }
+
+    .gate-logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      border: 1.5px solid rgba(166, 75, 42, 0.2);
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(166, 75, 42, 0.08);
+    }
+
+    .gate-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.45);
+      border-radius: 50%;
+    }
+
+    .gate-logo span {
+      font-family: 'Allenoire', serif;
+      font-size: 32px;
+      color: var(--terracotta);
+      text-transform: lowercase;
+    }
+
+    .gate-card h1 {
+      font-family: 'Allenoire', serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--navy);
+      letter-spacing: 0.02em;
+      text-transform: lowercase;
+      margin-bottom: 8px;
+    }
+
+    .gate-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .gate-card input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      outline: none;
+      background: var(--white);
+      transition: border-color 0.2s;
+      margin-bottom: 12px;
+    }
+
+    .gate-card input:focus {
+      border-color: var(--navy);
+    }
+
+    .gate-card button {
+      width: 100%;
+      padding: 14px;
+      background: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .gate-card button:hover {
+      background: #1f1812;
+    }
+
+    #gate-error {
+      color: var(--danger);
+      font-size: 12px;
+      margin-top: 12px;
+      min-height: 16px;
+    }
+
+    /* ── HEADER ── */
+    /* ── HEADER STYLING ── */
+    .sticky-header-wrapper {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #FAF7F4;
+      border-bottom: 1.5px solid var(--border);
+      box-shadow: 0 4px 20px rgba(42, 33, 24, 0.04);
+    }
+
+    header {
+      background: #FAF7F4;
+      padding: 14px 24px;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-logo {
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #ffffff;
+      border: 1.5px solid rgba(166, 75, 42, 0.2);
+      box-shadow: 0 2px 10px rgba(166, 75, 42, 0.08);
+    }
+
+    .header-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.45);
+      border-radius: 50%;
+    }
+
+    .header-brand h2 {
+      font-family: 'Allenoire', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--terracotta);
+      letter-spacing: 0.01em;
+      line-height: 1.1;
+      text-transform: lowercase;
+    }
+
+    .header-brand p {
+      font-size: 10.5px;
+      color: #8A99AD;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #save-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3.5px;
+      background: linear-gradient(90deg, var(--terracotta) 0%, #f5c542 50%, var(--success) 100%);
+      z-index: 99999;
+      box-shadow: 0 0 12px rgba(166, 75, 42, 0.45);
+      transition: width 0.3s cubic-bezier(0.1, 0.7, 0.1, 1), opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .autosave-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--navy);
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 1px 4px rgba(42, 33, 24, 0.04);
+      user-select: none;
+      cursor: default;
+      transition: all 0.25s ease;
+    }
+
+    .autosave-badge.saving {
+      border-color: rgba(245, 197, 66, 0.7);
+      background: #FFFDF5;
+      color: #92400e;
+    }
+
+    .autosave-badge.ok {
+      border-color: rgba(82, 160, 96, 0.45);
+      background: #F4FAF5;
+      color: #166534;
+    }
+
+    .autosave-badge.error {
+      border-color: rgba(224, 82, 82, 0.45);
+      background: #FFF5F5;
+      color: var(--danger);
+    }
+
+    .autosave-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #52a060;
+      box-shadow: 0 0 6px #52a060;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.3s;
+      flex-shrink: 0;
+    }
+
+    .autosave-dot.pulsing {
+      animation: dotPulse 1.2s infinite ease-in-out;
+    }
+
+    @keyframes dotPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.45); opacity: 0.65; }
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.18s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .btn-lg {
+      padding: 13px 28px;
+      font-size: 13px;
+      border-radius: 14px;
+    }
+
+    .btn-header {
+      padding: 8px 16px;
+      font-size: 12px;
+      border-radius: 10px;
+    }
+
+    .btn-primary {
+      background: var(--navy);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1f1812;
+    }
+
+    .btn-secondary {
+      background: var(--white);
+      color: var(--navy);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--navy);
+    }
+
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border: 1.5px solid var(--danger);
+    }
+
+    .btn-danger:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-sm {
+      padding: 7px 13px;
+      font-size: 11px;
+      border-radius: 8px;
+    }
+
+    .btn-xs {
+      padding: 5px 10px;
+      font-size: 10px;
+      border-radius: 7px;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+
+    /* ── STATS BAR ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 26px;
+    }
+
+    .stat-card .label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      margin-bottom: 8px;
+    }
+
+    .stat-card .value {
+      font-size: 30px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      color: var(--navy);
+    }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar h3 {
+      font-size: 20px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      transition: all 0.18s;
+      background: var(--white);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .filter-tab.active {
+      background: var(--navy);
+      color: white;
+      border-color: var(--navy);
+    }
+
+    /* ── TABLE WRAP & PC DISH TABLE (MATCHING PC SCREENSHOT) ── */
+    .table-wrap {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      box-shadow: 0 4px 20px rgba(42, 33, 24, 0.03);
+    }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 32px 64px minmax(0, 2fr) minmax(130px, 1.3fr) 90px 175px;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 24px;
+      background: var(--white);
+      border-bottom: 1.5px solid var(--border);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      min-width: 780px;
+    }
+
+    .table-header .th-actions {
+      text-align: right;
+    }
+
+    .dish-list {
+      display: flex;
+      flex-direction: column;
+      min-width: 780px;
+    }
+
+    .dish-card {
+      display: grid;
+      grid-template-columns: 32px 64px minmax(0, 2fr) minmax(130px, 1.3fr) 90px 175px;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 24px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s ease;
+    }
+
+    .table-wrap.no-drag .table-header {
+      grid-template-columns: 64px minmax(0, 2fr) minmax(130px, 1.3fr) 90px 175px;
+    }
+
+    .table-wrap.no-drag .dish-card {
+      grid-template-columns: 64px minmax(0, 2fr) minmax(130px, 1.3fr) 90px 175px;
+    }
+
+    .table-wrap.no-drag .th-drag,
+    .table-wrap.no-drag .dish-drag {
+      display: none !important;
+    }
+
+    .table-header > *,
+    .dish-card > * {
+      min-width: 0;
+    }
+
+    .dish-card:last-child {
+      border-bottom: none;
+    }
+
+    .dish-card:hover {
+      background: #FAF7F4;
+    }
+
+    .dish-drag {
+      cursor: grab;
+      color: var(--text-muted);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .dish-img, .dish-img-placeholder {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .dish-img-placeholder {
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .dish-plat-col {
+      min-width: 0;
+    }
+
+    .dish-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dish-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.35;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .dish-cat-col {
+      min-width: 0;
+    }
+
+    .category-badge {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      padding: 5px 14px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--navy);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      width: fit-content;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dish-price-col {
+      min-width: 0;
+    }
+
+    .dish-price {
+      font-size: 15.5px;
+      font-weight: 800;
+      color: var(--terracotta);
+      white-space: nowrap;
+    }
+
+    .dish-actions-col {
+      min-width: 0;
+    }
+
+    .dish-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+    }
+
+    .dish-actions .btn-sm {
+      padding: 7px 12px;
+      font-size: 12px;
+      border-radius: 10px;
+      font-weight: 600;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .btn-edit {
+      color: var(--terracotta) !important;
+      border: 1.5px solid var(--border) !important;
+      background: var(--white) !important;
+    }
+
+    .btn-edit:hover {
+      border-color: var(--terracotta) !important;
+      background: var(--warm) !important;
+    }
+
+    .dish-card.is-hidden-card {
+      opacity: 0.45;
+    }
+
+    .dish-card.is-hidden-card .dish-title,
+    .dish-card.is-hidden-card .dish-price {
+      text-decoration: line-through;
+    }
+
+    .dish-card.is-dragging-original { opacity: 0.2; }
+
+    .table-wrap {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    .td-drag { display:none; } /* legacy, unused now */
+
+    /* ── MODALS (EXACT MATCHING SCREENSHOTS) ── */
+    #modal-overlay,
+    #category-overlay,
+    #rename-cat-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 35, 50, 0.45);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #modal-overlay.open,
+    #category-overlay.open,
+    #rename-cat-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      position: relative;
+      background: var(--white);
+      border-radius: 28px;
+      width: 100%;
+      max-width: 620px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 40px;
+      box-shadow: 0 40px 100px rgba(42, 33, 24, 0.18);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #F4EFEB;
+      border: 1px solid var(--border);
+      color: var(--navy);
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s, color 0.15s, border-color 0.15s;
+      z-index: 100;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .modal-close-btn:hover {
+      background: var(--terracotta);
+      color: #ffffff;
+      border-color: var(--terracotta);
+      transform: scale(1.06);
+    }
+
+    .modal-close-btn:active {
+      transform: scale(0.94);
+    }
+
+    .modal-header-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .modal-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .modal input[type="text"],
+    .modal input[type="number"],
+    .modal textarea,
+    .modal select,
+    .new-cat-card input[type="text"] {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      background: var(--white);
+      transition: border-color 0.2s;
+      color: var(--navy);
+    }
+
+    .modal input:focus,
+    .modal textarea:focus,
+    .modal select:focus,
+    .new-cat-card input:focus {
+      border-color: var(--navy);
+    }
+
+    .form-group textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 28px;
+    }
+
+    /* ── PHOTO UPLOAD DROPZONE & CROP ENGINE ── */
+    .upload-dropzone {
+      border: 1.5px dashed var(--border-dark);
+      border-radius: 16px;
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      background: var(--warm);
+      transition: all 0.2s;
+    }
+
+    .upload-dropzone:hover {
+      border-color: var(--navy);
+      background: #F4EEE7;
+    }
+
+    .upload-dropzone p {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    #crop-viewport {
+      width: 100%;
+      max-width: 380px;
+      margin: 14px auto;
+      position: relative;
+      background: #000000;
+      border-radius: 14px;
+      overflow: hidden;
+      touch-action: none;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    #crop-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* ── CATEGORY MANAGER STYLING (MATCHING SCREENSHOT 1) ── */
+    .cat-item-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      transition: all 0.2s;
+    }
+
+    .cat-item-card:hover {
+      border-color: var(--border-dark);
+    }
+
+    .cat-item-card .cat-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .cat-item-card .cat-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .cat-item-card .cat-count {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .cat-item-card .cat-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .cat-badge-list {
+      background: var(--navy);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      letter-spacing: 0.05em;
+    }
+
+    .cat-btn-del {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 1.5px solid var(--danger);
+      background: transparent;
+      color: var(--danger);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .cat-btn-del:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    .new-cat-card {
+      background: #FAF7F4;
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
+      margin-top: 16px;
+      margin-bottom: 24px;
+    }
+
+    .new-cat-card .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--navy);
+      color: white;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    #toast.show { opacity: 1; transform: translateY(0); }
+    #toast.success { border-left: 4px solid var(--success); }
+    #toast.error { border-left: 4px solid var(--danger); }
+
+    #scrollToTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: white;
+      border: none;
+      box-shadow: 0 8px 24px rgba(42, 33, 24, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s;
+      z-index: 9000;
+    }
+
+    #scrollToTopBtn.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── SHARED TOOLBAR & SEARCH COMPONENTS ── */
+    .toolbar-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .toolbar-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toolbar-count-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: rgba(166, 75, 42, 0.08);
+      color: var(--terracotta);
+      letter-spacing: 0.02em;
+    }
+
+    .btn-header.btn-logout {
+      padding: 6px 12px !important;
+      font-size: 11.5px !important;
+      height: 34px !important;
+      border-radius: 9px !important;
+    }
+
+    .empty-state {
+      background: var(--white);
+      border: 1.5px dashed var(--border-dark);
+      border-radius: 20px;
+      padding: 44px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .empty-state-icon {
+      font-size: 38px;
+      margin-bottom: 2px;
+    }
+
+    .empty-state-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .empty-state-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 320px;
+      margin-bottom: 10px;
+    }
+
+    .modal-pull-handle { display: none; }
+    .mobile-bottom-dock { display: none; }
+
+    /* ── MOBILE NATIVE APP RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .sticky-header-wrapper {
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 2px 12px rgba(42, 33, 24, 0.05);
+        background: rgba(250, 247, 244, 0.96);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+
+      header {
+        padding: 10px 16px;
+        height: 60px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        position: static;
+      }
+
+      .header-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: auto;
+        padding-right: 0;
+      }
+
+      .header-logo {
+        width: 38px;
+        height: 38px;
+      }
+
+      .header-brand h2 {
+        font-size: 22px;
+        line-height: 1;
+      }
+
+      .header-brand p {
+        font-size: 9px;
+        letter-spacing: 0.12em;
+        margin-top: 1px;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: auto;
+      }
+
+      /* Hide header category & add dish buttons on mobile - they are now in the bottom dock! */
+      .header-actions .btn-header:not(.btn-logout) {
+        display: none !important;
+      }
+
+      .header-actions .btn-logout {
+        position: static !important;
+        padding: 5px 9px !important;
+        font-size: 10.5px !important;
+        height: 28px !important;
+        border-radius: 8px !important;
+        width: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .autosave-badge {
+        padding: 6px 10px;
+        font-size: 11px;
+        gap: 5px;
+        width: auto;
+        border-radius: 50px;
+      }
+
+      main {
+        padding: 14px 14px 100px 14px;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* ── STATS BAR (MOBILE NATIVE SEGMENTED CARD) ── */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: 18px;
+        padding: 12px 4px;
+        box-shadow: 0 2px 10px rgba(42, 33, 24, 0.03);
+        margin-bottom: 16px;
+      }
+
+      .stat-card {
+        padding: 4px 6px;
+        text-align: center;
+        border: none;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+        position: relative;
+      }
+
+      .stat-card:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 15%;
+        bottom: 15%;
+        width: 1px;
+        background: var(--border);
+      }
+
+      .stat-card .label {
+        font-size: 8.5px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        margin-bottom: 3px;
+      }
+
+      .stat-card .value {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--navy);
+      }
+
+      /* ── TOOLBAR & SEARCH (MOBILE) ── */
+      .toolbar {
+        margin-bottom: 14px;
+        gap: 10px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .toolbar-left {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+
+      .toolbar-top-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        margin-bottom: 2px;
+      }
+
+      .toolbar-title-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      .toolbar h3 {
+        font-size: 19px;
+        letter-spacing: -0.01em;
+      }
+
+      .filter-tabs {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding: 4px 2px 8px 2px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+
+      .filter-tabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      .filter-tab {
+        flex-shrink: 0;
+        padding: 7px 15px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 20px;
+        white-space: nowrap;
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        color: var(--navy);
+        box-shadow: 0 1px 4px rgba(42, 33, 24, 0.03);
+        transition: transform 0.15s, background 0.15s;
+      }
+
+      .filter-tab:active {
+        transform: scale(0.95);
+      }
+
+      .filter-tab.active {
+        background: var(--navy);
+        color: white;
+        border-color: var(--navy);
+        box-shadow: 0 3px 10px rgba(42, 33, 24, 0.2);
+      }
+
+      /* ── TABLE RESET (NO OVERFLOW BUG) ── */
+      .table-wrap {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .table-header {
+        display: none !important;
+      }
+
+      .dish-list {
+        min-width: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+      }
+
+      /* ── DISH CARD (NATIVE APP LAYOUT) ── */
+      .dish-card {
+        display: grid !important;
+        grid-template-columns: 28px 70px 1fr auto !important;
+        grid-template-areas:
+          "drag photo plat  price"
+          "drag photo cat   cat"
+          "actions actions actions actions" !important;
+        align-items: start !important;
+        column-gap: 10px !important;
+        row-gap: 8px !important;
+        padding: 13px !important;
+        border: 1.5px solid var(--border) !important;
+        border-radius: 18px !important;
+        background: var(--white) !important;
+        box-shadow: 0 2px 10px rgba(42, 33, 24, 0.04) !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+      }
+
+      .dish-card:hover {
+        background: var(--white);
+      }
+
+      /* When no drag handle is active (Tous filter or searching) */
+      .table-wrap.no-drag .dish-card {
+        grid-template-columns: 70px 1fr auto !important;
+        grid-template-areas:
+          "photo plat  price"
+          "photo cat   cat"
+          "actions actions actions" !important;
+      }
+
+      .table-wrap.no-drag .dish-drag {
+        display: none !important;
+      }
+
+      .dish-drag {
+        grid-area: drag;
+        grid-row: 1 / 3;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: var(--text-muted);
+        cursor: grab;
+        touch-action: none;
+        align-self: center;
+        height: 100%;
+        padding: 0;
+      }
+
+      .dish-photo-col {
+        grid-area: photo;
+        grid-row: 1 / 3;
+        align-self: start;
+      }
+
+      .dish-img, .dish-img-placeholder {
+        width: 70px !important;
+        height: 70px !important;
+        border-radius: 14px !important;
+        object-fit: cover !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(234, 227, 218, 0.8);
+      }
+
+      .dish-plat-col {
+        grid-area: plat;
+        min-width: 0;
+      }
+
+      .dish-title {
+        font-size: 14.5px;
+        font-weight: 700;
+        color: var(--navy);
+        line-height: 1.25;
+        margin-bottom: 2px;
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .dish-desc {
+        font-size: 11.5px;
+        color: var(--text-muted);
+        line-height: 1.35;
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .dish-price-col {
+        grid-area: price;
+        text-align: right;
+        align-self: start;
+        padding-left: 6px;
+      }
+
+      .dish-price {
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--terracotta);
+        white-space: nowrap;
+      }
+
+      .dish-cat-col {
+        grid-area: cat;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        padding-top: 2px;
+      }
+
+      .category-badge {
+        padding: 3px 10px;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: 20px;
+        background: #FAF7F4;
+        border: 1px solid var(--border);
+        color: var(--navy);
+        white-space: nowrap;
+        max-width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      .dish-actions-col {
+        grid-area: actions;
+        width: 100%;
+        border-top: 1px solid var(--border);
+        padding-top: 10px;
+        margin-top: 2px;
+      }
+
+      .dish-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .dish-actions .btn-sm {
+        padding: 8px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 10px;
+        transition: transform 0.15s, background 0.15s;
+      }
+
+      .dish-actions .btn-sm:active {
+        transform: scale(0.96);
+      }
+
+      .btn-edit,
+      .btn-vis,
+      .btn-del {
+        flex: 1;
+        height: 38px;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        padding: 0 !important;
+      }
+
+      .btn-edit {
+        color: var(--terracotta) !important;
+        border: 1.5px solid var(--border) !important;
+        background: var(--white) !important;
+      }
+
+      .btn-vis {
+        color: var(--navy) !important;
+        border: 1.5px solid var(--border) !important;
+        background: var(--white) !important;
+      }
+
+      .btn-del {
+        background: rgba(197, 85, 60, 0.08) !important;
+        border: 1.5px solid rgba(197, 85, 60, 0.2) !important;
+        color: var(--danger) !important;
+      }
+
+      /* ── MOBILE BOTTOM ACTION DOCK (NATIVE APP FEEL) ── */
+      .mobile-bottom-dock {
+        display: flex !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-top: 1px solid var(--border);
+        box-shadow: 0 -4px 20px rgba(42, 33, 24, 0.08);
+        padding: 10px 16px;
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
+        gap: 12px;
+        align-items: center;
+      }
+
+      .mobile-dock-btn {
+        height: 48px;
+        border-radius: 14px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        font-family: 'Inter', sans-serif;
+        transition: transform 0.15s, background 0.15s;
+      }
+
+      .mobile-dock-btn:active {
+        transform: scale(0.97);
+      }
+
+      .dock-btn-cat {
+        flex: 1;
+        background: var(--white);
+        color: var(--navy);
+        border: 1.5px solid var(--border);
+        font-size: 13.5px;
+        font-weight: 600;
+        box-shadow: 0 1px 4px rgba(42, 33, 24, 0.04);
+      }
+
+      .dock-btn-cat:hover {
+        border-color: var(--navy);
+      }
+
+      .dock-btn-add {
+        flex: 1.4;
+        background: var(--navy);
+        color: white;
+        font-size: 14px;
+        font-weight: 700;
+        box-shadow: 0 4px 14px rgba(42, 33, 24, 0.22);
+      }
+
+      .dock-btn-add:hover {
+        background: #1f1812;
+      }
+
+      /* ── MODALS ON MOBILE (NATIVE BOTTOM SHEET) ── */
+      #modal-overlay,
+      #category-overlay,
+      #rename-cat-overlay {
+        align-items: flex-end !important;
+        padding: 0 !important;
+        background: rgba(26, 35, 50, 0.5) !important;
+        backdrop-filter: blur(6px) !important;
+        -webkit-backdrop-filter: blur(6px) !important;
+      }
+
+      .modal {
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: 90vh !important;
+        border-radius: 26px 26px 0 0 !important;
+        padding: 20px 18px calc(24px + env(safe-area-inset-bottom)) !important;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2) !important;
+        animation: slideUpSheet 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+        overflow-y: auto !important;
+      }
+
+      @keyframes slideUpSheet {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+      }
+
+      .modal-pull-handle {
+        display: block !important;
+        width: 38px;
+        height: 4.5px;
+        background: #D6C9BD;
+        border-radius: 4px;
+        margin: 0 auto 16px auto;
+      }
+
+      .modal-close-btn {
+        top: 14px !important;
+        right: 14px !important;
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 14px !important;
+      }
+
+      .modal input[type="text"],
+      .modal input[type="number"],
+      .modal textarea,
+      .modal select,
+      .new-cat-card input[type="text"] {
+        font-size: 16px !important; /* Critical: stops iOS zoom */
+        padding: 13px 14px !important;
+        border-radius: 12px !important;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+
+      .modal-actions {
+        flex-direction: column-reverse !important;
+        gap: 10px !important;
+        margin-top: 24px !important;
+      }
+
+      .modal-actions .btn {
+        width: 100% !important;
+        height: 48px !important;
+        font-size: 14px !important;
+        border-radius: 14px !important;
+        justify-content: center !important;
+      }
+
+      #toast {
+        bottom: 84px !important;
+        right: 16px !important;
+        left: 16px !important;
+        text-align: center !important;
+        border-radius: 14px !important;
+      }
+
+      #scrollToTopBtn {
+        bottom: 80px !important;
+        right: 16px !important;
+        width: 44px !important;
+        height: 44px !important;
+      }
+    }
+
+    /* ── MAIN NAV TABS ── */
+    .main-nav {
+      display: flex;
+      gap: 4px;
+      padding: 0 24px 14px;
+      background: #FAF7F4;
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    .nav-tab {
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--text-muted);
+      transition: all 0.18s;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-tab.active {
+      background: var(--navy);
+      color: white;
+      border-color: var(--navy);
+    }
+
+    /* ── RECIPES SECTION ── */
+    .recipe-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .recipe-toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .recipe-toolbar-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .recipe-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 2px 12px rgba(42,33,24,0.04);
+      transition: box-shadow 0.2s, transform 0.18s;
+      position: relative;
+    }
+
+    .recipe-card:hover {
+      box-shadow: 0 8px 28px rgba(42,33,24,0.10);
+      transform: translateY(-2px);
+    }
+
+    .recipe-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .recipe-cat-tag {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--terracotta);
+      background: rgba(166,75,42,0.08);
+      border-radius: 20px;
+      padding: 3px 10px;
+      letter-spacing: 0.03em;
+      flex-shrink: 0;
+    }
+
+    .recipe-card-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .recipe-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .recipe-base-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .recipe-ingredients {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: 12px;
+    }
+
+    .recipe-ings-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+    }
+
+    .ing-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(234,227,218,0.5);
+      gap: 8px;
+    }
+
+    .ing-row:last-child { border-bottom: none; }
+    .ing-row-name { color: var(--navy); font-weight: 500; }
+    .ing-row-qty { font-weight: 700; color: var(--terracotta); white-space: nowrap; }
+
+    /* ── RECIPE MODAL INGREDIENT EDITOR ── */
+    .ing-editor-row {
+      display: grid;
+      grid-template-columns: 1fr 80px 80px 32px;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .ing-editor-row input,
+    .ing-editor-row select {
+      padding: 9px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 13px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      background: var(--white);
+      transition: border-color 0.2s;
+      width: 100%;
+      color: var(--navy);
+    }
+
+    .ing-editor-row input:focus,
+    .ing-editor-row select:focus { border-color: var(--navy); }
+
+    .ing-remove-btn {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      color: var(--danger);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+
+    .ing-remove-btn:hover { background: rgba(224,82,82,0.08); }
+
+    .add-ing-btn {
+      background: none;
+      border: 1.5px dashed var(--border);
+      border-radius: 10px;
+      padding: 9px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      width: 100%;
+      transition: border-color 0.2s, color 0.2s;
+      margin-top: 4px;
+    }
+
+    .add-ing-btn:hover { border-color: var(--navy); color: var(--navy); }
+
+    /* ── RECIPE SECTION MOBILE ── */
+    @media (max-width: 768px) {
+      .main-nav { padding: 0 14px 10px; }
+      .nav-tab { padding: 7px 16px; font-size: 11px; }
+      .recipe-grid { grid-template-columns: 1fr; }
+      .recipe-toolbar { flex-direction: column; align-items: stretch; }
+      .recipe-toolbar-right { justify-content: flex-end; }
+      .ing-editor-row { grid-template-columns: 1fr 70px 70px 32px; }
+    }
+  
+
+    /* ── USER BADGE IN HEADER ── */
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(166,75,42,0.08);
+      border: 1px solid rgba(166,75,42,0.2);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    /* ── USER MANAGEMENT SECTION ── */
+    .user-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .user-table-wrap {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      overflow-x: auto;
+      box-shadow: 0 2px 12px rgba(42,33,24,0.04);
+    }
+    .user-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+    .user-table th {
+      background: #FDFBF8;
+      padding: 14px 18px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      border-bottom: 1.5px solid var(--border);
+      text-transform: uppercase;
+    }
+    .user-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      color: var(--navy);
+      vertical-align: middle;
+    }
+    .user-table tr:last-child td { border-bottom: none; }
+    .user-table tr:hover td { background: rgba(250, 247, 244, 0.6); }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .role-admin { background: #FDE8E1; color: var(--terracotta); border: 1px solid rgba(166,75,42,0.3); }
+    .role-staff { background: #E8F0FE; color: #1A73E8; border: 1px solid rgba(26,115,232,0.3); }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+    .status-active { background: #E6F4EA; color: #137333; }
+    .status-inactive { background: #FCE8E6; color: #C5221F; }
+
+    .cat-chips-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .cat-chip {
+      font-size: 10.5px;
+      background: #F1ECE6;
+      color: var(--navy);
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-weight: 600;
+      border: 1px solid rgba(214,204,194,0.4);
+    }
+
+    /* ── SCALING CALCULATOR MODAL ── */
+    #scaling-modal-overlay,
+    #recipe-modal-overlay,
+    #recipe-cat-overlay,
+    #user-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(42, 33, 24, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    #scaling-modal-overlay.open,
+    #recipe-modal-overlay.open,
+    #recipe-cat-overlay.open,
+    #user-modal-overlay.open {
+      display: flex;
+    }
+
+    .calc-box {
+      background: #FAF7F4;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+    .calc-mode-nav {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .calc-mode-btn {
+      padding: 7px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--text-muted);
+      transition: all 0.15s;
+    }
+    .calc-mode-btn.active {
+      background: var(--terracotta);
+      color: white;
+      border-color: var(--terracotta);
+    }
+    .calc-ratio-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #FFF;
+      border: 1.5px solid #F3EAE3;
+      border-left: 4px solid var(--terracotta);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .calc-multiplier-pill {
+      background: var(--terracotta);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .calc-table-wrap {
+      max-height: 280px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+    }
+    .calc-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .calc-table th {
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      padding: 10px 12px;
+      border-bottom: 1.5px solid var(--border);
+      background: #FDFBF8;
+      position: sticky;
+      top: 0;
+    }
+    .calc-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(234,227,218,0.6);
+      font-size: 13px;
+    }
+    .calc-qty-scaled {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--terracotta);
+    }
+    .quick-scale-bar {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .quick-scale-btn {
+      padding: 5px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: white;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--navy);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .quick-scale-btn:hover {
+      border-color: var(--terracotta);
+      color: var(--terracotta);
+    }
+
+    /* Print styles for Recipe Cards */
+    @media print {
+      body * { visibility: hidden !important; }
+      #print-recipe-container, #print-recipe-container * { visibility: visible !important; }
+      #print-recipe-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: white;
+        padding: 24px;
+        display: block !important;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- TOP THIN SAVE PROGRESS BAR -->
+  <div id="save-progress-bar"></div>
+
+  <!-- AUTH GATE MODAL -->
+  <div id="gate">
+    <div class="gate-card">
+      <div class="gate-logo">
+        <img src="../logos/logo_madelina-4.webp" alt="Madelina Logo" />
+      </div>
+      <h1>madelina admin</h1>
+      <p>Entrez vos identifiants pour accéder</p>
+      <form onsubmit="event.preventDefault(); unlockGate();">
+        <input type="text" id="gate-user" placeholder="Nom d'utilisateur" autocomplete="username" />
+        <input type="password" id="gate-pass" placeholder="Mot de passe" autocomplete="current-password" />
+        <button type="submit" id="gate-btn">Se connecter</button>
+      </form>
+      <div id="gate-error"></div>
+    </div>
+  </div>
+
+  <!-- PRINTABLE RECIPE CONTAINER (HIDDEN UNTIL PRINT) -->
+  <div id="print-recipe-container" style="display:none;"></div>
+
+  <!-- MAIN APP -->
+  <div id="app">
+    <div class="sticky-header-wrapper">
+      <header>
+        <div class="header-brand">
+          <div class="header-logo">
+            <img src="../logos/logo_madelina-4.webp" alt="Madelina Logo" />
+          </div>
+          <div>
+            <h2>madelina</h2>
+            <p>Dashboard Direction & Cuisine</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <div class="user-badge" id="current-user-badge">👤 Connecté</div>
+          <div id="autosave-status" class="autosave-badge" title="Statut de sauvegarde automatique">
+            <span class="autosave-dot" id="autosave-dot"></span>
+            <span id="autosave-text">Enregistré</span>
+          </div>
+          <button class="btn btn-secondary btn-header" id="btn-header-cats" onclick="openCategoryManager()">📁 Catégories</button>
+          <button class="btn btn-primary btn-header" id="btn-header-add-plat" onclick="openModal(null)">+ Ajouter un plat</button>
+          <button class="btn btn-secondary btn-header btn-logout" style="color: var(--terracotta);" onclick="doLogout()">🔒 Déconnecter</button>
+        </div>
+      </header>
+    </div>
+
+    <!-- MAIN NAV TABS -->
+    <div class="sticky-header-wrapper">
+      <div class="main-nav">
+        <button class="nav-tab active" id="nav-menu" onclick="switchView('menu')">🍽️ Menu & Carte</button>
+        <button class="nav-tab" id="nav-recipes" onclick="switchView('recipes')">📖 Recettes & Calculatrice</button>
+        <button class="nav-tab" id="nav-users" onclick="switchView('users')">👥 Utilisateurs & Rôles</button>
+      </div>
+    </div>
+
+    <main>
+      <!-- ══════════════════════════════════════════ -->
+      <!-- 1. MENU & CARTE SECTION                   -->
+      <!-- ══════════════════════════════════════════ -->
+      <div id="section-menu">
+        <!-- STATS BAR -->
+        <div class="stats">
+          <div class="stat-card">
+            <div class="label">Plats Visibles</div>
+            <div class="value" id="stat-total">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Catégories</div>
+            <div class="value" id="stat-categories">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Masqués</div>
+            <div class="value" id="stat-hidden">0</div>
+          </div>
+        </div>
+
+        <!-- TOOLBAR & FILTERS -->
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <div class="toolbar-top-row">
+              <div class="toolbar-title-group">
+                <h3>La Carte</h3>
+                <span class="toolbar-count-badge" id="dish-count-badge">0 plats</span>
+              </div>
+            </div>
+            <div class="filter-tabs" id="filter-tabs"></div>
+          </div>
+        </div>
+
+        <!-- MENU CARD TABLE LIST -->
+        <div class="table-wrap">
+          <div class="table-header">
+            <div class="th-cell th-drag"></div>
+            <div class="th-cell th-photo">PHOTO</div>
+            <div class="th-cell th-plat">PLAT</div>
+            <div class="th-cell th-cat">CATÉGORIE</div>
+            <div class="th-cell th-price">PRIX</div>
+            <div class="th-cell th-actions">ACTIONS</div>
+          </div>
+          <div class="dish-list" id="menu-tbody"></div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- 2. RECIPES & SCALING SECTION             -->
+      <!-- ══════════════════════════════════════════ -->
+      <div id="section-recipes" style="display:none;">
+        <div class="stats" style="margin-bottom:24px;">
+          <div class="stat-card">
+            <div class="label">Recettes</div>
+            <div class="value" id="stat-recipes">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Catégories</div>
+            <div class="value" id="stat-recipe-cats">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Ingrédients Totaux</div>
+            <div class="value" id="stat-ingredients">0</div>
+          </div>
+        </div>
+
+        <div class="recipe-toolbar">
+          <div class="recipe-toolbar-left">
+            <h3 style="font-size:20px;font-weight:700;">Recettes & Fiches Techniques</h3>
+            <span class="toolbar-count-badge" id="recipe-count-badge">0 recettes</span>
+            <div class="filter-tabs" id="recipe-filter-tabs"></div>
+          </div>
+          <div class="recipe-toolbar-right">
+            <button class="btn btn-secondary btn-sm" id="btn-recipe-cats" onclick="openRecipeCatModal()">📁 Catégories</button>
+            <button class="btn btn-primary btn-sm" id="btn-recipe-add" onclick="openRecipeModal(null)">+ Ajouter une recette</button>
+          </div>
+        </div>
+
+        <div class="recipe-grid" id="recipe-grid">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- 3. USERS & ROLES SECTION (RBAC)          -->
+      <!-- ══════════════════════════════════════════ -->
+      <div id="section-users" style="display:none;">
+        <div class="stats" style="margin-bottom:24px;">
+          <div class="stat-card">
+            <div class="label">Utilisateurs Actifs</div>
+            <div class="value" id="stat-users-active">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Administrateurs</div>
+            <div class="value" id="stat-users-admins">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Membres Équipe</div>
+            <div class="value" id="stat-users-staff">0</div>
+          </div>
+        </div>
+
+        <div class="user-toolbar">
+          <div>
+            <h3 style="font-size:20px;font-weight:700;">Gestion des Comptes & Permissions</h3>
+            <p style="font-size:12px;color:var(--text-muted);margin-top:2px;">
+              Attribuez des rôles et restreignez l'accès aux catégories de recettes selon le poste (Pâtisserie, Barista...).
+            </p>
+          </div>
+          <div>
+            <button class="btn btn-primary btn-sm" onclick="openUserModal(null)">+ Nouvel utilisateur</button>
+          </div>
+        </div>
+
+        <div class="user-table-wrap">
+          <table class="user-table">
+            <thead>
+              <tr>
+                <th>UTILISATEUR</th>
+                <th>RÔLE</th>
+                <th>ACCÈS AUX RECETTES</th>
+                <th>STATUT</th>
+                <th style="text-align:right;">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="user-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- MOBILE BOTTOM DOCKS -->
+    <div class="mobile-bottom-dock" id="mobile-dock-menu">
+      <button class="mobile-dock-btn dock-btn-cat" onclick="openCategoryManager()">📁 Catégories</button>
+      <button class="mobile-dock-btn dock-btn-add" onclick="openModal(null)">+ Ajouter un plat</button>
+    </div>
+    <div class="mobile-bottom-dock" id="mobile-dock-recipes" style="display:none !important;">
+      <button class="mobile-dock-btn dock-btn-cat" onclick="openRecipeCatModal()">📁 Catégories</button>
+      <button class="mobile-dock-btn dock-btn-add" onclick="openRecipeModal(null)">+ Recette</button>
+    </div>
+    <div class="mobile-bottom-dock" id="mobile-dock-users" style="display:none !important;">
+      <button class="mobile-dock-btn dock-btn-add" style="grid-column: span 2;" onclick="openUserModal(null)">+ Nouvel utilisateur</button>
+    </div>
+  </div>
+
+
+<!-- DISH MODAL -->
+  <div id="modal-overlay">
+    <div class="modal">
+      <button type="button" class="modal-close-btn" onclick="closeModal()" aria-label="Fermer" title="Fermer">✕</button>
+      <div class="modal-pull-handle"></div>
+      <h3 id="modal-title" style="font-size:22px;margin-bottom:24px;">Nouveau plat</h3>
+      <form id="item-form" onsubmit="saveItem(event)">
+        <input type="hidden" id="item-index" />
+
+        <!-- 1. TITLES (FR & EN) -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>NOM DU PLAT (FR)</label>
+            <input type="text" id="f-title" required placeholder="Ex: Cappuccino Madelina" onblur="handleAutoTranslate('f-title', 'f-title-en', 'fr', 'en', 'title-fr-spinner')" />
+            <span id="title-fr-spinner" style="display:none;font-size:11px;color:var(--terracotta);"> Traduction...</span>
+          </div>
+          <div class="form-group">
+            <label>NOM DU PLAT (EN)</label>
+            <input type="text" id="f-title-en" placeholder="Ex: Madelina Cappuccino" onblur="handleAutoTranslate('f-title-en', 'f-title', 'en', 'fr', 'title-en-spinner')" />
+            <span id="title-en-spinner" style="display:none;font-size:11px;color:var(--terracotta);"> Traduction...</span>
+          </div>
+        </div>
+
+        <!-- 2. PRIX (DT) * -->
+        <div class="form-group">
+          <label>PRIX (DT) *</label>
+          <input type="number" step="0.1" id="f-price" required placeholder="Ex: 4.5" />
+        </div>
+
+        <!-- 3. CATÉGORIE * (DIRECTLY UNDER PRICE AS REQUESTED IN POINT 2) -->
+        <div class="form-group">
+          <label>CATÉGORIE *</label>
+          <select id="f-category" required onchange="updateCropForCategory()"></select>
+        </div>
+
+        <!-- 4. DESCRIPTIONS (FR & EN) -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>DESCRIPTION (FR)</label>
+            <textarea id="f-description" placeholder="Description courte du plat..." onblur="handleAutoTranslate('f-description', 'f-description-en', 'fr', 'en', 'desc-fr-spinner')"></textarea>
+            <span id="desc-fr-spinner" style="display:none;font-size:11px;color:var(--terracotta);"> Traduction...</span>
+          </div>
+          <div class="form-group">
+            <label>DESCRIPTION (EN)</label>
+            <textarea id="f-description-en" placeholder="Short description of the dish..." onblur="handleAutoTranslate('f-description-en', 'f-description', 'en', 'fr', 'desc-en-spinner')"></textarea>
+            <span id="desc-en-spinner" style="display:none;font-size:11px;color:var(--terracotta);"> Traduction...</span>
+          </div>
+        </div>
+
+        <!-- 5. PHOTO DU PLAT * (AT THE VERY BOTTOM) -->
+        <div class="form-group">
+          <label>PHOTO DU PLAT *</label>
+          <div class="upload-dropzone" id="upload-dropzone" onclick="document.getElementById('file-input').click()">
+            <span id="upload-icon" style="font-size:26px;">📷</span>
+            <p id="upload-label">CLIQUEZ POUR CHOISIR UNE PHOTO</p>
+          </div>
+          <input type="file" id="file-input" accept="image/*,.heic,.heif" style="display:none;" onchange="uploadImage(event)" />
+          <div id="upload-status" style="font-size:11px;margin-top:6px;display:none;"></div>
+          <div id="img-required-msg" style="color:var(--danger);font-size:11px;display:none;margin-top:4px;">Veuillez ajouter une photo.</div>
+        </div>
+
+        <div id="crop-zone" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span id="crop-ratio-label" style="font-size:11px;font-weight:700;color:var(--text-muted);">📐 Cadre de rognage</span>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="resetCrop()">Réinitialiser le cadrage</button>
+          </div>
+          <div id="crop-viewport">
+            <canvas id="crop-canvas"></canvas>
+          </div>
+          <p id="crop-hint" style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:4px;display:none;">Ajustez les coins ou déplacez le cadre.</p>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary btn-lg" onclick="closeModal()">Annuler</button>
+          <button type="submit" class="btn btn-primary btn-lg">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CATEGORY MANAGER MODAL -->
+  <div id="category-overlay">
+    <div class="modal">
+      <button type="button" class="modal-close-btn" onclick="closeCategoryManager()" aria-label="Fermer" title="Fermer">✕</button>
+      <div class="modal-pull-handle"></div>
+      <div class="modal-header-title">
+        <span>📁</span> Gérer les Catégories
+      </div>
+      <div class="modal-subtitle">Ajoutez ou supprimez des catégories du menu.</div>
+
+      <!-- REORDERABLE CATEGORY LIST -->
+      <div id="category-list" style="max-height:320px;overflow-y:auto;padding-right:4px;"></div>
+
+      <!-- NEW CATEGORY CARD -->
+      <div class="new-cat-card">
+        <div class="card-title">NOUVELLE CATÉGORIE</div>
+        <div class="form-row" style="margin-bottom:12px;">
+          <div>
+            <label style="font-size:10px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:4px;">NOM (FR)</label>
+            <input type="text" id="new-cat-input" placeholder="Ex: 🍕 Pizza" onblur="handleCatAutoTranslate('fr-to-en')" />
+            <span id="cat-fr-spinner" style="display:none;font-size:11px;color:var(--terracotta);"> Traduction...</span>
+          </div>
+          <div>
+            <label style="font-size:10px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:4px;">NAME (EN)</label>
+            <input type="text" id="new-cat-input-en" placeholder="Ex: 🍕 Pizza" onblur="handleCatAutoTranslate('en-to-fr')" />
+            <span id="cat-en-spinner" style="display:none;font-size:11px;color:var(--terracotta);"> Traduction...</span>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1;">
+            <label style="font-size:10px;font-weight:700;color:var(--text-muted);display:block;margin:0;white-space:nowrap;">STYLE D'AFFICHAGE :</label>
+            <div style="display:flex;gap:14px;align-items:center;">
+              <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;">
+                <input type="radio" name="cat-style" value="false" id="style-grid" /> Grille (Images)
+              </label>
+              <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;">
+                <input type="radio" name="cat-style" value="true" checked id="style-list" /> Liste (Texte)
+              </label>
+            </div>
+          </div>
+          <button class="btn btn-primary" style="padding:10px 22px;border-radius:12px;font-weight:700;white-space:nowrap;flex-shrink:0;" onclick="addCategory(event)">+ Ajouter</button>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top:20px;">
+        <button class="btn btn-secondary btn-lg" style="width:100%;" onclick="closeCategoryManager()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RENAME CATEGORY MODAL -->
+  <div id="rename-cat-overlay">
+    <div class="modal" style="max-width:440px;">
+      <button type="button" class="modal-close-btn" onclick="closeRenameCategory()" aria-label="Fermer" title="Fermer">✕</button>
+      <div class="modal-pull-handle"></div>
+      <h3 style="font-size:20px;margin-bottom:20px;">Renommer la catégorie</h3>
+      <form onsubmit="saveRenameCategory(event)">
+        <input type="hidden" id="rename-cat-index" />
+        <div class="form-group">
+          <label>NOM (FR)</label>
+          <input type="text" id="rename-cat-fr" required />
+        </div>
+        <div class="form-group">
+          <label>NAME (EN)</label>
+          <input type="text" id="rename-cat-en" />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary btn-lg" onclick="closeRenameCategory()">Annuler</button>
+          <button type="submit" class="btn btn-primary btn-lg">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- RECIPE ADD/EDIT MODAL                     -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="recipe-modal-overlay">
+    <div class="modal" style="max-width:620px;max-height:90vh;display:flex;flex-direction:column;">
+      <button type="button" class="modal-close-btn" onclick="closeRecipeModal()" aria-label="Fermer" title="Fermer">✕</button>
+      <div class="modal-pull-handle"></div>
+      <h3 id="recipe-modal-title" style="font-size:22px;margin-bottom:18px;">Nouvelle Recette</h3>
+      <form id="recipe-form" onsubmit="saveRecipe(event)" style="overflow-y:auto;padding-right:4px;flex:1;">
+        <input type="hidden" id="recipe-id" />
+
+        <div class="form-row">
+          <div class="form-group" style="flex:2;">
+            <label>NOM DE LA RECETTE</label>
+            <input type="text" id="r-name" required placeholder="Ex: Gâteau Chocolat Fondant" />
+          </div>
+          <div class="form-group" style="flex:1;">
+            <label>CATÉGORIE</label>
+            <select id="r-category" required></select>
+          </div>
+        </div>
+
+        <div class="card-title" style="margin-top:10px;margin-bottom:8px;font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.06em;">
+          TAILLE STANDARD & BASE DE CALCUL
+        </div>
+        <div style="background:#FAF7F4;border:1.5px solid var(--border);border-radius:14px;padding:12px;margin-bottom:16px;">
+          <div style="display:flex;gap:16px;margin-bottom:10px;align-items:center;">
+            <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="r-base-type" value="dimension" checked onchange="toggleRecipeBaseTypeInputs()" />
+              📐 Dimensions (Moule)
+            </label>
+            <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="r-base-type" value="portion" onchange="toggleRecipeBaseTypeInputs()" />
+              🔢 Nombre de Portions
+            </label>
+          </div>
+
+          <div id="base-dim-inputs" class="form-row" style="margin-bottom:0;">
+            <div class="form-group">
+              <label>LARGEUR / DIAMÈTRE (CM)</label>
+              <input type="number" id="r-base-dim1" min="1" step="0.5" value="20" placeholder="20" />
+            </div>
+            <div class="form-group">
+              <label>LONGUEUR (CM, SI RECTANGLE)</label>
+              <input type="number" id="r-base-dim2" min="1" step="0.5" value="20" placeholder="20" />
+            </div>
+            <div class="form-group">
+              <label>PORTIONS ESTIMÉES</label>
+              <input type="number" id="r-base-portions" min="1" step="1" value="6" placeholder="6" />
+            </div>
+          </div>
+
+          <div id="base-portion-inputs" class="form-group" style="display:none;margin-bottom:0;">
+            <label>NOMBRE DE PORTIONS / PIÈCES DE BASE</label>
+            <input type="number" id="r-base-portions-only" min="1" step="1" value="1" placeholder="Ex: 12 pièces" />
+          </div>
+
+          <div class="form-group" style="margin-top:10px;margin-bottom:0;">
+            <label>DESCRIPTION SOMMAIRE DE LA BASE</label>
+            <input type="text" id="r-base-desc" placeholder="Ex: Gâteau carré 20cm × 20cm (6 portions)" />
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div class="card-title" style="margin:0;font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.06em;">
+            INGRÉDIENTS (POUR LA TAILLE DE BASE)
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="addIngredientRow()">+ Ingrédient</button>
+        </div>
+
+        <div id="recipe-ingredients-container">
+          <!-- Rows will be injected here -->
+        </div>
+
+        <div class="form-group" style="margin-top:14px;">
+          <label>INSTRUCTIONS DE PRÉPARATION & NOTES</label>
+          <textarea id="r-description" rows="3" placeholder="Étapes de préparation, temps de cuisson, température, conseils..."></textarea>
+        </div>
+
+        <div class="modal-actions" style="margin-top:20px;">
+          <button type="button" class="btn btn-secondary btn-lg" onclick="closeRecipeModal()">Annuler</button>
+          <button type="submit" class="btn btn-primary btn-lg" id="r-save-btn">Enregistrer la recette</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- RECIPE CATEGORIES MODAL                   -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="recipe-cat-overlay">
+    <div class="modal" style="max-width:480px;">
+      <button type="button" class="modal-close-btn" onclick="closeRecipeCatModal()" aria-label="Fermer" title="Fermer">✕</button>
+      <div class="modal-pull-handle"></div>
+      <div class="modal-header-title">
+        <span>📁</span> Catégories de Recettes
+      </div>
+      <div class="modal-subtitle">Organisez vos fiches par ateliers (Pâtisserie, Viennoiserie, Boissons...).</div>
+
+      <div id="recipe-cat-list" style="max-height:280px;overflow-y:auto;padding-right:4px;margin-bottom:16px;"></div>
+
+      <div class="new-cat-card">
+        <div class="card-title">NOUVELLE CATÉGORIE</div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <input type="text" id="new-recipe-cat-input" placeholder="Ex: 🥐 Viennoiserie" style="flex:1;" />
+          <button type="button" class="btn btn-primary" onclick="addRecipeCategory()">+ Ajouter</button>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top:20px;">
+        <button class="btn btn-secondary btn-lg" style="width:100%;" onclick="closeRecipeCatModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SMART SCALING CALCULATOR MODAL             -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="scaling-modal-overlay">
+    <div class="modal" style="max-width:680px;max-height:92vh;display:flex;flex-direction:column;">
+      <button type="button" class="modal-close-btn" onclick="closeScalingModal()" aria-label="Fermer" title="Fermer">✕</button>
+      <div class="modal-pull-handle"></div>
+      
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+        <span style="font-size:24px;">🧮</span>
+        <div>
+          <h3 id="calc-recipe-title" style="font-size:20px;font-weight:700;color:var(--navy);margin:0;">Calculatrice de Proportions</h3>
+          <div id="calc-recipe-base-badge" style="font-size:12px;color:var(--terracotta);font-weight:600;margin-top:2px;">Base standard : 20 × 20 cm</div>
+        </div>
+      </div>
+
+      <div style="overflow-y:auto;padding-right:4px;margin-top:14px;flex:1;">
+        <!-- MODE SELECTOR TABS -->
+        <div class="calc-mode-nav">
+          <button type="button" class="calc-mode-btn active" id="btn-scale-dim" onclick="setScalingMode('dimensions')">📐 Par Dimensions Moule</button>
+          <button type="button" class="calc-mode-btn" id="btn-scale-portion" onclick="setScalingMode('portions')">🔢 Par Portions</button>
+          <button type="button" class="calc-mode-btn" id="btn-scale-ingredient" onclick="setScalingMode('ingredient')">⚖️ Par Ingrédient Clé</button>
+          <button type="button" class="calc-mode-btn" id="btn-scale-direct" onclick="setScalingMode('direct')">✖️ Multiplicateur</button>
+        </div>
+
+        <!-- MODE CONTROLS BOX -->
+        <div class="calc-box">
+          <!-- 1. DIMENSIONS MODE -->
+          <div id="calc-panel-dimensions">
+            <div style="display:flex;gap:14px;align-items:center;margin-bottom:12px;">
+              <span style="font-size:11px;font-weight:700;color:var(--text-muted);">FORME DU MOULE :</span>
+              <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;cursor:pointer;">
+                <input type="radio" name="calc-shape" value="rect" checked onchange="calculateScale()" /> Carré / Rectangle
+              </label>
+              <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;cursor:pointer;">
+                <input type="radio" name="calc-shape" value="round" onchange="calculateScale()" /> Rond (Diamètre)
+              </label>
+            </div>
+            
+            <div class="form-row" style="margin-bottom:0;" id="calc-dim-rect-fields">
+              <div class="form-group">
+                <label>NOUVELLE LARGEUR (CM)</label>
+                <input type="number" id="calc-target-w" min="1" step="0.5" value="30" oninput="calculateScale()" />
+              </div>
+              <div class="form-group">
+                <label>NOUVELLE LONGUEUR (CM)</label>
+                <input type="number" id="calc-target-l" min="1" step="0.5" value="30" oninput="calculateScale()" />
+              </div>
+            </div>
+
+            <div class="form-group" style="display:none;margin-bottom:0;" id="calc-dim-round-fields">
+              <label>NOUVEAU DIAMÈTRE DÉSIRÉ (CM)</label>
+              <input type="number" id="calc-target-diam" min="1" step="0.5" value="26" oninput="calculateScale()" />
+            </div>
+          </div>
+
+          <!-- 2. PORTIONS MODE -->
+          <div id="calc-panel-portions" style="display:none;">
+            <div class="form-row" style="margin-bottom:0;">
+              <div class="form-group">
+                <label>PORTIONS INITIALES (BASE)</label>
+                <input type="number" id="calc-base-portions-val" disabled style="background:#ECE7E1;" />
+              </div>
+              <div class="form-group">
+                <label>NOUVELLES PORTIONS DÉSIRÉES</label>
+                <input type="number" id="calc-target-portions" min="1" step="1" value="12" oninput="calculateScale()" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. INGREDIENT MODE -->
+          <div id="calc-panel-ingredient" style="display:none;">
+            <div class="form-row" style="margin-bottom:0;">
+              <div class="form-group" style="flex:2;">
+                <label>CHOISIR L'INGRÉDIENT DISPONIBLE</label>
+                <select id="calc-ing-select" onchange="onCalcIngredientSelected()"></select>
+              </div>
+              <div class="form-group" style="flex:1;">
+                <label>QUANTITÉ EN STOCK</label>
+                <input type="number" id="calc-ing-target-qty" min="0.1" step="any" oninput="calculateScale()" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. DIRECT MULTIPLIER MODE -->
+          <div id="calc-panel-direct" style="display:none;">
+            <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px;">COEFFICIENT MULTIPLICATEUR :</div>
+            <div class="quick-scale-bar">
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(0.5)">0.5× (Demi)</button>
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(1.0)">1.0× (Base)</button>
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(1.5)">1.5×</button>
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(2.0)">2.0× (Double)</button>
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(3.0)">3.0× (Triple)</button>
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(4.0)">4.0×</button>
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(5.0)">5.0×</button>
+            </div>
+          </div>
+
+          <!-- RATIO SUMMARY BANNER -->
+          <div class="calc-ratio-banner">
+            <div>
+              <span id="calc-ratio-text">Ratio calculé : surface augmentée de +125%</span>
+            </div>
+            <div class="calc-multiplier-pill" id="calc-factor-pill">× 2.25</div>
+          </div>
+        </div>
+
+        <!-- RECALCULATED INGREDIENTS TABLE -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div class="card-title" style="margin:0;font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.06em;">
+            INGRÉDIENTS RECALCULÉS POUR L'ATELIER
+          </div>
+          <span style="font-size:11px;color:var(--text-muted);" id="calc-items-count">5 ingrédients</span>
+        </div>
+
+        <div class="calc-table-wrap">
+          <table class="calc-table">
+            <thead>
+              <tr>
+                <th>INGRÉDIENT</th>
+                <th style="text-align:right;">BASE</th>
+                <th style="text-align:right;color:var(--terracotta);">NOUVELLE QUANTITÉ</th>
+                <th>UNITÉ</th>
+              </tr>
+            </thead>
+            <tbody id="calc-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <div id="calc-instructions-preview" style="background:#FFF9F5;border:1px solid #F3EAE3;border-radius:12px;padding:12px;margin-top:14px;font-size:12px;color:var(--navy);display:none;">
+          <strong style="color:var(--terracotta);display:block;margin-bottom:4px;">Instructions :</strong>
+          <span id="calc-instructions-text"></span>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top:18px;display:flex;justify-content:space-between;gap:10px;">
+        <button type="button" class="btn btn-secondary" onclick="closeScalingModal()">Fermer</button>
+        <button type="button" class="btn btn-primary" onclick="printRecipeSheet()">🖨️ Imprimer la Fiche Cuisine</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- USER ADD/EDIT MODAL (RBAC)                 -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="user-modal-overlay">
+    <div class="modal" style="max-width:520px;max-height:90vh;display:flex;flex-direction:column;">
+      <button type="button" class="modal-close-btn" onclick="closeUserModal()" aria-label="Fermer" title="Fermer">✕</button>
+      <div class="modal-pull-handle"></div>
+      <h3 id="user-modal-title" style="font-size:22px;margin-bottom:18px;">Nouvel Utilisateur</h3>
+      
+      <form id="user-form" onsubmit="saveUser(event)" style="overflow-y:auto;padding-right:4px;flex:1;">
+        <input type="hidden" id="u-id" />
+
+        <div class="form-group">
+          <label>NOM COMPLET (EX: AHMED BEN ALI)</label>
+          <input type="text" id="u-name" required placeholder="Chef Pâtissier Ahmed" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>NOM D'UTILISATEUR (IDENTIFIANT)</label>
+            <input type="text" id="u-username" required placeholder="ahmed" autocomplete="off" />
+          </div>
+          <div class="form-group">
+            <label id="u-pass-label">MOT DE PASSE</label>
+            <input type="password" id="u-password" placeholder="••••••••" autocomplete="new-password" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>RÔLE & ACCÈS GÉNÉRAL</label>
+          <select id="u-role" onchange="onUserRoleChange()">
+            <option value="staff">👨‍🍳 Équipe / Staff (Recettes & Calculatrice selon poste)</option>
+            <option value="admin">👑 Administrateur (Accès Total : Menu, Recettes, Utilisateurs)</option>
+          </select>
+        </div>
+
+        <div id="u-categories-box" style="background:#FAF7F4;border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.06em;margin-bottom:4px;">
+            CATÉGORIES DE RECETTES AUTORISÉES
+          </div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-bottom:10px;">
+            Exemple : Cochez uniquement "Pâtisserie" pour le pâtissier, ou "Boissons" pour le barista.
+          </div>
+          <div style="margin-bottom:8px;">
+            <label style="font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" id="u-cat-all" onchange="toggleAllCatCheckboxes(this.checked)" />
+              ⭐ Toutes les catégories
+            </label>
+          </div>
+          <div id="u-cat-checkboxes-list" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:6px;border-top:1px solid var(--border);">
+            <!-- Dynamically populated from recipe categories -->
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:10px;">
+          <label style="font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:8px;cursor:pointer;">
+            <input type="checkbox" id="u-is-active" checked />
+            Compte actif (autoriser la connexion)
+          </label>
+        </div>
+
+        <div class="modal-actions" style="margin-top:20px;">
+          <button type="button" class="btn btn-secondary btn-lg" onclick="closeUserModal()">Annuler</button>
+          <button type="submit" class="btn btn-primary btn-lg" id="u-save-btn">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast"></div>
+
+  <!-- JAVASCRIPT LOGIC & ENGINES -->
+  <script>
+    // ══════════════════════════════════════════
+    // ██  GLOBAL STATE & AUTH                ██
+    // ══════════════════════════════════════════
+    let currentUser = null;
+    let currentView = 'menu';
+    let recipesList = [];
+    let recipeCategories = [];
+    let activeRecipeFilter = 'all';
+    let activeScalingRecipe = null;
+    let scalingMode = 'dimensions';
+    let usersList = [];
+
+    // ══════════════════════════════════════════
+    // ██  AUTH GATE LOGIC                     ██
+    // ══════════════════════════════════════════
+    async function unlockGate() {
+      const user = document.getElementById('gate-user').value.trim();
+      const pass = document.getElementById('gate-pass').value;
+      const errorEl = document.getElementById('gate-error');
+      const btn = document.getElementById('gate-btn');
+
+      if (!user || !pass) {
+        errorEl.textContent = 'Veuillez saisir l\'identifiant et le mot de passe';
+        return;
+      }
+
+      errorEl.textContent = 'Vérification en cours...';
+      if (btn) btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: user, password: pass })
+        });
+        const data = await res.json();
+        if (data.success) {
+          currentUser = data.user;
+          document.getElementById('gate').style.display = 'none';
+          document.getElementById('app').style.display = 'block';
+          applyUserPermissions();
+          initApp();
+        } else {
+          errorEl.textContent = data.error || 'Identifiant ou mot de passe incorrect';
+        }
+      } catch (err) {
+        errorEl.textContent = 'Erreur de connexion. Vérifiez votre réseau.';
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    async function checkExistingAuth() {
+      try {
+        const res = await fetch('/api/auth/check');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.authenticated && data.user) {
+            currentUser = data.user;
+            document.getElementById('gate').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            applyUserPermissions();
+            initApp();
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn('Auth check skipped:', e);
+      }
+    }
+
+    async function doLogout() {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST' });
+      } catch(e) {}
+      currentUser = null;
+      document.getElementById('app').style.display = 'none';
+      document.getElementById('gate').style.display = 'flex';
+      const userEl = document.getElementById('gate-user');
+      const passEl = document.getElementById('gate-pass');
+      if (userEl) userEl.value = '';
+      if (passEl) passEl.value = '';
+      const errorEl = document.getElementById('gate-error');
+      if (errorEl) errorEl.textContent = '';
+    }
+
+    function applyUserPermissions() {
+      if (!currentUser) return;
+
+      const userBadge = document.getElementById('current-user-badge');
+      if (userBadge) {
+        const isAdm = currentUser.role === 'admin';
+        userBadge.innerHTML = `👤 <strong>${currentUser.name || currentUser.username}</strong> <span style="font-size:10.5px;opacity:0.85;">(${isAdm ? 'Directrice / Admin' : 'Équipe'})</span>`;
+      }
+
+      const navMenu = document.getElementById('nav-menu');
+      const navUsers = document.getElementById('nav-users');
+      const navRecipes = document.getElementById('nav-recipes');
+      const btnHeaderCats = document.getElementById('btn-header-cats');
+      const btnHeaderAddPlat = document.getElementById('btn-header-add-plat');
+
+      const isStaff = currentUser.role !== 'admin';
+
+      if (isStaff) {
+        if (navMenu) navMenu.style.display = 'none';
+        if (navUsers) navUsers.style.display = 'none';
+        if (btnHeaderCats) btnHeaderCats.style.display = 'none';
+        if (btnHeaderAddPlat) btnHeaderAddPlat.style.display = 'none';
+        switchView('recipes');
+      } else {
+        if (navMenu) navMenu.style.display = '';
+        if (navUsers) navUsers.style.display = '';
+        if (btnHeaderCats) btnHeaderCats.style.display = '';
+        if (btnHeaderAddPlat) btnHeaderAddPlat.style.display = '';
+        switchView('menu');
+      }
+    }
+
+    function switchView(view) {
+      currentView = view;
+      ['menu', 'recipes', 'users'].forEach(v => {
+        const sec = document.getElementById(`section-${v}`);
+        const tab = document.getElementById(`nav-${v}`);
+        const dock = document.getElementById(`mobile-dock-${v}`);
+        if (sec) sec.style.display = (v === view) ? 'block' : 'none';
+        if (tab) tab.classList.toggle('active', v === view);
+        if (dock) dock.style.display = (v === view) ? 'flex' : 'none';
+      });
+
+      if (view === 'recipes') {
+        loadRecipes();
+      } else if (view === 'users' && currentUser?.role === 'admin') {
+        loadUsers();
+      }
+    }
+
+    // ══════════════════════════════════════════
+    // ██  MODULE 1: RECIPES ENGINE            ██
+    // ══════════════════════════════════════════
+    async function loadRecipes() {
+      try {
+        const res = await fetch('/api/admin/recipes');
+        if (!res.ok) throw new Error('Erreur lors du chargement des recettes');
+        const data = await res.json();
+        recipesList = data.recipes || [];
+        recipeCategories = data.categories || [];
+        
+        // Update stats
+        const statR = document.getElementById('stat-recipes');
+        const statC = document.getElementById('stat-recipe-cats');
+        const statI = document.getElementById('stat-ingredients');
+        const badge = document.getElementById('recipe-count-badge');
+        
+        let totalIngs = 0;
+        recipesList.forEach(r => totalIngs += (r.ingredients?.length || 0));
+        
+        if (statR) statR.textContent = recipesList.length;
+        if (statC) statC.textContent = recipeCategories.length;
+        if (statI) statI.textContent = totalIngs;
+        if (badge) badge.textContent = `${recipesList.length} recette${recipesList.length > 1 ? 's' : ''}`;
+
+        renderRecipeTabs();
+        renderRecipes();
+      } catch (err) {
+        console.error('loadRecipes error:', err);
+      }
+    }
+
+    function renderRecipeTabs() {
+      const container = document.getElementById('recipe-filter-tabs');
+      if (!container) return;
+
+      let html = `<button class="filter-tab ${activeRecipeFilter === 'all' ? 'active' : ''}" onclick="filterRecipes('all')">Tous (${recipesList.length})</button>`;
+      recipeCategories.forEach(cat => {
+        const count = recipesList.filter(r => r.category_id === cat.id).length;
+        html += `<button class="filter-tab ${activeRecipeFilter === cat.id ? 'active' : ''}" onclick="filterRecipes('${cat.id}')">${cat.name} (${count})</button>`;
+      });
+      container.innerHTML = html;
+    }
+
+    function filterRecipes(catId) {
+      activeRecipeFilter = catId;
+      renderRecipeTabs();
+      renderRecipes();
+    }
+
+    function renderRecipes() {
+      const grid = document.getElementById('recipe-grid');
+      if (!grid) return;
+
+      const filtered = (activeRecipeFilter === 'all')
+        ? recipesList
+        : recipesList.filter(r => r.category_id === activeRecipeFilter);
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 48px 20px; background: white; border-radius: 20px; border: 1.5px dashed var(--border);">
+            <div style="font-size: 32px; margin-bottom: 8px;">📖</div>
+            <h4 style="font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px;">Aucune recette trouvée</h4>
+            <p style="font-size: 13px; color: var(--text-muted); max-width: 380px; margin: 0 auto 16px;">
+              ${currentUser?.role === 'admin' ? 'Ajoutez vos premières recettes techniques et commencez à calculer vos proportions intelligemment.' : 'Aucune recette n\'est assignée à votre profil pour le moment.'}
+            </p>
+            ${currentUser?.role === 'admin' ? '<button class="btn btn-primary btn-sm" onclick="openRecipeModal(null)">+ Créer une recette</button>' : ''}
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(r => {
+        const ings = r.ingredients || [];
+        const previewIngs = ings.slice(0, 4);
+        const hasMoreIngs = ings.length > 4;
+
+        // Base description badge
+        let baseBadge = r.base_description;
+        if (!baseBadge) {
+          if (r.base_type === 'dimension') {
+            baseBadge = `${r.base_dim1 || 20} × ${r.base_dim2 || 20} cm (${r.base_portions || 6} parts)`;
+          } else {
+            baseBadge = `${r.base_portions || 1} portion(s)`;
+          }
+        }
+
+        const isAdmin = currentUser?.role === 'admin';
+
+        return `
+          <div class="recipe-card">
+            <div class="recipe-card-header">
+              <span class="recipe-cat-tag">${r.category_name || 'Général'}</span>
+              <div class="recipe-card-actions">
+                ${isAdmin ? `
+                  <button class="btn-icon" title="Modifier" onclick="openRecipeModal('${r.id}')">✏️</button>
+                  <button class="btn-icon" style="color:var(--danger);" title="Supprimer" onclick="deleteRecipe('${r.id}')">🗑️</button>
+                ` : ''}
+              </div>
+            </div>
+
+            <div class="recipe-name">${r.name}</div>
+            <div class="recipe-base-desc">📐 Base : <strong>${baseBadge}</strong></div>
+
+            <div class="recipe-ingredients">
+              <div class="recipe-ings-title">Ingrédients (${ings.length})</div>
+              ${previewIngs.map(i => `
+                <div class="ing-row">
+                  <span class="ing-row-name">${i.name}</span>
+                  <span class="ing-row-qty">${i.quantity} ${i.unit}</span>
+                </div>
+              `).join('')}
+              ${hasMoreIngs ? `<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">+ ${ings.length - 4} autre(s)...</div>` : ''}
+            </div>
+
+            <div style="margin-top:16px;display:flex;gap:8px;">
+              <button class="btn btn-primary" style="flex:1;padding:9px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;" onclick="openScalingModal('${r.id}')">
+                🧮 Calculer Proportions
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openRecipeModal(recipeId) {
+      const modal = document.getElementById('recipe-modal-overlay');
+      const form = document.getElementById('recipe-form');
+      const title = document.getElementById('recipe-modal-title');
+      const catSelect = document.getElementById('r-category');
+      
+      // Populate category select
+      catSelect.innerHTML = recipeCategories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+      // Clear container
+      const container = document.getElementById('recipe-ingredients-container');
+      container.innerHTML = '';
+
+      if (recipeId) {
+        const recipe = recipesList.find(r => r.id === recipeId);
+        if (!recipe) return;
+
+        title.textContent = 'Modifier la Recette';
+        document.getElementById('recipe-id').value = recipe.id;
+        document.getElementById('r-name').value = recipe.name;
+        catSelect.value = recipe.category_id;
+        document.getElementById('r-description').value = recipe.description || '';
+        document.getElementById('r-base-desc').value = recipe.base_description || '';
+
+        const baseType = recipe.base_type || 'dimension';
+        const typeRadios = document.getElementsByName('r-base-type');
+        typeRadios.forEach(r => r.checked = (r.value === baseType));
+
+        document.getElementById('r-base-dim1').value = recipe.base_dim1 || 20;
+        document.getElementById('r-base-dim2').value = recipe.base_dim2 || 20;
+        document.getElementById('r-base-portions').value = recipe.base_portions || 6;
+        document.getElementById('r-base-portions-only').value = recipe.base_portions || 1;
+
+        toggleRecipeBaseTypeInputs();
+
+        if (recipe.ingredients && recipe.ingredients.length > 0) {
+          recipe.ingredients.forEach(ing => addIngredientRow(ing.name, ing.quantity, ing.unit));
+        } else {
+          addIngredientRow();
+        }
+      } else {
+        title.textContent = 'Nouvelle Recette';
+        form.reset();
+        document.getElementById('recipe-id').value = '';
+        document.getElementById('r-base-dim1').value = 20;
+        document.getElementById('r-base-dim2').value = 20;
+        document.getElementById('r-base-portions').value = 6;
+        document.getElementById('r-base-portions-only').value = 1;
+        toggleRecipeBaseTypeInputs();
+        addIngredientRow();
+      }
+
+      modal.classList.add('open');
+    }
+
+    function closeRecipeModal() {
+      document.getElementById('recipe-modal-overlay').classList.remove('open');
+    }
+
+    function toggleRecipeBaseTypeInputs() {
+      const type = document.querySelector('input[name="r-base-type"]:checked')?.value || 'dimension';
+      const dimFields = document.getElementById('base-dim-inputs');
+      const portionFields = document.getElementById('base-portion-inputs');
+      if (type === 'dimension') {
+        dimFields.style.display = 'grid';
+        portionFields.style.display = 'none';
+      } else {
+        dimFields.style.display = 'none';
+        portionFields.style.display = 'block';
+      }
+    }
+
+    function addIngredientRow(name = '', qty = '', unit = 'g') {
+      const container = document.getElementById('recipe-ingredients-container');
+      const row = document.createElement('div');
+      row.className = 'ing-editor-row';
+      row.innerHTML = `
+        <input type="text" placeholder="Ingrédient (ex: Farine T45)" value="${name.replace(/"/g, '&quot;')}" class="ing-input-name" required />
+        <input type="number" placeholder="Quantité" step="any" min="0" value="${qty}" class="ing-input-qty" required />
+        <select class="ing-input-unit">
+          <option value="g" ${unit === 'g' ? 'selected' : ''}>g</option>
+          <option value="kg" ${unit === 'kg' ? 'selected' : ''}>kg</option>
+          <option value="ml" ${unit === 'ml' ? 'selected' : ''}>ml</option>
+          <option value="cl" ${unit === 'cl' ? 'selected' : ''}>cl</option>
+          <option value="L" ${unit === 'L' ? 'selected' : ''}>L</option>
+          <option value="pcs" ${unit === 'pcs' ? 'selected' : ''}>pcs</option>
+          <option value="c.à.s" ${unit === 'c.à.s' ? 'selected' : ''}>c.à.s</option>
+          <option value="c.à.c" ${unit === 'c.à.c' ? 'selected' : ''}>c.à.c</option>
+          <option value="pincée" ${unit === 'pincée' ? 'selected' : ''}>pincée</option>
+        </select>
+        <button type="button" class="ing-remove-btn" onclick="removeIngredientRow(this)" title="Supprimer">✕</button>
+      `;
+      container.appendChild(row);
+    }
+
+    function removeIngredientRow(btn) {
+      const container = document.getElementById('recipe-ingredients-container');
+      if (container.children.length > 1) {
+        btn.closest('.ing-editor-row').remove();
+      } else {
+        toast('La recette doit comporter au moins un ingrédient', 'error');
+      }
+    }
+
+    async function saveRecipe(e) {
+      e.preventDefault();
+      const id = document.getElementById('recipe-id').value;
+      const isNew = !id;
+      const saveBtn = document.getElementById('r-save-btn');
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Enregistrement...';
+
+      const baseType = document.querySelector('input[name="r-base-type"]:checked')?.value || 'dimension';
+      const dim1 = parseFloat(document.getElementById('r-base-dim1').value) || 20;
+      const dim2 = parseFloat(document.getElementById('r-base-dim2').value) || 20;
+      const portions = (baseType === 'dimension')
+        ? (parseInt(document.getElementById('r-base-portions').value) || 6)
+        : (parseInt(document.getElementById('r-base-portions-only').value) || 1);
+
+      let baseDesc = document.getElementById('r-base-desc').value.trim();
+      if (!baseDesc) {
+        baseDesc = (baseType === 'dimension')
+          ? `Gâteau ${dim1} × ${dim2} cm (${portions} portions)`
+          : `${portions} portion(s)`;
+      }
+
+      // Collect ingredients
+      const rows = document.querySelectorAll('#recipe-ingredients-container .ing-editor-row');
+      const ingredients = [];
+      rows.forEach((row, idx) => {
+        const name = row.querySelector('.ing-input-name').value.trim();
+        const qty = parseFloat(row.querySelector('.ing-input-qty').value) || 0;
+        const unit = row.querySelector('.ing-input-unit').value;
+        if (name) {
+          ingredients.push({
+            id: 'ing_' + Date.now() + '_' + idx,
+            name,
+            quantity: qty,
+            unit,
+            order_idx: idx + 1
+          });
+        }
+      });
+
+      const payload = {
+        id: isNew ? ('rec_' + Date.now()) : id,
+        name: document.getElementById('r-name').value.trim(),
+        category_id: document.getElementById('r-category').value,
+        description: document.getElementById('r-description').value.trim(),
+        base_description: baseDesc,
+        base_type: baseType,
+        base_dim1: dim1,
+        base_dim2: dim2,
+        base_portions: portions,
+        base_unit: 'cm',
+        ingredients
+      };
+
+      try {
+        const url = isNew ? '/api/admin/recipes' : `/api/admin/recipes/${id}`;
+        const method = isNew ? 'POST' : 'PUT';
+
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || 'Erreur lors de la sauvegarde');
+        }
+
+        toast(isNew ? '✅ Recette ajoutée avec succès' : '✅ Recette mise à jour', 'success');
+        closeRecipeModal();
+        await loadRecipes();
+      } catch (err) {
+        toast('❌ ' + err.message, 'error');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Enregistrer la recette';
+      }
+    }
+
+    async function deleteRecipe(recipeId) {
+      const rec = recipesList.find(r => r.id === recipeId);
+      if (!confirm(`Supprimer définitivement la recette "${rec?.name || 'cette recette'}" ?`)) return;
+
+      try {
+        const res = await fetch(`/api/admin/recipes/${recipeId}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error('Échec de suppression');
+        toast('🗑️ Recette supprimée', 'success');
+        await loadRecipes();
+      } catch (err) {
+        toast('❌ ' + err.message, 'error');
+      }
+    }
+
+    // ── RECIPE CATEGORIES MANAGER ──
+    function openRecipeCatModal() {
+      renderRecipeCatList();
+      document.getElementById('recipe-cat-overlay').classList.add('open');
+    }
+
+    function closeRecipeCatModal() {
+      document.getElementById('recipe-cat-overlay').classList.remove('open');
+    }
+
+    function renderRecipeCatList() {
+      const list = document.getElementById('recipe-cat-list');
+      if (!list) return;
+
+      list.innerHTML = recipeCategories.map((c, idx) => {
+        const count = recipesList.filter(r => r.category_id === c.id).length;
+        return `
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:white;border:1px solid var(--border);border-radius:12px;margin-bottom:8px;">
+            <div>
+              <span style="font-weight:700;color:var(--navy);font-size:13px;">${c.name}</span>
+              <span style="font-size:11px;color:var(--text-muted);margin-left:6px;">(${count} recette${count > 1 ? 's' : ''})</span>
+            </div>
+            <button class="btn-icon" style="color:var(--danger);" onclick="deleteRecipeCategory('${c.id}')" title="Supprimer">🗑️</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function addRecipeCategory() {
+      const input = document.getElementById('new-recipe-cat-input');
+      const val = input.value.trim();
+      if (!val) return;
+
+      const newCat = {
+        id: 'cat_' + Date.now(),
+        name: val,
+        order_idx: recipeCategories.length + 1
+      };
+
+      const updated = [...recipeCategories, newCat];
+      try {
+        const res = await fetch('/api/admin/recipe-categories', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ categories: updated })
+        });
+        if (!res.ok) throw new Error('Échec d\'ajout');
+        input.value = '';
+        toast('✅ Catégorie ajoutée', 'success');
+        await loadRecipes();
+        renderRecipeCatList();
+      } catch (err) {
+        toast('❌ ' + err.message, 'error');
+      }
+    }
+
+    async function deleteRecipeCategory(catId) {
+      const count = recipesList.filter(r => r.category_id === catId).length;
+      if (count > 0) {
+        toast(`Impossible de supprimer : ${count} recette(s) utilisent cette catégorie`, 'error');
+        return;
+      }
+      if (!confirm('Supprimer cette catégorie ?')) return;
+
+      const updated = recipeCategories.filter(c => c.id !== catId);
+      try {
+        const res = await fetch('/api/admin/recipe-categories', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ categories: updated })
+        });
+        if (!res.ok) throw new Error('Échec');
+        toast('Catégorie supprimée', 'success');
+        await loadRecipes();
+        renderRecipeCatList();
+      } catch (err) {
+        toast('❌ ' + err.message, 'error');
+      }
+    }
+
+    // ══════════════════════════════════════════
+    // ██  SCALING CALCULATOR ENGINE (PRO)     ██
+    // ══════════════════════════════════════════
+    let currentFactor = 1.0;
+
+    function openScalingModal(recipeId) {
+      const rec = recipesList.find(r => r.id === recipeId);
+      if (!rec) return;
+
+      activeScalingRecipe = rec;
+      document.getElementById('calc-recipe-title').textContent = rec.name;
+
+      const baseBadge = rec.base_description || `${rec.base_dim1 || 20} × ${rec.base_dim2 || 20} cm`;
+      document.getElementById('calc-recipe-base-badge').textContent = `Taille standard initiale : ${baseBadge}`;
+
+      // Populate ingredient dropdown for mode 'ingredient'
+      const ingSelect = document.getElementById('calc-ing-select');
+      ingSelect.innerHTML = (rec.ingredients || []).map((ing, idx) => 
+        `<option value="${idx}">${ing.name} (Base : ${ing.quantity} ${ing.unit})</option>`
+      ).join('');
+
+      // Base values
+      document.getElementById('calc-base-portions-val').value = rec.base_portions || 6;
+      document.getElementById('calc-target-portions').value = (rec.base_portions || 6) * 2;
+      document.getElementById('calc-target-w').value = (rec.base_dim1 || 20) * 1.5;
+      document.getElementById('calc-target-l').value = (rec.base_dim2 || 20) * 1.5;
+      document.getElementById('calc-target-diam').value = Math.round((rec.base_dim1 || 20) * 1.3);
+
+      // Instructions preview
+      const instBox = document.getElementById('calc-instructions-preview');
+      const instText = document.getElementById('calc-instructions-text');
+      if (rec.description && rec.description.trim()) {
+        instText.textContent = rec.description;
+        instBox.style.display = 'block';
+      } else {
+        instBox.style.display = 'none';
+      }
+
+      // Default mode
+      if (rec.base_type === 'portion') {
+        setScalingMode('portions');
+      } else {
+        setScalingMode('dimensions');
+      }
+
+      document.getElementById('scaling-modal-overlay').classList.add('open');
+    }
+
+    function closeScalingModal() {
+      document.getElementById('scaling-modal-overlay').classList.remove('open');
+    }
+
+    function setScalingMode(mode) {
+      scalingMode = mode;
+      ['dimensions', 'portions', 'ingredient', 'direct'].forEach(m => {
+        const btn = document.getElementById(`btn-scale-${m}`);
+        const panel = document.getElementById(`calc-panel-${m}`);
+        if (btn) btn.classList.toggle('active', m === mode);
+        if (panel) panel.style.display = (m === mode) ? 'block' : 'none';
+      });
+
+      if (mode === 'ingredient') {
+        onCalcIngredientSelected();
+      } else {
+        calculateScale();
+      }
+    }
+
+    function onCalcIngredientSelected() {
+      if (!activeScalingRecipe) return;
+      const idx = parseInt(document.getElementById('calc-ing-select').value) || 0;
+      const ing = (activeScalingRecipe.ingredients || [])[idx];
+      if (ing) {
+        document.getElementById('calc-ing-target-qty').value = Math.round(ing.quantity * 2);
+      }
+      calculateScale();
+    }
+
+    function setDirectMultiplier(m) {
+      currentFactor = m;
+      applyCalculatedScale(`Coefficient multiplicateur direct : × ${m.toFixed(2)}`);
+    }
+
+    function calculateScale() {
+      if (!activeScalingRecipe) return;
+      const rec = activeScalingRecipe;
+      let factor = 1.0;
+      let ratioText = '';
+
+      if (scalingMode === 'dimensions') {
+        const shape = document.querySelector('input[name="calc-shape"]:checked')?.value || 'rect';
+        const rectFields = document.getElementById('calc-dim-rect-fields');
+        const roundFields = document.getElementById('calc-dim-round-fields');
+
+        if (shape === 'rect') {
+          rectFields.style.display = 'grid';
+          roundFields.style.display = 'none';
+
+          const baseW = rec.base_dim1 || 20;
+          const baseL = rec.base_dim2 || 20;
+          const targetW = parseFloat(document.getElementById('calc-target-w').value) || baseW;
+          const targetL = parseFloat(document.getElementById('calc-target-l').value) || baseL;
+
+          const baseArea = baseW * baseL;
+          const targetArea = targetW * targetL;
+
+          factor = targetArea / (baseArea || 1);
+          const percentChange = Math.round((factor - 1) * 100);
+          const sign = percentChange >= 0 ? '+' : '';
+          ratioText = `Surface : ${baseArea} cm² ➔ ${targetArea} cm² (${sign}${percentChange}%)`;
+        } else {
+          rectFields.style.display = 'none';
+          roundFields.style.display = 'block';
+
+          const baseDiam = rec.base_dim1 || 20;
+          const targetDiam = parseFloat(document.getElementById('calc-target-diam').value) || baseDiam;
+
+          const baseArea = Math.PI * Math.pow(baseDiam / 2, 2);
+          const targetArea = Math.PI * Math.pow(targetDiam / 2, 2);
+
+          factor = targetArea / (baseArea || 1);
+          const percentChange = Math.round((factor - 1) * 100);
+          const sign = percentChange >= 0 ? '+' : '';
+          ratioText = `Diamètre : Ø${baseDiam} cm ➔ Ø${targetDiam} cm (${sign}${percentChange}%)`;
+        }
+      } else if (scalingMode === 'portions') {
+        const baseP = rec.base_portions || 6;
+        const targetP = parseFloat(document.getElementById('calc-target-portions').value) || baseP;
+        factor = targetP / (baseP || 1);
+        ratioText = `Portions : ${baseP} parts ➔ ${targetP} parts`;
+      } else if (scalingMode === 'ingredient') {
+        const idx = parseInt(document.getElementById('calc-ing-select').value) || 0;
+        const ing = (rec.ingredients || [])[idx];
+        if (ing && ing.quantity > 0) {
+          const targetQty = parseFloat(document.getElementById('calc-ing-target-qty').value) || ing.quantity;
+          factor = targetQty / ing.quantity;
+          ratioText = `Basé sur ${ing.name} : ${ing.quantity}${ing.unit} ➔ ${targetQty}${ing.unit}`;
+        }
+      }
+
+      currentFactor = Math.max(0.01, factor);
+      applyCalculatedScale(ratioText);
+    }
+
+    function applyCalculatedScale(ratioSummary) {
+      const bannerText = document.getElementById('calc-ratio-text');
+      const pill = document.getElementById('calc-factor-pill');
+      const tbody = document.getElementById('calc-tbody');
+      const countEl = document.getElementById('calc-items-count');
+
+      if (bannerText) bannerText.textContent = ratioSummary;
+      if (pill) pill.textContent = `× ${currentFactor.toFixed(2)}`;
+
+      const ings = activeScalingRecipe?.ingredients || [];
+      if (countEl) countEl.textContent = `${ings.length} ingrédient${ings.length > 1 ? 's' : ''}`;
+
+      if (!tbody) return;
+
+      tbody.innerHTML = ings.map(ing => {
+        const scaledQty = Math.round(ing.quantity * currentFactor * 100) / 100;
+        // Format nicely
+        let displayScaled = scaledQty;
+        if (scaledQty >= 1000 && ing.unit === 'g') {
+          displayScaled = `${(scaledQty / 1000).toFixed(2)} kg (${scaledQty} g)`;
+        } else if (scaledQty >= 1000 && ing.unit === 'ml') {
+          displayScaled = `${(scaledQty / 1000).toFixed(2)} L (${scaledQty} ml)`;
+        } else {
+          displayScaled = `${displayScaled} ${ing.unit}`;
+        }
+
+        return `
+          <tr>
+            <td style="font-weight:600;color:var(--navy);">${ing.name}</td>
+            <td style="text-align:right;color:var(--text-muted);">${ing.quantity} ${ing.unit}</td>
+            <td style="text-align:right;" class="calc-qty-scaled">${displayScaled}</td>
+            <td style="color:var(--text-muted);font-weight:500;">${ing.unit}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function printRecipeSheet() {
+      if (!activeScalingRecipe) return;
+      const rec = activeScalingRecipe;
+      const ings = rec.ingredients || [];
+
+      let scaleTitle = `Coefficient : × ${currentFactor.toFixed(2)}`;
+      if (scalingMode === 'dimensions') {
+        const shape = document.querySelector('input[name="calc-shape"]:checked')?.value || 'rect';
+        if (shape === 'rect') {
+          const w = document.getElementById('calc-target-w').value;
+          const l = document.getElementById('calc-target-l').value;
+          scaleTitle = `Moule Rectangulaire : ${w} cm × ${l} cm (Facteur × ${currentFactor.toFixed(2)})`;
+        } else {
+          const d = document.getElementById('calc-target-diam').value;
+          scaleTitle = `Moule Rond : Diamètre Ø ${d} cm (Facteur × ${currentFactor.toFixed(2)})`;
+        }
+      } else if (scalingMode === 'portions') {
+        const p = document.getElementById('calc-target-portions').value;
+        scaleTitle = `Quantité : ${p} portions (Facteur × ${currentFactor.toFixed(2)})`;
+      }
+
+      const printContainer = document.getElementById('print-recipe-container');
+      printContainer.innerHTML = `
+        <div style="font-family:'Inter',sans-serif;max-width:800px;margin:0 auto;color:#2A2118;padding:20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #A64B2A;padding-bottom:12px;margin-bottom:20px;">
+            <div>
+              <h1 style="font-size:24px;margin:0;color:#A64B2A;text-transform:uppercase;letter-spacing:0.05em;">MADELINA COFFEE</h1>
+              <p style="margin:2px 0 0;font-size:12px;color:#7A6E65;">Laboratoire de Production & Pâtisserie · Fiche Technique</p>
+            </div>
+            <div style="text-align:right;font-size:12px;color:#7A6E65;">
+              Date : ${new Date().toLocaleDateString('fr-FR')}<br />
+              Heure : ${new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+            </div>
+          </div>
+
+          <div style="margin-bottom:20px;background:#FAF7F4;padding:16px;border-radius:12px;border:1px solid #EAE3DA;">
+            <div style="font-size:11px;font-weight:700;color:#A64B2A;text-transform:uppercase;margin-bottom:4px;">${rec.category_name || 'Recette'}</div>
+            <h2 style="font-size:22px;margin:0 0 8px;color:#2A2118;">${rec.name}</h2>
+            <div style="font-size:13px;color:#4A3F35;">
+              <strong>🎯 Cible calculée :</strong> ${scaleTitle}<br />
+              <span style="font-size:12px;color:#7A6E65;">(Base standard : ${rec.base_description || 'Standard'})</span>
+            </div>
+          </div>
+
+          <h3 style="font-size:14px;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;color:#2A2118;">
+            Ingrédients Pesés & Mesurés
+          </h3>
+          <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
+            <thead>
+              <tr style="background:#F4EFEB;border-bottom:2px solid #EAE3DA;">
+                <th style="text-align:left;padding:10px;font-size:12px;">Ingrédient</th>
+                <th style="text-align:right;padding:10px;font-size:12px;">Quantité Calculée</th>
+                <th style="text-align:left;padding:10px;font-size:12px;">Unité</th>
+                <th style="text-align:center;padding:10px;font-size:12px;width:70px;">Pointage [✓]</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${ings.map(ing => {
+                const scaled = Math.round(ing.quantity * currentFactor * 100) / 100;
+                return `
+                  <tr style="border-bottom:1px solid #EAE3DA;">
+                    <td style="padding:10px;font-weight:600;font-size:13px;">${ing.name}</td>
+                    <td style="padding:10px;text-align:right;font-size:15px;font-weight:700;color:#A64B2A;">${scaled}</td>
+                    <td style="padding:10px;font-size:13px;color:#7A6E65;">${ing.unit}</td>
+                    <td style="padding:10px;text-align:center;"><div style="width:18px;height:18px;border:1.5px solid #A64B2A;margin:0 auto;border-radius:4px;"></div></td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+
+          ${rec.description ? `
+            <div style="border-top:1px solid #EAE3DA;padding-top:16px;">
+              <h3 style="font-size:13px;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;color:#2A2118;">Méthode & Procédé</h3>
+              <p style="font-size:12.5px;line-height:1.6;color:#4A3F35;white-space:pre-line;margin:0;">${rec.description}</p>
+            </div>
+          ` : ''}
+
+          <div style="margin-top:40px;border-top:1px dashed #CCC;padding-top:10px;font-size:11px;color:#999;text-align:center;">
+            Madelina Coffee & Pâtisserie · Usage Interne Confidentiel
+          </div>
+        </div>
+      `;
+
+      window.print();
+    }
+
+    // ══════════════════════════════════════════
+    // ██  MODULE 2: USERS & RBAC ENGINE       ██
+    // ══════════════════════════════════════════
+    async function loadUsers() {
+      try {
+        const res = await fetch('/api/admin/users');
+        if (!res.ok) throw new Error('Impossible de charger les utilisateurs');
+        const data = await res.json();
+        usersList = data.users || [];
+
+        // Update stats
+        const activeCount = usersList.filter(u => u.is_active === 1).length;
+        const adminCount = usersList.filter(u => u.role === 'admin').length;
+        const staffCount = usersList.filter(u => u.role === 'staff').length;
+
+        document.getElementById('stat-users-active').textContent = activeCount;
+        document.getElementById('stat-users-admins').textContent = adminCount;
+        document.getElementById('stat-users-staff').textContent = staffCount;
+
+        renderUsers();
+      } catch (err) {
+        console.error('loadUsers error:', err);
+      }
+    }
+
+    function renderUsers() {
+      const tbody = document.getElementById('user-tbody');
+      if (!tbody) return;
+
+      if (usersList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--text-muted);">Aucun utilisateur</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = usersList.map(u => {
+        const isAdm = u.role === 'admin';
+        const isActive = u.is_active === 1;
+
+        // Categories chips
+        let catHtml = '';
+        if (isAdm) {
+          catHtml = '<span class="cat-chip" style="background:#FDE8E1;color:var(--terracotta);font-weight:700;">⭐ Accès Complet (Toutes)</span>';
+        } else if (!u.allowed_categories || u.allowed_categories === '*') {
+          catHtml = '<span class="cat-chip" style="background:#E6F4EA;color:#137333;">Toutes les catégories</span>';
+        } else {
+          try {
+            const arr = JSON.parse(u.allowed_categories);
+            if (Array.isArray(arr) && arr.length > 0) {
+              catHtml = '<div class="cat-chips-list">' + arr.map(catId => {
+                const c = recipeCategories.find(rc => rc.id === catId);
+                return `<span class="cat-chip">${c ? c.name : catId}</span>`;
+              }).join('') + '</div>';
+            } else {
+              catHtml = '<span style="color:var(--danger);font-size:11px;">Aucune catégorie autorisée</span>';
+            }
+          } catch (e) {
+            catHtml = `<span class="cat-chip">${u.allowed_categories}</span>`;
+          }
+        }
+
+        const isHaifa = u.username.toLowerCase() === 'haifa';
+
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:700;color:var(--navy);font-size:14px;">${u.name}</div>
+              <div style="font-size:12px;color:var(--text-muted);">@${u.username}</div>
+            </td>
+            <td>
+              <span class="role-badge ${isAdm ? 'role-admin' : 'role-staff'}">
+                ${isAdm ? '👑 Admin' : '👨‍🍳 Équipe'}
+              </span>
+            </td>
+            <td>${catHtml}</td>
+            <td>
+              <span class="status-badge ${isActive ? 'status-active' : 'status-inactive'}">
+                ${isActive ? '● Actif' : '○ Inactif'}
+              </span>
+            </td>
+            <td style="text-align:right;">
+              <button class="btn-icon" title="Modifier" onclick="openUserModal('${u.id}')">✏️</button>
+              ${!isHaifa ? `
+                <button class="btn-icon" title="${isActive ? 'Désactiver' : 'Activer'}" onclick="toggleUserStatus('${u.id}', ${isActive})">
+                  ${isActive ? '⏸️' : '▶️'}
+                </button>
+                <button class="btn-icon" style="color:var(--danger);" title="Supprimer" onclick="deleteUser('${u.id}')">🗑️</button>
+              ` : '<span style="font-size:11px;color:var(--text-muted);font-style:italic;">Principal</span>'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openUserModal(userId) {
+      const modal = document.getElementById('user-modal-overlay');
+      const title = document.getElementById('user-modal-title');
+      const passLabel = document.getElementById('u-pass-label');
+      const passInput = document.getElementById('u-password');
+      const userInput = document.getElementById('u-username');
+
+      // Populate category checkboxes
+      const container = document.getElementById('u-cat-checkboxes-list');
+      container.innerHTML = recipeCategories.map(c => `
+        <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;">
+          <input type="checkbox" class="u-cat-checkbox" value="${c.id}" />
+          ${c.name}
+        </label>
+      `).join('');
+
+      if (userId) {
+        const u = usersList.find(x => x.id === userId);
+        if (!u) return;
+        title.textContent = 'Modifier l\'Utilisateur';
+        document.getElementById('u-id').value = u.id;
+        document.getElementById('u-name').value = u.name;
+        userInput.value = u.username;
+        userInput.disabled = true; // Username shouldn't change
+        passInput.value = '';
+        passInput.required = false;
+        passLabel.textContent = 'MOT DE PASSE (LAISSER VIDE POUR CONSERVER)';
+        document.getElementById('u-role').value = u.role;
+        document.getElementById('u-is-active').checked = (u.is_active === 1);
+
+        // Checkboxes
+        if (u.allowed_categories === '*') {
+          document.getElementById('u-cat-all').checked = true;
+          toggleAllCatCheckboxes(true);
+        } else {
+          document.getElementById('u-cat-all').checked = false;
+          try {
+            const arr = JSON.parse(u.allowed_categories);
+            document.querySelectorAll('.u-cat-checkbox').forEach(cb => {
+              cb.checked = arr.includes(cb.value);
+            });
+          } catch(e) {}
+        }
+      } else {
+        title.textContent = 'Nouvel Utilisateur';
+        document.getElementById('u-id').value = '';
+        document.getElementById('u-name').value = '';
+        userInput.value = '';
+        userInput.disabled = false;
+        passInput.value = '';
+        passInput.required = true;
+        passLabel.textContent = 'MOT DE PASSE *';
+        document.getElementById('u-role').value = 'staff';
+        document.getElementById('u-is-active').checked = true;
+        document.getElementById('u-cat-all').checked = true;
+        toggleAllCatCheckboxes(true);
+      }
+
+      onUserRoleChange();
+      modal.classList.add('open');
+    }
+
+    function closeUserModal() {
+      document.getElementById('user-modal-overlay').classList.remove('open');
+    }
+
+    function onUserRoleChange() {
+      const role = document.getElementById('u-role').value;
+      const catBox = document.getElementById('u-categories-box');
+      if (role === 'admin') {
+        catBox.style.display = 'none';
+      } else {
+        catBox.style.display = 'block';
+      }
+    }
+
+    function toggleAllCatCheckboxes(checked) {
+      document.querySelectorAll('.u-cat-checkbox').forEach(cb => {
+        cb.checked = checked;
+      });
+    }
+
+    async function saveUser(e) {
+      e.preventDefault();
+      const id = document.getElementById('u-id').value;
+      const isNew = !id;
+      const saveBtn = document.getElementById('u-save-btn');
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'Enregistrement...';
+
+      const role = document.getElementById('u-role').value;
+      const isActive = document.getElementById('u-is-active').checked ? 1 : 0;
+      const allChecked = document.getElementById('u-cat-all').checked;
+
+      let allowedCategories = '*';
+      if (role === 'staff' && !allChecked) {
+        const checkedValues = [];
+        document.querySelectorAll('.u-cat-checkbox:checked').forEach(cb => {
+          checkedValues.push(cb.value);
+        });
+        allowedCategories = checkedValues;
+      }
+
+      const payload = {
+        name: document.getElementById('u-name').value.trim(),
+        role,
+        allowed_categories: allowedCategories,
+        is_active: isActive
+      };
+
+      const pass = document.getElementById('u-password').value;
+      if (isNew) {
+        payload.username = document.getElementById('u-username').value.trim().toLowerCase();
+        payload.password = pass;
+      } else {
+        payload.id = id;
+        if (pass && pass.trim()) payload.password = pass.trim();
+      }
+
+      try {
+        const url = '/api/admin/users';
+        const method = isNew ? 'POST' : 'PUT';
+
+        const res = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || 'Erreur lors de la sauvegarde');
+        }
+
+        toast(isNew ? '✅ Utilisateur créé avec succès' : '✅ Utilisateur mis à jour', 'success');
+        closeUserModal();
+        await loadUsers();
+      } catch (err) {
+        toast('❌ ' + err.message, 'error');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Enregistrer';
+      }
+    }
+
+    async function toggleUserStatus(userId, currentStatus) {
+      try {
+        const res = await fetch('/api/admin/users', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: userId, is_active: currentStatus ? 0 : 1 })
+        });
+        if (!res.ok) throw new Error('Échec de mise à jour du statut');
+        toast(`Compte ${currentStatus ? 'désactivé' : 'activé'}`, 'success');
+        await loadUsers();
+      } catch (err) {
+        toast('❌ ' + err.message, 'error');
+      }
+    }
+
+    async function deleteUser(userId) {
+      if (!confirm('Supprimer définitivement cet utilisateur ?')) return;
+      try {
+        const res = await fetch(`/api/admin/users?id=${encodeURIComponent(userId)}`, {
+          method: 'DELETE'
+        });
+        if (!res.ok) {
+          const d = await res.json().catch(() => ({}));
+          throw new Error(d.error || 'Échec de suppression');
+        }
+        toast('🗑️ Utilisateur supprimé', 'success');
+        await loadUsers();
+      } catch (err) {
+        toast('❌ ' + err.message, 'error');
+      }
+    }
+
+    // ══════════════════════════════════════════
+    // ██  MODAL BACKDROP & ESCAPE HANDLERS    ██
+    // ══════════════════════════════════════════
+    const allModalIds = [
+      'modal-overlay', 'category-overlay', 'rename-cat-overlay',
+      'recipe-modal-overlay', 'recipe-cat-overlay', 'scaling-modal-overlay', 'user-modal-overlay'
+    ];
+
+    allModalIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      let isBackdropDown = false;
+      el.addEventListener('pointerdown', (e) => {
+        isBackdropDown = (e.target === el);
+      });
+      el.addEventListener('click', (e) => {
+        if (isBackdropDown && e.target === el) {
+          if (id === 'modal-overlay') closeModal();
+          else if (id === 'category-overlay') closeCategoryManager();
+          else if (id === 'rename-cat-overlay') closeRenameCategory();
+          else if (id === 'recipe-modal-overlay') closeRecipeModal();
+          else if (id === 'recipe-cat-overlay') closeRecipeCatModal();
+          else if (id === 'scaling-modal-overlay') closeScalingModal();
+          else if (id === 'user-modal-overlay') closeUserModal();
+        }
+        isBackdropDown = false;
+      });
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (document.getElementById('scaling-modal-overlay')?.classList.contains('open')) closeScalingModal();
+        else if (document.getElementById('user-modal-overlay')?.classList.contains('open')) closeUserModal();
+        else if (document.getElementById('recipe-modal-overlay')?.classList.contains('open')) closeRecipeModal();
+        else if (document.getElementById('recipe-cat-overlay')?.classList.contains('open')) closeRecipeCatModal();
+        else if (document.getElementById('rename-cat-overlay')?.classList.contains('open')) closeRenameCategory();
+        else if (document.getElementById('modal-overlay')?.classList.contains('open')) closeModal();
+        else if (document.getElementById('category-overlay')?.classList.contains('open')) closeCategoryManager();
+      }
+    });
+
+
+    // ══════════════════════════════════════════
+    // ██  MENU & DISH ENGINE (ORIGINAL)       ██
+    // ══════════════════════════════════════════
+    let menuItems = [];
+    let pendingImages = new Map();
+    let activeFilter = 'all';
+
+    [object Promise]
+
+    // CLEAN STATE RESET HELPER
+    function clearImageState() {
+      _rawImage = null;
+      _cropDirty = false;
+      _cropBypassed = false;
+      window._rawPendingFile = null;
+
+      if (window._rawPendingFileUrl) {
+        URL.revokeObjectURL(window._rawPendingFileUrl);
+        window._rawPendingFileUrl = null;
+      }
+      if (window._currentPendingPreview) {
+        URL.revokeObjectURL(window._currentPendingPreview);
+        window._currentPendingPreview = null;
+      }
+
+      window._currentPendingBlob = null;
+      window._currentImageUrl = '';
+
+      const cropZone = document.getElementById('crop-zone');
+      if (cropZone) cropZone.style.display = 'none';
+
+      const fileInput = document.getElementById('file-input');
+      if (fileInput) fileInput.value = '';
+
+      updateUploadZone(false);
+    }
+
+    // ══════════════════════════════════════════
+    // ██  CROP ZONE ENGINE (Multi-point Box UI)  ██
+    // ══════════════════════════════════════════
+    let _rawImage = null;
+    let _cropIsList = false;
+    let _cropDirty = false;
+    let _cropBypassed = false;
+    let _cropDragging = false;
+    let _cropDragMode = 'none';
+    let _cropDragLast = { x: 0, y: 0 };
+    let _cropDragStartBox = { x: 0, y: 0, w: 0, h: 0 };
+
+    let cropBox = { x: 0, y: 0, w: 0, h: 0 };
+    let imgX = 0, imgY = 0, imgW = 0, imgH = 0;
+
+    function renderCrop() {
+      const canvas = document.getElementById('crop-canvas');
+      const vp = document.getElementById('crop-viewport');
+      if (!canvas || !vp || !_rawImage) return;
+
+      const W = vp.clientWidth;
+      const H = W; // always 1:1 square
+
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+
+      const ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+      ctx.clearRect(0, 0, W, H);
+
+      if (_cropBypassed) {
+        ctx.drawImage(_rawImage, imgX, imgY, imgW, imgH);
+        return;
+      }
+
+      ctx.drawImage(_rawImage, imgX, imgY, imgW, imgH);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
+      ctx.fillRect(0, 0, W, H);
+
+      const scaleX = _rawImage.naturalWidth / imgW;
+      const scaleY = _rawImage.naturalHeight / imgH;
+      const srcX = (cropBox.x - imgX) * scaleX;
+      const srcY = (cropBox.y - imgY) * scaleY;
+      const srcW = cropBox.w * scaleX;
+      const srcH = cropBox.h * scaleY;
+
+      ctx.drawImage(_rawImage, srcX, srcY, srcW, srcH, cropBox.x, cropBox.y, cropBox.w, cropBox.h);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(cropBox.x, cropBox.y, cropBox.w, cropBox.h);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.beginPath();
+      ctx.moveTo(cropBox.x + cropBox.w / 3, cropBox.y);
+      ctx.lineTo(cropBox.x + cropBox.w / 3, cropBox.y + cropBox.h);
+      ctx.moveTo(cropBox.x + 2 * cropBox.w / 3, cropBox.y);
+      ctx.lineTo(cropBox.x + 2 * cropBox.w / 3, cropBox.y + cropBox.h);
+      ctx.moveTo(cropBox.x, cropBox.y + cropBox.h / 3);
+      ctx.lineTo(cropBox.x + cropBox.w, cropBox.y + cropBox.h / 3);
+      ctx.moveTo(cropBox.x, cropBox.y + 2 * cropBox.h / 3);
+      ctx.lineTo(cropBox.x + cropBox.w, cropBox.y + 2 * cropBox.h / 3);
+      ctx.stroke();
+
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'square';
+      const len = 16;
+      ctx.beginPath();
+      ctx.moveTo(cropBox.x + len, cropBox.y); ctx.lineTo(cropBox.x, cropBox.y); ctx.lineTo(cropBox.x, cropBox.y + len);
+      ctx.moveTo(cropBox.x + cropBox.w - len, cropBox.y); ctx.lineTo(cropBox.x + cropBox.w, cropBox.y); ctx.lineTo(cropBox.x + cropBox.w, cropBox.y + len);
+      ctx.moveTo(cropBox.x + len, cropBox.y + cropBox.h); ctx.lineTo(cropBox.x, cropBox.y + cropBox.h); ctx.lineTo(cropBox.x, cropBox.y + cropBox.h - len);
+      ctx.moveTo(cropBox.x + cropBox.w - len, cropBox.y + cropBox.h); ctx.lineTo(cropBox.x + cropBox.w, cropBox.y + cropBox.h); ctx.lineTo(cropBox.x + cropBox.w, cropBox.y + cropBox.h - len);
+      ctx.stroke();
+    }
+
+    function initCropBoxPosition() {
+      const vp = document.getElementById('crop-viewport');
+      const canvasW = vp.clientWidth;
+      const canvasH = canvasW; // always 1:1 square
+      const cropRatio = 1.0;
+      const imgRatio = _rawImage.naturalWidth / _rawImage.naturalHeight;
+
+      if (imgRatio > canvasW / canvasH) {
+        imgW = canvasW;
+        imgH = canvasW / imgRatio;
+        imgX = 0;
+        imgY = (canvasH - imgH) / 2;
+      } else {
+        imgH = canvasH;
+        imgW = canvasH * imgRatio;
+        imgX = (canvasW - imgW) / 2;
+        imgY = 0;
+      }
+
+      if (imgW / imgH > cropRatio) {
+        cropBox.h = imgH;
+        cropBox.w = cropBox.h * cropRatio;
+      } else {
+        cropBox.w = imgW;
+        cropBox.h = cropBox.w / cropRatio;
+      }
+
+      cropBox.x = imgX + (imgW - cropBox.w) / 2;
+      cropBox.y = imgY + (imgH - cropBox.h) / 2;
+    }
+
+    function initCropZone(src, isList) {
+      _cropIsList = !!isList;
+      _cropDragging = false;
+      _cropDragMode = 'none';
+      _cropBypassed = false;
+
+      const vp = document.getElementById('crop-viewport');
+      if (vp) vp.style.aspectRatio = '1/1';
+
+      const lbl = document.getElementById('crop-ratio-label');
+      if (lbl) {
+        lbl.textContent = '📐 Aperçu (1:1)';
+        lbl.style.display = 'block';
+      }
+
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        _rawImage = img;
+        document.getElementById('crop-zone').style.display = 'block';
+        initCropBoxPosition();
+        requestAnimationFrame(renderCrop);
+      };
+      img.onerror = () => {
+        document.getElementById('crop-zone').style.display = 'none';
+      };
+      img.src = src;
+
+      const canvas = document.getElementById('crop-canvas');
+      canvas.onpointerdown = _onCropPointerDown;
+      canvas.onpointermove = _onCropPointerMove;
+      canvas.onpointerup = _onCropPointerUp;
+      canvas.onpointercancel = _onCropPointerUp;
+    }
+
+    function clearImageState() {
+      window._rawPendingFile = null;
+      if (window._rawPendingFileUrl) {
+        URL.revokeObjectURL(window._rawPendingFileUrl);
+        window._rawPendingFileUrl = null;
+      }
+      window._currentPendingBlob = null;
+      window._currentPendingPreview = null;
+      window._currentImageUrl = null;
+      _rawImage = null;
+      _cropDirty = false;
+      _cropBypassed = false;
+      _cropIsList = false;
+
+      const cropZone = document.getElementById('crop-zone');
+      if (cropZone) cropZone.style.display = 'none';
+
+      const fileInput = document.getElementById('f-image');
+      if (fileInput) fileInput.value = '';
+
+      updateUploadZone(false);
+    }
+
+    // EXACT RESET CROP FUNCTION (Reverts to TRUE UNCROPPED ORIGINAL PHOTO)
+    function resetCrop() {
+      const catFr = document.getElementById('f-category').value;
+      const catObj = getCategories().find(c => c.fr === catFr);
+      const isList = catObj ? !!catObj.isList : false;
+
+      if (window._rawPendingFile && window._rawPendingFileUrl) {
+        window._currentPendingBlob = null;
+        window._currentPendingPreview = null;
+        _cropBypassed = false;
+        _cropDirty = true;
+        initCropZone(window._rawPendingFileUrl, isList);
+        updateUploadZone(true);
+        return;
+      }
+
+      const idxStr = document.getElementById('item-index').value;
+      const currentItem = idxStr !== '' ? menuItems[parseInt(idxStr)] : null;
+      const itemId = currentItem ? currentItem.id : null;
+
+      const candidateUrls = [];
+      if (itemId) {
+        candidateUrls.push(`/api/images/menu/${itemId}-original.webp`);
+      }
+      if (window._currentImageUrl) {
+        candidateUrls.push(window._currentImageUrl.replace(/(-\d+)?\.webp$/, (m, ts) => `${ts || ''}-original.webp`));
+      }
+
+      function tryNextOriginal(idx) {
+        if (idx >= candidateUrls.length) {
+          if (_rawImage) {
+            initCropBoxPosition();
+            _cropDirty = true;
+            renderCrop();
+            updateUploadZone(true);
+          } else if (window._currentImageUrl) {
+            initCropZone(window._currentImageUrl, isList);
+            _cropDirty = true;
+            updateUploadZone(true);
+          }
+          return;
+        }
+
+        const url = candidateUrls[idx];
+        const testImg = new Image();
+        if (!url.startsWith('blob:')) testImg.crossOrigin = 'anonymous';
+        testImg.onload = () => {
+          initCropZone(url, isList);
+          _cropDirty = true;
+          updateUploadZone(true);
+        };
+        testImg.onerror = () => {
+          tryNextOriginal(idx + 1);
+        };
+        testImg.src = url;
+      }
+
+      tryNextOriginal(0);
+    }
+
+    function updateCropForCategory() {
+      const catFr = document.getElementById('f-category').value;
+      const catObj = getCategories().find(c => c.fr === catFr);
+      const isList = catObj ? !!catObj.isList : false;
+      if (isList === _cropIsList) return;
+
+      _cropIsList = isList;
+      const vp = document.getElementById('crop-viewport');
+      if (vp) vp.style.aspectRatio = '1/1';
+
+      const lbl = document.getElementById('crop-ratio-label');
+      if (lbl) {
+        lbl.textContent = '📐 Aperçu (1:1)';
+      }
+
+      if (_rawImage) {
+        _cropDirty = true;
+        initCropBoxPosition();
+        renderCrop();
+      }
+    }
+
+    async function getCropBlob() {
+      if (!_rawImage) return null;
+
+      const scaleX = _rawImage.naturalWidth / imgW;
+      const scaleY = _rawImage.naturalHeight / imgH;
+
+      const srcX = Math.max(0, (cropBox.x - imgX) * scaleX);
+      const srcY = Math.max(0, (cropBox.y - imgY) * scaleY);
+      const srcW = Math.min(_rawImage.naturalWidth - srcX, cropBox.w * scaleX);
+      const srcH = Math.min(_rawImage.naturalHeight - srcY, cropBox.h * scaleY);
+
+      const OUT_W = Math.min(800, srcW);
+      const OUT_H = OUT_W; // always 1:1 square
+
+      const canvas = document.createElement('canvas');
+      canvas.width = OUT_W;
+      canvas.height = OUT_H;
+      const ctx = canvas.getContext('2d');
+
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(_rawImage, srcX, srcY, srcW, srcH, 0, 0, OUT_W, OUT_H);
+
+      return new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.93));
+    }
+
+    function getTouchMode(px, py) {
+      const threshold = 24;
+      if (Math.hypot(px - cropBox.x, py - cropBox.y) < threshold) return 'resize-tl';
+      if (Math.hypot(px - (cropBox.x + cropBox.w), py - cropBox.y) < threshold) return 'resize-tr';
+      if (Math.hypot(px - cropBox.x, py - (cropBox.y + cropBox.h)) < threshold) return 'resize-bl';
+      if (Math.hypot(px - (cropBox.x + cropBox.w), py - (cropBox.y + cropBox.h)) < threshold) return 'resize-br';
+      if (px >= cropBox.x && px <= cropBox.x + cropBox.w && py >= cropBox.y && py <= cropBox.y + cropBox.h) return 'move';
+      return 'none';
+    }
+
+    function _onCropPointerDown(e) {
+      if (e.button > 0 && e.pointerType === 'mouse') return;
+      e.preventDefault();
+
+      const rect = e.currentTarget.getBoundingClientRect();
+      const px = e.clientX - rect.left;
+      const py = e.clientY - rect.top;
+
+      const mode = getTouchMode(px, py);
+      if (mode === 'none') return;
+
+      _cropDragging = true;
+      _cropDragMode = mode;
+      _cropDragLast = { x: px, y: py };
+      _cropDragStartBox = { ...cropBox };
+
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch(_) {}
+    }
+
+    function _onCropPointerMove(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const px = e.clientX - rect.left;
+      const py = e.clientY - rect.top;
+
+      if (!_cropDragging) {
+        const mode = getTouchMode(px, py);
+        if (mode === 'resize-tl' || mode === 'resize-br') e.currentTarget.style.cursor = 'nwse-resize';
+        else if (mode === 'resize-tr' || mode === 'resize-bl') e.currentTarget.style.cursor = 'nesw-resize';
+        else if (mode === 'move') e.currentTarget.style.cursor = 'move';
+        else e.currentTarget.style.cursor = 'default';
+        return;
+      }
+
+      const dx = px - _cropDragLast.x;
+      const dy = py - _cropDragLast.y;
+      _cropDirty = true;
+      const cropRatio = _cropIsList ? 1.0 : 4/3;
+      const minSize = 40;
+
+      if (_cropDragMode === 'move') {
+        cropBox.x += dx; cropBox.y += dy;
+        if (cropBox.x < imgX) cropBox.x = imgX;
+        if (cropBox.y < imgY) cropBox.y = imgY;
+        if (cropBox.x + cropBox.w > imgX + imgW) cropBox.x = imgX + imgW - cropBox.w;
+        if (cropBox.y + cropBox.h > imgY + imgH) cropBox.y = imgY + imgH - cropBox.h;
+        _cropDragLast = { x: px, y: py };
+      } else if (_cropDragMode === 'resize-br') {
+        let newW = _cropDragStartBox.w + (px - _cropDragLast.x);
+        if (_cropDragStartBox.x + newW > imgX + imgW) newW = imgX + imgW - _cropDragStartBox.x;
+        let newH = newW / cropRatio;
+        if (_cropDragStartBox.y + newH > imgY + imgH) {
+          newH = imgY + imgH - _cropDragStartBox.y;
+          newW = newH * cropRatio;
+        }
+        if (newW >= minSize) { cropBox.w = newW; cropBox.h = newH; }
+      } else if (_cropDragMode === 'resize-tl') {
+        let newW = _cropDragStartBox.w - (px - _cropDragLast.x);
+        let newH = newW / cropRatio;
+        let newX = _cropDragStartBox.x + (_cropDragStartBox.w - newW);
+        let newY = _cropDragStartBox.y + (_cropDragStartBox.h - newH);
+        if (newX < imgX) { newX = imgX; newW = _cropDragStartBox.x + _cropDragStartBox.w - imgX; newH = newW / cropRatio; newY = _cropDragStartBox.y + _cropDragStartBox.h - newH; }
+        if (newY < imgY) { newY = imgY; newH = _cropDragStartBox.y + _cropDragStartBox.h - imgY; newW = newH * cropRatio; newX = _cropDragStartBox.x + _cropDragStartBox.w - newW; }
+        if (newW >= minSize) { cropBox.x = newX; cropBox.y = newY; cropBox.w = newW; cropBox.h = newH; }
+      }
+      renderCrop();
+    }
+
+    function _onCropPointerUp(e) {
+      _cropDragging = false;
+      _cropDragMode = 'none';
+      if (e && e.currentTarget) e.currentTarget.style.cursor = 'default';
+    }
+
+    // ── IMAGE COMPRESSION & UPLOAD ──
+    function compressToWebP(file, maxDim = 600, targetKB = 60) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = async () => {
+          try {
+            let w = img.naturalWidth, h = img.naturalHeight;
+            if (w > maxDim || h > maxDim) {
+              if (w >= h) { h = Math.round(h * maxDim / w); w = maxDim; }
+              else { w = Math.round(w * maxDim / h); h = maxDim; }
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+
+            const supportsWebP = await new Promise(res => {
+              const testCanvas = document.createElement('canvas');
+              testCanvas.width = 1; testCanvas.height = 1;
+              testCanvas.toBlob(b => res(b && b.type === 'image/webp'), 'image/webp', 0.5);
+            });
+
+            const origKB = file.size / 1024;
+            let quality = origKB > 2000 ? 0.50 : origKB > 800 ? 0.60 : 0.70;
+            const MIN_QUALITY = 0.20;
+            const format = supportsWebP ? 'image/webp' : 'image/jpeg';
+            let blob = null;
+
+            for (let attempt = 0; attempt < 12; attempt++) {
+              blob = await new Promise(res => canvas.toBlob(b => res(b), format, quality));
+              if (!blob) { reject(new Error('Conversion échouée')); return; }
+              if (blob.size / 1024 <= targetKB || quality <= MIN_QUALITY) break;
+              quality -= 0.05;
+            }
+            resolve(blob);
+          } catch (e) { reject(e); }
+          finally { URL.revokeObjectURL(img.src); }
+        };
+        img.onerror = () => reject(new Error('Lecture image échouée'));
+        img.src = URL.createObjectURL(file);
+      });
+    }
+
+    function updateUploadZone(hasImage) {
+      const icon = document.getElementById('upload-icon');
+      const label = document.getElementById('upload-label');
+      const zone = document.getElementById('upload-dropzone');
+      if (hasImage) {
+        icon.textContent = '✅';
+        label.textContent = 'PHOTO CHARGÉE — CLIQUEZ POUR REMPLACER';
+        zone.style.borderColor = 'var(--success)';
+      } else {
+        icon.textContent = '📷';
+        label.textContent = 'CLIQUEZ POUR CHOISIR UNE PHOTO';
+        zone.style.borderColor = 'var(--border-dark)';
+      }
+    }
+
+    async function uploadImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const statusEl = document.getElementById('upload-status');
+      statusEl.style.display = 'block';
+      statusEl.textContent = '⌛ Préparation...';
+
+      try {
+        let fileToProcess = file;
+        const isHEIC = file.name.toLowerCase().endsWith('.heic') || file.name.toLowerCase().endsWith('.heif');
+        if (isHEIC) {
+          if (typeof heic2any === 'function') {
+            statusEl.textContent = '⌛ Conversion HEIC...';
+            const converted = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.8 });
+            const blob = Array.isArray(converted) ? converted[0] : converted;
+            fileToProcess = new File([blob], file.name.replace(/\.[^/.]+$/, '') + '.jpg', { type: 'image/jpeg' });
+          }
+        }
+
+        window._rawPendingFile = fileToProcess;
+        if (window._rawPendingFileUrl) URL.revokeObjectURL(window._rawPendingFileUrl);
+        window._rawPendingFileUrl = URL.createObjectURL(fileToProcess);
+        _cropDirty = true;
+
+        const catFr = document.getElementById('f-category').value;
+        const catObj = getCategories().find(c => c.fr === catFr);
+        initCropZone(window._rawPendingFileUrl, catObj ? !!catObj.isList : false);
+
+        updateUploadZone(true);
+        document.getElementById('img-required-msg').style.display = 'none';
+        statusEl.textContent = '✅ Image prête — ajustez le cadrage';
+        statusEl.style.color = 'var(--success)';
+      } catch (err) {
+        statusEl.textContent = '❌ Erreur : ' + err.message;
+        statusEl.style.color = 'var(--danger)';
+      }
+      setTimeout(() => { statusEl.style.display = 'none'; }, 6000);
+      event.target.value = '';
+    }
+
+    // ══════════════════════════════════════════
+    // ██  AUTO-SAVE ENGINE                    ██
+    // ══════════════════════════════════════════
+    let _autoSaveInProgress = false;
+
+    function setAutosaveStatus(state) {
+      const badge = document.getElementById('autosave-status');
+      const dot   = document.getElementById('autosave-dot');
+      const text  = document.getElementById('autosave-text');
+      const bar   = document.getElementById('save-progress-bar');
+      if (!dot || !text) return;
+
+      if (badge) badge.classList.remove('saving', 'ok', 'error');
+      dot.classList.remove('pulsing');
+
+      if (state === 'saving') {
+        if (badge) badge.classList.add('saving');
+        dot.classList.add('pulsing');
+        dot.style.background = '#d97706';
+        dot.style.boxShadow = '0 0 8px rgba(217, 119, 6, 0.6)';
+        text.textContent = 'Sauvegarde...';
+        if (bar) {
+          bar.style.opacity = '1';
+          bar.style.width = '70%';
+        }
+      } else if (state === 'ok') {
+        if (badge) badge.classList.add('ok');
+        dot.style.background = '#16a34a';
+        dot.style.boxShadow = '0 0 8px rgba(22, 163, 74, 0.6)';
+        text.textContent = 'Enregistré ✓';
+        if (bar) {
+          bar.style.width = '100%';
+          setTimeout(() => {
+            bar.style.opacity = '0';
+            setTimeout(() => { bar.style.width = '0%'; }, 350);
+          }, 450);
+        }
+        if (badge) {
+          clearTimeout(badge._t);
+          badge._t = setTimeout(() => setAutosaveStatus('idle'), 3200);
+        }
+      } else if (state === 'error') {
+        if (badge) badge.classList.add('error');
+        dot.style.background = '#dc2626';
+        dot.style.boxShadow = '0 0 8px rgba(220, 38, 38, 0.6)';
+        text.textContent = 'Erreur !';
+        if (bar) {
+          bar.style.opacity = '0';
+          bar.style.width = '0%';
+        }
+      } else {
+        // idle
+        dot.style.background = '#16a34a';
+        dot.style.boxShadow = '0 0 5px rgba(22, 163, 74, 0.5)';
+        text.textContent = 'Enregistré';
+        if (bar) {
+          bar.style.opacity = '0';
+          bar.style.width = '0%';
+        }
+      }
+    }
+
+    async function triggerManualSave() {
+      if (_autoSaveInProgress) return;
+      toast('💾 Synchronisation des modifications...', 'success');
+      await autoSave();
+    }
+
+    async function autoSave() {
+      if (_autoSaveInProgress) return;
+      _autoSaveInProgress = true;
+      setAutosaveStatus('saving');
+
+      try {
+        if (pendingImages.size > 0) {
+          for (const [itemId, imgData] of pendingImages) {
+            const formData = new FormData();
+            const webpFile = new File([imgData.cropped], `${itemId}.webp`, { type: 'image/webp' });
+            formData.append('image', webpFile);
+            formData.append('itemId', itemId);
+
+            if (imgData.original) {
+              const originalFile = new File([imgData.original], `${itemId}-original.webp`, { type: 'image/webp' });
+              formData.append('image_original', originalFile);
+            }
+
+            const uploadRes = await fetch('/api/admin/upload', {
+              method: 'POST',
+              body: formData
+            });
+            const uploadData = await uploadRes.json();
+            if (!uploadData.success) throw new Error(uploadData.error);
+
+            const item = menuItems.find(m => m.id === itemId);
+            if (item) item.image = uploadData.url;
+          }
+          pendingImages.clear();
+          render();
+        }
+
+        const payload = {
+          categories: getCategories(),
+          items: menuItems
+        };
+
+        const res = await fetch('/api/admin/menu', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error('Erreur HTTP ' + res.status);
+        setAutosaveStatus('ok');
+        toast('✅ Modifications enregistrées avec succès', 'success');
+      } catch (err) {
+        setAutosaveStatus('error');
+        toast('❌ Sauvegarde échouée: ' + err.message, 'error');
+      } finally {
+        _autoSaveInProgress = false;
+      }
+    }
+
+    function toast(msg, type = 'success') {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = `show ${type}`;
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.className = '', 3500);
+    }
+
+    // ══════════════════════════════════════════
+    // ██  AUTO-TRANSLATION ENGINE             ██
+    // ══════════════════════════════════════════
+    async function autoTranslateAPI(text, sourceLang, targetLang) {
+      if (!text || !text.trim()) return '';
+      try {
+        const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+        const r = await fetch(url);
+        const data = await r.json();
+        if (data && data[0]) return data[0].map(x => x[0]).join('');
+      } catch (e) {}
+
+      try {
+        const langPair = `${sourceLang}|${targetLang}`;
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${langPair}`;
+        const r = await fetch(url);
+        const data = await r.json();
+        if (data.responseData?.translatedText) return data.responseData.translatedText;
+      } catch (e) {}
+      return '';
+    }
+
+    async function handleAutoTranslate(sourceId, targetId, sourceLang, targetLang, spinnerId) {
+      const sourceEl = document.getElementById(sourceId);
+      const targetEl = document.getElementById(targetId);
+      const spinnerEl = spinnerId ? document.getElementById(spinnerId) : null;
+      if (!sourceEl || !targetEl) return;
+
+      const text = sourceEl.value.trim();
+      if (!text) return;
+
+      if (spinnerEl) spinnerEl.style.display = 'inline';
+      try {
+        const translated = await autoTranslateAPI(text, sourceLang, targetLang);
+        if (translated) {
+          targetEl.placeholder = '💡 ' + translated;
+          targetEl.dataset.proposal = translated;
+        }
+      } catch(e) {}
+      finally {
+        if (spinnerEl) spinnerEl.style.display = 'none';
+      }
+    }
+
+    // ══════════════════════════════════════════
+    // ██  CATEGORIES ENGINE & REORDERING       ██
+    // ══════════════════════════════════════════
+    const DEFAULT_CATEGORIES = [
+      { fr: "☕ Boisson chaude", en: "☕ Hot Drinks", isList: true },
+      { fr: "🧃 Boisson fraîche", en: "🧃 Cold Drinks", isList: true },
+      { fr: "🥐 Viennoiseries", en: "🥐 Pastries", isList: true },
+      { fr: "🍰 Gâteaux et tartes", en: "🍰 Cakes & Tarts", isList: false },
+      { fr: "🍽️ Plats", en: "🍽️ Savory", isList: false }
+    ];
+
+    let runtimeCategories = null;
+
+    function getCategories() {
+      if (!runtimeCategories) {
+        runtimeCategories = DEFAULT_CATEGORIES.map(c => ({ ...c }));
+      }
+      if (typeof menuItems !== 'undefined') {
+        const known = new Set(runtimeCategories.map(c => c.fr));
+        menuItems.forEach(item => {
+          if (item.category && !known.has(item.category)) {
+            runtimeCategories.push({
+              fr: item.category,
+              en: item.category_en || item.category,
+              isList: item.category_is_list || false
+            });
+            known.add(item.category);
+          }
+        });
+      }
+      return runtimeCategories;
+    }
+
+    function saveCategories(cats) {
+      runtimeCategories = cats;
+      repopulateCategorySelect();
+    }
+
+    function repopulateCategorySelect() {
+      const select = document.getElementById('f-category');
+      if (!select) return;
+      const currentVal = select.value;
+      select.innerHTML = '<option value="">-- Choisir --</option>';
+      getCategories().forEach(catObj => {
+        const opt = document.createElement('option');
+        opt.value = catObj.fr;
+        opt.textContent = catObj.fr;
+        select.appendChild(opt);
+      });
+      if (currentVal) select.value = currentVal;
+    }
+
+    function openCategoryManager() {
+      document.body.style.overflow = 'hidden';
+      document.getElementById('category-overlay').classList.add('open');
+      renderCategoryList();
+    }
+
+    function closeCategoryManager() {
+      document.body.style.overflow = '';
+      document.getElementById('category-overlay').classList.remove('open');
+    }
+
+    // CATEGORY POINTER DRAG & DROP
+    let _catActiveTr = null, _catGhost = null, _catPointerId = null, _catGrabOffsetY = 0;
+
+    function onCatPointerDown(e) {
+      if (!e.target.closest('.drag-handle')) return;
+      const row = e.target.closest('.cat-item-card');
+      if (!row || _catActiveTr) return;
+      e.preventDefault();
+
+      _catActiveTr = row;
+      _catPointerId = e.pointerId;
+      const rect = row.getBoundingClientRect();
+      _catGrabOffsetY = e.clientY - rect.top;
+      row.style.opacity = '0.35';
+
+      _catGhost = row.cloneNode(true);
+      Object.assign(_catGhost.style, {
+        position: 'fixed', top: '0', left: rect.left + 'px', width: rect.width + 'px',
+        margin: '0', pointerEvents: 'none', zIndex: '99999',
+        transform: `translate3d(0, ${e.clientY - _catGrabOffsetY}px, 0)`,
+        boxShadow: '0 10px 30px rgba(42,33,24,0.18)', border: '1.5px solid var(--navy)', background: 'var(--white)'
+      });
+      document.body.appendChild(_catGhost);
+
+      window.addEventListener('pointermove', onCatPointerMove, { passive: false });
+      window.addEventListener('pointerup', onCatPointerUp, { passive: true });
+    }
+
+    function onCatPointerMove(e) {
+      if (!_catActiveTr || e.pointerId !== _catPointerId) return;
+      e.preventDefault();
+      if (_catGhost) _catGhost.style.transform = `translate3d(0, ${e.clientY - _catGrabOffsetY}px, 0)`;
+
+      _catGhost.style.visibility = 'hidden';
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      _catGhost.style.visibility = '';
+      const hoverRow = el?.closest('.cat-item-card');
+      if (hoverRow && hoverRow !== _catActiveTr) {
+        const list = document.getElementById('category-list');
+        const hRect = hoverRow.getBoundingClientRect();
+        const after = e.clientY > hRect.top + hRect.height / 2;
+        list.insertBefore(_catActiveTr, after ? hoverRow.nextSibling : hoverRow);
+      }
+    }
+
+    async function onCatPointerUp(e) {
+      if (!_catActiveTr || e.pointerId !== _catPointerId) return;
+      window.removeEventListener('pointermove', onCatPointerMove);
+      window.removeEventListener('pointerup', onCatPointerUp);
+      if (_catGhost) { _catGhost.remove(); _catGhost = null; }
+      if (_catActiveTr) { _catActiveTr.style.opacity = '1'; _catActiveTr = null; }
+
+      const rows = Array.from(document.querySelectorAll('#category-list .cat-item-card'));
+      const currentCats = getCategories();
+      const reordered = rows.map(row => {
+        const nameEl = row.querySelector('.cat-name');
+        return nameEl ? currentCats.find(c => c.fr === nameEl.textContent.trim()) : null;
+      }).filter(Boolean);
+
+      saveCategories(reordered);
+      renderCategoryList();
+      render();
+      await autoSave();
+    }
+
+    function renderCategoryList() {
+      const list = document.getElementById('category-list');
+      const cats = getCategories();
+      list.innerHTML = '';
+      cats.forEach((catObj, i) => {
+        const itemCount = menuItems.filter(m => m.category === catObj.fr).length;
+        const row = document.createElement('div');
+        row.className = 'cat-item-card';
+        row.addEventListener('pointerdown', onCatPointerDown);
+        row.innerHTML = `
+          <div class="drag-handle" style="cursor:grab;color:var(--text-muted);font-size:16px;padding:4px;">☰</div>
+          <div style="flex:1;">
+            <div class="cat-title-row">
+              <span class="cat-name">${catObj.fr}</span>
+              <span class="cat-count">${itemCount} plat${itemCount !== 1 ? 's' : ''}</span>
+              ${catObj.isList ? '<span class="cat-badge-list">LISTE</span>' : ''}
+            </div>
+            <div class="cat-sub">${catObj.en || catObj.fr}</div>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="renameCategory(${i})">✏️</button>
+          <button class="cat-btn-del" onclick="removeCategory(${i})" title="Supprimer">✕</button>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    function renameCategory(index) {
+      const cat = getCategories()[index];
+      if (!cat) return;
+      document.body.style.overflow = 'hidden';
+      document.getElementById('rename-cat-index').value = index;
+      document.getElementById('rename-cat-fr').value = cat.fr || '';
+      document.getElementById('rename-cat-en').value = cat.en || '';
+      document.getElementById('rename-cat-overlay').classList.add('open');
+    }
+
+    function closeRenameCategory() {
+      document.body.style.overflow = '';
+      document.getElementById('rename-cat-overlay').classList.remove('open');
+    }
+
+    async function saveRenameCategory(e) {
+      e.preventDefault();
+      const index = parseInt(document.getElementById('rename-cat-index').value);
+      const cats = getCategories();
+      const cat = cats[index];
+      if (!cat) return;
+
+      const newFr = document.getElementById('rename-cat-fr').value.trim();
+      const newEn = document.getElementById('rename-cat-en').value.trim();
+      if (!newFr) return;
+
+      menuItems.forEach(item => {
+        if (item.category === cat.fr) {
+          item.category = newFr;
+          item.category_en = newEn || newFr;
+        }
+      });
+
+      cat.fr = newFr; cat.en = newEn || newFr;
+      saveCategories(cats);
+      renderCategoryList();
+      render();
+      closeRenameCategory();
+      await autoSave();
+    }
+
+    async function addCategory(e) {
+      const fr = document.getElementById('new-cat-input').value.trim();
+      const en = document.getElementById('new-cat-input-en').value.trim();
+      if (!fr) return;
+
+      const isList = document.querySelector('input[name="cat-style"]:checked').value === 'true';
+      const cats = getCategories();
+      cats.push({ fr, en: en || fr, isList });
+      saveCategories(cats);
+
+      document.getElementById('new-cat-input').value = '';
+      document.getElementById('new-cat-input-en').value = '';
+      document.getElementById('style-list').checked = true; // reset to Liste default
+      renderCategoryList();
+      render();
+      await autoSave();
+    }
+
+    async function removeCategory(index) {
+      const cats = getCategories();
+      const removed = cats[index];
+      if (!removed) return;
+
+      const itemsUsing = menuItems.filter(m => m.category === removed.fr);
+      const msg = itemsUsing.length > 0
+        ? `Voulez-vous vraiment supprimer la catégorie "${removed.fr}" ET ses ${itemsUsing.length} plat(s) ?`
+        : `Voulez-vous vraiment supprimer la catégorie "${removed.fr}" ?`;
+
+      if (!confirm(msg)) return;
+
+      menuItems = menuItems.filter(m => m.category !== removed.fr);
+      cats.splice(index, 1);
+      saveCategories(cats);
+      renderCategoryList();
+      render();
+      await autoSave();
+    }
+
+    async function saveCategoriesAndClose() {
+      closeCategoryManager();
+      render();
+      await autoSave();
+    }
+
+    // ══════════════════════════════════════════
+    // ██  DISHES REORDERING ENGINE            ██
+    // ══════════════════════════════════════════
+    let _activeTr = null, _ghost = null, _activePointerId = null, _grabOffsetY = 0, _latestClientY = 0, _dragSrcId = null;
+
+    function onDishPointerDown(e) {
+      if (!e.target.closest('.dish-drag')) return;
+      if (activeFilter === 'all') {
+        toast('ℹ️ Sélectionnez une catégorie pour réordonner les plats', 'error');
+        return;
+      }
+      const card = e.target.closest('div[data-id]');
+      if (!card || _activeTr) return;
+      e.preventDefault();
+
+      _activeTr = card;
+      _activePointerId = e.pointerId;
+      _dragSrcId = card.getAttribute('data-id');
+      _latestClientY = e.clientY;
+      const trRect = card.getBoundingClientRect();
+      _grabOffsetY = e.clientY - trRect.top;
+
+      _ghost = document.createElement('div');
+      _ghost.id = 'touch-drag-ghost';
+      _ghost.appendChild(card.cloneNode(true));
+
+      Object.assign(_ghost.style, {
+        position: 'fixed', top: '0', left: trRect.left + 'px', width: trRect.width + 'px',
+        margin: '0', pointerEvents: 'none', zIndex: '99999',
+        transform: `translate3d(0, ${e.clientY - _grabOffsetY}px, 0)`,
+        boxShadow: '0 15px 45px rgba(42,33,24,0.18)', border: '1.5px solid var(--navy)',
+        background: 'var(--white)', borderRadius: '16px'
+      });
+      document.body.appendChild(_ghost);
+
+      card.classList.add('is-dragging-original');
+      window.addEventListener('pointermove', onDishPointerMove, { passive: false });
+      window.addEventListener('pointerup', onDishPointerUp, { passive: true });
+    }
+
+    function onDishPointerMove(e) {
+      if (!_activeTr || e.pointerId !== _activePointerId) return;
+      e.preventDefault();
+      _latestClientY = e.clientY;
+      if (_ghost) _ghost.style.transform = `translate3d(0, ${_latestClientY - _grabOffsetY}px, 0)`;
+
+      _ghost.style.visibility = 'hidden';
+      const el = document.elementFromPoint(e.clientX, _latestClientY);
+      _ghost.style.visibility = '';
+      const targetCard = el?.closest('#menu-tbody > div[data-id]');
+      if (targetCard && targetCard !== _activeTr) {
+        const list = document.getElementById('menu-tbody');
+        const hRect = targetCard.getBoundingClientRect();
+        const after = _latestClientY > hRect.top + hRect.height / 2;
+        list.insertBefore(_activeTr, after ? targetCard.nextSibling : targetCard);
+      }
+    }
+
+    async function onDishPointerUp(e) {
+      if (!_activeTr || e.pointerId !== _activePointerId) return;
+      window.removeEventListener('pointermove', onDishPointerMove);
+      window.removeEventListener('pointerup', onDishPointerUp);
+      if (_ghost) { _ghost.remove(); _ghost = null; }
+      if (_activeTr) { _activeTr.classList.remove('is-dragging-original'); _activeTr = null; }
+
+      const cards = Array.from(document.querySelectorAll('#menu-tbody div[data-id]'));
+      const reorderedIds = cards.map(r => r.getAttribute('data-id'));
+      
+      const updated = [];
+      const currentCatItems = menuItems.filter(m => m.category === activeFilter);
+      const otherItems = menuItems.filter(m => m.category !== activeFilter);
+
+      reorderedIds.forEach(id => {
+        const item = currentCatItems.find(m => m.id === id);
+        if (item) updated.push(item);
+      });
+
+      menuItems = [...updated, ...otherItems];
+      render();
+      await autoSave();
+    }
+
+    // ══════════════════════════════════════════
+    // ██  SEARCH ENGINE                        ██
+    // ══════════════════════════════════════════
+    // ██  RENDER DISHES & DASHBOARD           ██
+    // ══════════════════════════════════════════
+    function render() {
+      const cats = getCategories();
+
+      const tabsEl = document.getElementById('filter-tabs');
+      tabsEl.innerHTML = `<button class="filter-tab ${activeFilter === 'all' ? 'active' : ''}" onclick="setFilter('all')">Tous</button>`;
+      cats.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = `filter-tab ${activeFilter === cat.fr ? 'active' : ''}`;
+        btn.textContent = cat.fr;
+        btn.onclick = () => setFilter(cat.fr);
+        tabsEl.appendChild(btn);
+      });
+
+      const totalCount = menuItems.length;
+      const hiddenCount = menuItems.filter(m => m.is_hidden).length;
+      const visibleCount = totalCount - hiddenCount;
+
+      document.getElementById('stat-total').innerHTML = `${visibleCount} <span style="font-size:16px;font-weight:400;color:var(--text-muted);">/ ${totalCount}</span>`;
+      document.getElementById('stat-categories').textContent = cats.length;
+      document.getElementById('stat-hidden').textContent = hiddenCount;
+
+      const tableWrap = document.querySelector('.table-wrap');
+      if (tableWrap) {
+        if (activeFilter === 'all') {
+          tableWrap.classList.add('no-drag');
+        } else {
+          tableWrap.classList.remove('no-drag');
+        }
+      }
+
+      const list = document.getElementById('menu-tbody');
+      list.innerHTML = '';
+
+      // Apply category filter
+      const filtered = activeFilter === 'all' ? menuItems : menuItems.filter(m => m.category === activeFilter);
+
+      // Update count badge
+      const countBadge = document.getElementById('dish-count-badge');
+      if (countBadge) {
+        countBadge.textContent = `${filtered.length} plat${filtered.length !== 1 ? 's' : ''}`;
+      }
+
+      // Empty state
+      if (filtered.length === 0) {
+        const emptyEl = document.createElement('div');
+        emptyEl.className = 'empty-state';
+        emptyEl.innerHTML = `
+          <div class="empty-state-icon">🍽️</div>
+          <div class="empty-state-title">Aucun plat ici</div>
+          <div class="empty-state-desc">Cette catégorie est vide. Ajoutez votre premier plat.</div>
+          <button class="btn btn-primary btn-sm" onclick="openModal(null)">+ Ajouter un plat</button>
+        `;
+        list.appendChild(emptyEl);
+        return;
+      }
+
+      filtered.forEach((item, idx) => {
+        const realIndex = menuItems.indexOf(item);
+        const card = document.createElement('div');
+        card.className = `dish-card${item.is_hidden ? ' is-hidden-card' : ''}`;
+        card.setAttribute('data-id', item.id);
+        if (activeFilter !== 'all') {
+          card.addEventListener('pointerdown', onDishPointerDown);
+        }
+
+        const imgHtml = item.image
+          ? `<img class="dish-img" src="${item.image}" alt="${item.title}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="dish-img-placeholder" style="display:none">☕</div>`
+          : `<div class="dish-img-placeholder">☕</div>`;
+
+        const eyeOpen = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+        const eyeOff  = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
+        const penIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
+        const trashIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>`;
+
+        const dragHtml = (activeFilter !== 'all')
+          ? `<div class="dish-drag" title="Glisser pour réordonner">☰</div>`
+          : '';
+
+        card.innerHTML = `
+          ${dragHtml}
+          <div class="dish-photo-col">${imgHtml}</div>
+          <div class="dish-plat-col">
+            <div class="dish-title">${item.title}</div>
+            ${item.description ? `<div class="dish-desc">${item.description}</div>` : ''}
+          </div>
+          <div class="dish-cat-col">
+            <span class="category-badge">${item.category}</span>
+          </div>
+          <div class="dish-price-col">
+            <span class="dish-price">${typeof item.price === 'number' ? item.price.toFixed(1) : item.price} DT</span>
+          </div>
+          <div class="dish-actions-col">
+            <div class="dish-actions">
+              <button class="btn btn-secondary btn-sm btn-edit" onclick="openModal(${realIndex})" title="Modifier">${penIcon}</button>
+              <button class="btn btn-secondary btn-sm btn-vis" onclick="toggleHide(${realIndex})" title="${item.is_hidden ? 'Afficher' : 'Masquer'}">${item.is_hidden ? eyeOff : eyeOpen}</button>
+              <button class="btn btn-danger btn-sm btn-del" onclick="deleteItem(${realIndex})" title="Supprimer">${trashIcon}</button>
+            </div>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    function setFilter(cat) {
+      activeFilter = cat;
+      render();
+    }
+
+    async function toggleHide(idx) {
+      menuItems[idx].is_hidden = !menuItems[idx].is_hidden;
+      render();
+      await autoSave();
+    }
+
+    async function deleteItem(idx) {
+      if (!confirm(`Supprimer "${menuItems[idx].title}" ?`)) return;
+      menuItems.splice(idx, 1);
+      render();
+      await autoSave();
+    }
+
+    // OPEN DISH MODAL (ALWAYS CLEARS PREVIOUS DISH IMAGE STATE)
+    function openModal(idx) {
+      document.getElementById('modal-title').textContent = idx === null ? 'Nouveau plat' : 'Modifier le plat';
+      document.getElementById('item-index').value = idx === null ? '' : idx;
+
+      // Clean image state FIRST
+      clearImageState();
+
+      if (idx !== null) {
+        const item = menuItems[idx];
+        document.getElementById('f-title').value = item.title || '';
+        document.getElementById('f-title-en').value = item.title_en || '';
+        document.getElementById('f-price').value = item.price || '';
+        document.getElementById('f-category').value = item.category || '';
+        document.getElementById('f-description').value = item.description || '';
+        document.getElementById('f-description-en').value = item.description_en || '';
+        window._currentImageUrl = item.image || '';
+
+        if (item.image) {
+          const catObj = getCategories().find(c => c.fr === item.category);
+          initCropZone(item.image, catObj ? !!catObj.isList : false);
+          updateUploadZone(true);
+        }
+      } else {
+        document.getElementById('item-form').reset();
+        if (activeFilter && activeFilter !== 'all') {
+          document.getElementById('f-category').value = activeFilter;
+        }
+      }
+      document.body.style.overflow = 'hidden';
+      document.getElementById('modal-overlay').classList.add('open');
+    }
+
+    function closeModal() {
+      document.body.style.overflow = '';
+      document.getElementById('modal-overlay').classList.remove('open');
+      clearImageState();
+    }
+
+    async function saveItem(e) {
+      e.preventDefault();
+      const idxStr = document.getElementById('item-index').value;
+      const catFr = document.getElementById('f-category').value;
+      if (!catFr) { toast('Sélectionnez une catégorie', 'error'); return; }
+
+      const titleFr = document.getElementById('f-title').value.trim();
+      const titleEn = document.getElementById('f-title-en').value.trim() || titleFr;
+      const price = parseFloat(document.getElementById('f-price').value) || 0;
+      const descFr = document.getElementById('f-description').value.trim();
+      const descEn = document.getElementById('f-description-en').value.trim() || descFr;
+
+      let webpCropped = null;
+      let webpOriginal = null;
+
+      if (_cropDirty && _rawImage) {
+        const croppedBlob = await getCropBlob();
+        if (croppedBlob) {
+          webpCropped = await compressToWebP(croppedBlob);
+        }
+
+        // ONLY send webpOriginal if a NEW file was uploaded in this session!
+        if (window._rawPendingFile) {
+          webpOriginal = await compressToWebP(window._rawPendingFile, 1000, 120);
+        }
+      }
+
+      const imageUrl = window._currentPendingPreview || window._currentImageUrl || '';
+      const newItem = {
+        category: catFr,
+        title: titleFr, title_en: titleEn,
+        price, image: imageUrl,
+        description: descFr, description_en: descEn,
+        is_hidden: false
+      };
+
+      if (idxStr === '') {
+        const uniqueId = 'plat-' + Date.now();
+        newItem.id = uniqueId;
+        if (webpCropped) {
+          pendingImages.set(uniqueId, { cropped: webpCropped, original: webpOriginal });
+        }
+        menuItems.unshift(newItem);
+      } else {
+        const idx = parseInt(idxStr);
+        const existing = menuItems[idx];
+        menuItems[idx] = { ...existing, ...newItem };
+        if (webpCropped) {
+          pendingImages.set(existing.id, { cropped: webpCropped, original: webpOriginal });
+        }
+      }
+
+      closeModal();
+      render();
+      await autoSave();
+    }
+
+    // Close modals when clicking outside (on backdrop)
+    
+  </script>
+</body>
+
+</html>

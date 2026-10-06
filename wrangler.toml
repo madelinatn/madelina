@@ -1,0 +1,15 @@
+name = "madelina"
+pages_build_output_dir = "dist"
+compatibility_date = "2024-05-13"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "madelina-db"
+database_id = "4a877787-ac15-4651-b46a-9ad04c2b918b"
+
+[[kv_namespaces]]
+binding = "IMAGES"
+id = "850436f9f73d49079ee8de2fa5edc67d"
+
+
+

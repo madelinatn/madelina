@@ -1,32 +1,58 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu as MenuIcon, X, Phone, Instagram } from 'lucide-react';
 import { motion, AnimatePresence, useScroll } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 
 export const Header = () => {
   const [isScrolled, setIsScrolled]       = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
+  const { language, setLanguage, t } = useLanguage();
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    return scrollY.on('change', (v) => setIsScrolled(v > 60));
+    return scrollY.on('change', (v) => setIsScrolled(v > 0));
   }, [scrollY]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isMobileMenuOpen && headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    const handleScroll = () => {
+      if (isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isMobileMenuOpen]);
+
   const navItems = [
-    { label: 'Le Menu',   href: '/menu',      external: true  },
-    { label: "L'Atelier", href: '/#our-story',  external: false },
-    { label: 'Contact',   href: '/#contact',  external: false },
+    { label: t('Le Menu', 'Our Menu'), href: '/menu' },
+    { label: t("L'Atelier", 'Our Story'), href: '/#our-story' },
+    { label: 'Contact', href: '/#contact' },
   ];
 
   return (
     <header
+      ref={headerRef}
       id="site-header"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled
-          ? 'bg-[#FAF7F4]/90 backdrop-blur-xl py-3 border-b border-[#A64B2A]/10 shadow-[0_2px_24px_rgba(166,75,42,0.06)]'
-          : 'bg-transparent py-6'
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
+        isScrolled || isMobileMenuOpen
+          ? 'bg-[#FAF7F4]/96 border-[#A64B2A]/10 shadow-[0_2px_24px_rgba(166,75,42,0.06)]'
+          : 'bg-[#FAF7F4]/0 border-transparent shadow-none'
+      } ${isScrolled ? 'py-3' : 'py-6'}`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
 
@@ -45,9 +71,11 @@ export const Header = () => {
         >
           <div className="relative transition-transform duration-500 group-hover:scale-105 h-16 w-16 sm:h-20 sm:w-20 rounded-full overflow-hidden bg-white shadow-sm border border-[#A64B2A]/20 flex items-center justify-center">
             <img
-              src="/logos/logo_madelina-4.png"
+              src="/logos/logo_madelina-4.webp"
               alt="madélina par Haifa Ben Salem"
               className="w-full h-full object-cover scale-[1.45]"
+              width="160"
+              height="160"
               loading="eager"
               fetchpriority="high"
               decoding="sync"
@@ -66,7 +94,6 @@ export const Header = () => {
             >
               <Link
                 to={item.href}
-                id={`nav-${item.label.toLowerCase().replace(/\W+/g, '-')}`}
                 className="relative text-[11px] uppercase tracking-[0.2em] font-medium text-[#2A2118] hover:text-[#A64B2A] transition-colors duration-300 group"
               >
                 {item.label}
@@ -76,13 +103,28 @@ export const Header = () => {
           ))}
         </nav>
 
-        {/* ── CTA ── */}
+        {/* ── CTA & Lang ── */}
         <div className="hidden md:flex items-center gap-4">
+          <div className="flex items-center gap-2 mr-2 text-[11px] font-medium uppercase tracking-wider">
+            <button 
+              onClick={() => setLanguage('fr')} 
+              className={`transition-colors ${language === 'fr' ? 'text-[#A64B2A] font-bold' : 'text-[#2A2118]/60 hover:text-[#A64B2A]'}`}
+            >
+              FR
+            </button>
+            <span className="text-[#2A2118]/20">|</span>
+            <button 
+              onClick={() => setLanguage('en')} 
+              className={`transition-colors ${language === 'en' ? 'text-[#A64B2A] font-bold' : 'text-[#2A2118]/60 hover:text-[#A64B2A]'}`}
+            >
+              EN
+            </button>
+          </div>
+
           <a
             href="https://www.instagram.com/madelina_bizerte/"
             target="_blank"
             rel="noopener noreferrer"
-            id="nav-instagram"
             className="flex items-center justify-center bg-[#A64B2A]/10 text-[#A64B2A] rounded-full w-9 h-9 hover:bg-[#A64B2A] hover:text-white transition-all shadow-sm"
             aria-label="Instagram"
           >
@@ -92,7 +134,6 @@ export const Header = () => {
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.97 }}
             href="tel:72413676"
-            id="nav-phone-btn"
             className="btn-primary flex items-center gap-2 text-[12px] px-5 py-2.5"
           >
             <Phone size={14} strokeWidth={1.5} />
@@ -102,7 +143,6 @@ export const Header = () => {
 
         {/* ── Mobile Toggle ── */}
         <button
-          id="nav-mobile-toggle"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="md:hidden p-2 text-[#2A2118] hover:text-[#A64B2A] transition-colors"
           aria-label="Ouvrir le menu"
@@ -132,10 +172,39 @@ export const Header = () => {
                 </Link>
               ))}
               <div className="h-px bg-[#A64B2A]/10 my-2" />
-              <a href="tel:72413676" className="flex items-center gap-2 text-[#A64B2A] font-medium">
-                <Phone size={16} strokeWidth={1.5} />
-                72 413 676
-              </a>
+              
+              <div className="flex items-center gap-4 text-sm font-medium uppercase tracking-wider mb-2">
+                <button 
+                  onClick={() => { setLanguage('fr'); setIsMobileMenuOpen(false); }} 
+                  className={language === 'fr' ? 'text-[#A64B2A]' : 'text-[#2A2118]/60'}
+                >
+                  Français
+                </button>
+                <span className="text-[#2A2118]/20">•</span>
+                <button 
+                  onClick={() => { setLanguage('en'); setIsMobileMenuOpen(false); }} 
+                  className={language === 'en' ? 'text-[#A64B2A]' : 'text-[#2A2118]/60'}
+                >
+                  English
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between mt-2">
+                <a href="tel:72413676" className="flex items-center gap-2.5 text-[#A64B2A] font-medium text-base">
+                  <Phone size={18} strokeWidth={1.5} />
+                  <span>72 413 676</span>
+                </a>
+
+                <a
+                  href="https://www.instagram.com/madelina_bizerte/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center bg-[#A64B2A]/10 text-[#A64B2A] rounded-full w-10 h-10 hover:bg-[#A64B2A] hover:text-white transition-all shadow-sm"
+                  aria-label="Instagram"
+                >
+                  <Instagram size={18} strokeWidth={1.5} />
+                </a>
+              </div>
             </div>
           </motion.div>
         )}

@@ -1,0 +1,203 @@
+  <!-- AUTH GATE MODAL -->
+  <div id="gate">
+    <div class="gate-card">
+      <div class="gate-logo">
+        <img src="../logos/logo_madelina-4.webp" alt="Madelina Logo" />
+      </div>
+      <h1>madelina admin</h1>
+      <p>Entrez vos identifiants pour accéder</p>
+      <form onsubmit="event.preventDefault(); unlockGate();">
+        <input type="text" id="gate-user" placeholder="Nom d'utilisateur" autocomplete="username" />
+        <input type="password" id="gate-pass" placeholder="Mot de passe" autocomplete="current-password" />
+        <button type="submit" id="gate-btn">Se connecter</button>
+      </form>
+      <div id="gate-error"></div>
+    </div>
+  </div>
+
+  <!-- PRINTABLE RECIPE CONTAINER (HIDDEN UNTIL PRINT) -->
+  <div id="print-recipe-container" style="display:none;"></div>
+
+  <!-- MAIN APP -->
+  <div id="app">
+    <div class="sticky-header-wrapper">
+      <header>
+        <div class="header-brand">
+          <div class="header-logo">
+            <img src="../logos/logo_madelina-4.webp" alt="Madelina Logo" />
+          </div>
+          <div>
+            <h2>madelina</h2>
+            <p>Dashboard Direction & Cuisine</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <div class="user-badge" id="current-user-badge">👤 Connecté</div>
+          <div id="autosave-status" class="autosave-badge" title="Statut de sauvegarde automatique">
+            <span class="autosave-dot" id="autosave-dot"></span>
+            <span id="autosave-text">Enregistré</span>
+          </div>
+          <button class="btn btn-secondary btn-header" id="btn-header-cats" onclick="openCategoryManager()">📁 Catégories</button>
+          <button class="btn btn-primary btn-header" id="btn-header-add-plat" onclick="openModal(null)">+ Ajouter un plat</button>
+          <button class="btn btn-secondary btn-header btn-logout" style="color: var(--terracotta);" onclick="doLogout()">🔒 Déconnecter</button>
+        </div>
+      </header>
+    </div>
+
+    <!-- MAIN NAV TABS -->
+    <div class="sticky-header-wrapper">
+      <div class="main-nav">
+        <button class="nav-tab active" id="nav-menu" onclick="switchView('menu')">🍽️ Menu & Carte</button>
+        <button class="nav-tab" id="nav-recipes" onclick="switchView('recipes')">📖 Recettes & Calculatrice</button>
+        <button class="nav-tab" id="nav-users" onclick="switchView('users')">👥 Utilisateurs & Rôles</button>
+      </div>
+    </div>
+
+    <main>
+      <!-- ══════════════════════════════════════════ -->
+      <!-- 1. MENU & CARTE SECTION                   -->
+      <!-- ══════════════════════════════════════════ -->
+      <div id="section-menu">
+        <!-- STATS BAR -->
+        <div class="stats">
+          <div class="stat-card">
+            <div class="label">Plats Visibles</div>
+            <div class="value" id="stat-total">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Catégories</div>
+            <div class="value" id="stat-categories">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Masqués</div>
+            <div class="value" id="stat-hidden">0</div>
+          </div>
+        </div>
+
+        <!-- TOOLBAR & FILTERS -->
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <div class="toolbar-top-row">
+              <div class="toolbar-title-group">
+                <h3>La Carte</h3>
+                <span class="toolbar-count-badge" id="dish-count-badge">0 plats</span>
+              </div>
+            </div>
+            <div class="filter-tabs" id="filter-tabs"></div>
+          </div>
+        </div>
+
+        <!-- MENU CARD TABLE LIST -->
+        <div class="table-wrap">
+          <div class="table-header">
+            <div class="th-cell th-drag"></div>
+            <div class="th-cell th-photo">PHOTO</div>
+            <div class="th-cell th-plat">PLAT</div>
+            <div class="th-cell th-cat">CATÉGORIE</div>
+            <div class="th-cell th-price">PRIX</div>
+            <div class="th-cell th-actions">ACTIONS</div>
+          </div>
+          <div class="dish-list" id="menu-tbody"></div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- 2. RECIPES & SCALING SECTION             -->
+      <!-- ══════════════════════════════════════════ -->
+      <div id="section-recipes" style="display:none;">
+        <div class="stats" style="margin-bottom:24px;">
+          <div class="stat-card">
+            <div class="label">Recettes</div>
+            <div class="value" id="stat-recipes">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Catégories</div>
+            <div class="value" id="stat-recipe-cats">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Ingrédients Totaux</div>
+            <div class="value" id="stat-ingredients">0</div>
+          </div>
+        </div>
+
+        <div class="recipe-toolbar">
+          <div class="recipe-toolbar-left">
+            <h3 style="font-size:20px;font-weight:700;">Recettes & Fiches Techniques</h3>
+            <span class="toolbar-count-badge" id="recipe-count-badge">0 recettes</span>
+            <div class="filter-tabs" id="recipe-filter-tabs"></div>
+          </div>
+          <div class="recipe-toolbar-right">
+            <button class="btn btn-secondary btn-sm" id="btn-recipe-cats" onclick="openRecipeCatModal()">📁 Catégories</button>
+            <button class="btn btn-primary btn-sm" id="btn-recipe-add" onclick="openRecipeModal(null)">+ Ajouter une recette</button>
+          </div>
+        </div>
+
+        <div class="recipe-grid" id="recipe-grid">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!-- 3. USERS & ROLES SECTION (RBAC)          -->
+      <!-- ══════════════════════════════════════════ -->
+      <div id="section-users" style="display:none;">
+        <div class="stats" style="margin-bottom:24px;">
+          <div class="stat-card">
+            <div class="label">Utilisateurs Actifs</div>
+            <div class="value" id="stat-users-active">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Administrateurs</div>
+            <div class="value" id="stat-users-admins">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Membres Équipe</div>
+            <div class="value" id="stat-users-staff">0</div>
+          </div>
+        </div>
+
+        <div class="user-toolbar">
+          <div>
+            <h3 style="font-size:20px;font-weight:700;">Gestion des Comptes & Permissions</h3>
+            <p style="font-size:12px;color:var(--text-muted);margin-top:2px;">
+              Attribuez des rôles et restreignez l'accès aux catégories de recettes selon le poste (Pâtisserie, Barista...).
+            </p>
+          </div>
+          <div>
+            <button class="btn btn-primary btn-sm" onclick="openUserModal(null)">+ Nouvel utilisateur</button>
+          </div>
+        </div>
+
+        <div class="user-table-wrap">
+          <table class="user-table">
+            <thead>
+              <tr>
+                <th>UTILISATEUR</th>
+                <th>RÔLE</th>
+                <th>ACCÈS AUX RECETTES</th>
+                <th>STATUT</th>
+                <th style="text-align:right;">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="user-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- MOBILE BOTTOM DOCKS -->
+    <div class="mobile-bottom-dock" id="mobile-dock-menu">
+      <button class="mobile-dock-btn dock-btn-cat" onclick="openCategoryManager()">📁 Catégories</button>
+      <button class="mobile-dock-btn dock-btn-add" onclick="openModal(null)">+ Ajouter un plat</button>
+    </div>
+    <div class="mobile-bottom-dock" id="mobile-dock-recipes" style="display:none !important;">
+      <button class="mobile-dock-btn dock-btn-cat" onclick="openRecipeCatModal()">📁 Catégories</button>
+      <button class="mobile-dock-btn dock-btn-add" onclick="openRecipeModal(null)">+ Recette</button>
+    </div>
+    <div class="mobile-bottom-dock" id="mobile-dock-users" style="display:none !important;">
+      <button class="mobile-dock-btn dock-btn-add" style="grid-column: span 2;" onclick="openUserModal(null)">+ Nouvel utilisateur</button>
+    </div>
+  </div>

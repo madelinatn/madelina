@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 const fadeInUp = {
   hidden:  { opacity: 0, y: 40 },
@@ -32,10 +33,12 @@ const Stat = ({ number, label }: { number: string; label: string }) => (
 );
 
 export const OurStory = () => {
+  const { t } = useLanguage();
+
   return (
     <section
       id="our-story"
-      style={{ background: '#F2E9E1', padding: '7rem 0', overflow: 'hidden' }}
+      className="bg-[#F2E9E1] py-28 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
 
@@ -47,13 +50,13 @@ export const OurStory = () => {
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          <span style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#A64B2A', fontWeight: 500 }}>
-            Notre Histoire
+          <span className="font-sans text-[0.65rem] tracking-[0.3em] uppercase text-madelina-terracotta font-medium">
+            {t("Notre Histoire", "Our Story")}
           </span>
-          <h2 style={{ fontFamily: '"Allenoire",Georgia,serif', fontSize: 'clamp(1.75rem, 6vw, 3.8rem)', color: '#2A2118', marginTop: '1rem', lineHeight: 1.25 }}>
-            Plus qu'un Café,
+          <h2 className="font-allenoire text-[clamp(1.75rem,6vw,3.8rem)] text-madelina-navy mt-4 leading-[1.25]">
+            {t("Plus qu'un Café,", "More than a Cafe,")}
             <br className="hidden sm:block" />
-            <span style={{ color: '#A64B2A' }}> Une Galerie de Saveurs</span>
+            <span className="text-madelina-terracotta"> {t("Une Galerie de Saveurs", "A Gallery of Flavors")}</span>
           </h2>
           <ArchDivider />
         </motion.div>
@@ -73,20 +76,24 @@ export const OurStory = () => {
             <div className="relative p-2 md:p-3 bg-white rounded-[2.5rem] shadow-[0_24px_80px_rgba(42,33,24,0.08)] border border-[#A64B2A]/10">
               <div className="img-hover rounded-[2rem] overflow-hidden">
                 <img
-                  src="https://i.ibb.co/7xFdCVrx/unnamed-14.jpg"
-                  alt="madélina — pâtisserie artisanale et café"
-                  className="w-full aspect-[3/4] object-cover"
+                  src="/images/art-de-creer.webp"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  alt="madélina — vitrine pâtisserie artisanale"
+                  className="w-full aspect-[3/4] object-cover object-center"
+                  width="600"
+                  height="800"
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>
 
             {/* Floating badge top-right */}
             <motion.div
-              className="absolute -top-3 right-0 sm:-top-6 sm:-right-6 w-[6.5rem] h-[6.5rem] sm:w-[8rem] sm:h-[8rem] flex flex-col items-center justify-center bg-[#A64B2A] text-[#F2E9E1] rounded-full border-[3px] border-[#FAF7F4] shadow-[0_8px_32px_rgba(166,75,42,0.35)] z-10 p-3 animate-float"
+              className="absolute -top-3 right-0 sm:-top-6 sm:-right-6 w-[7rem] h-[7rem] sm:w-[9rem] sm:h-[9rem] flex flex-col items-center justify-center bg-[#A64B2A] text-[#F2E9E1] rounded-full border-[3px] border-[#FAF7F4] shadow-[0_8px_32px_rgba(166,75,42,0.35)] z-10 p-3 animate-float"
             >
-              <span style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.7rem', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', lineHeight: 1.4, textAlign: 'center' }}>
-                L’Art<br />de Créer
+              <span style={{ fontFamily: '"Playfair Display",serif' }} className="text-[0.8rem] sm:text-[0.95rem] font-bold tracking-[0.06em] uppercase leading-[1.35] text-center">
+                {t("L'ART", "THE ART")}<br />{t("DE CRÉER", "OF CREATING")}
               </span>
             </motion.div>
 
@@ -98,11 +105,11 @@ export const OurStory = () => {
               transition={{ delay: 0.3, duration: 0.8 }}
               className="absolute -bottom-8 w-[94%] left-[3%] sm:w-auto sm:left-1/2 sm:-translate-x-1/2 bg-[#FAF7F4] rounded-[1.25rem] p-4 sm:p-5 flex items-center justify-around sm:justify-center sm:gap-8 shadow-[0_12px_48px_rgba(42,33,24,0.10)] z-10 whitespace-nowrap"
             >
-              <Stat number="100%" label="Fait maison" />
+              <Stat number="100%" label={t("Fait maison", "Homemade")} />
               <div className="w-px h-8 bg-[#A64B2A]/15 hidden sm:block" />
-              <Stat number="4.8★" label="Note Google" />
+              <Stat number="4.8★" label={t("Note Google", "Google Rating")} />
               <div className="w-px h-8 bg-[#A64B2A]/15 hidden sm:block" />
-              <Stat number="∞" label="Saveurs" />
+              <Stat number="∞" label={t("Saveurs", "Flavors")} />
             </motion.div>
           </motion.div>
 
@@ -112,26 +119,32 @@ export const OurStory = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            style={{ paddingTop: '3rem' }}
+            className="pt-12"
           >
-            <p style={{ fontFamily: '"Inter",sans-serif', color: '#7A6A5A', fontSize: '1.0625rem', lineHeight: 1.85, marginBottom: '1.75rem' }}>
-              Haifa Ben Salem a imaginé madélina comme un lieu intime, à mi-chemin entre l'atelier parisien et la chaleur du foyer tunisien — un endroit où chaque création est pensée avec soin, des ingrédients jusqu'à la présentation.
+            <p className="font-sans text-[#7A6A5A] text-[1.0625rem] leading-[1.85] mb-7">
+              {t(
+                "Haifa Ben Salem a imaginé madélina comme un lieu intime, à mi-chemin entre l'atelier parisien et la chaleur du foyer tunisien — un endroit où chaque création est pensée avec soin, des ingrédients jusqu'à la présentation.",
+                "Haifa Ben Salem imagined madélina as an intimate place, halfway between a Parisian workshop and the warmth of a Tunisian home — a place where every creation is carefully thought out, from ingredients to presentation."
+              )}
             </p>
-            <p style={{ fontFamily: '"Inter",sans-serif', color: '#7A6A5A', fontSize: '1.0625rem', lineHeight: 1.85, marginBottom: '2.5rem' }}>
-              Nos pâtisseries portent en elles un savoir-faire artisanal qui allie techniques françaises et saveurs du Maghreb, dans une harmonie simple et rare.
+            <p className="font-sans text-[#7A6A5A] text-[1.0625rem] leading-[1.85] mb-10">
+              {t(
+                "Nos pâtisseries portent en elles un savoir-faire artisanal qui allie techniques françaises et saveurs du Maghreb, dans une harmonie simple et rare.",
+                "Our pastries carry within them an artisanal know-how that combines French techniques and flavors of the Maghreb, in a simple and rare harmony."
+              )}
             </p>
             {/* Pillars list */}
             <div className="space-y-5">
               {[
-                { icon: '✦', title: 'Ingrédients d’exception',      desc: 'Sélectionnés chaque matin avec soin et passion.' },
-                { icon: '✦', title: 'Le geste juste, chaque fois',    desc: 'Chaque pâtisserie est façonnée à la main, sans compromis.' },
-                { icon: '✦', title: 'Une ambiance qui vous accueille', desc: 'Un espace pensé pour le calme, la beauté et le partage.' },
+                { icon: '✦', title: t('Ingrédients d’exception', 'Exceptional ingredients'),      desc: t('Sélectionnés chaque matin avec soin et passion.', 'Selected every morning with care and passion.') },
+                { icon: '✦', title: t('Le geste juste, chaque fois', 'The right gesture, every time'),    desc: t('Chaque pâtisserie est façonnée à la main, sans compromis.', 'Each pastry is hand-crafted, without compromise.') },
+                { icon: '✦', title: t('Une ambiance qui vous accueille', 'An atmosphere that welcomes you'), desc: t('Un espace pensé pour le calme, la beauté et le partage.', 'A space designed for calm, beauty, and sharing.') },
               ].map((p) => (
                 <div key={p.title} className="flex items-start gap-4">
-                  <span style={{ color: '#A64B2A', fontSize: '0.75rem', marginTop: '0.3rem', flexShrink: 0 }}>{p.icon}</span>
+                  <span className="text-madelina-terracotta text-xs mt-1 shrink-0">{p.icon}</span>
                   <div>
-                    <p style={{ fontFamily: '"Playfair Display",serif', fontSize: '1rem', color: '#2A2118', marginBottom: '0.2rem' }}>{p.title}</p>
-                    <p style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.875rem', color: '#7A6A5A', lineHeight: 1.6 }}>{p.desc}</p>
+                    <p className="font-display text-base text-madelina-navy mb-1">{p.title}</p>
+                    <p className="font-sans text-sm text-[#7A6A5A] leading-[1.6]">{p.desc}</p>
                   </div>
                 </div>
               ))}
@@ -143,7 +156,7 @@ export const OurStory = () => {
                 id="story-contact-btn"
                 className="btn-primary inline-flex"
               >
-                Nous Trouver
+                {t("Nous Trouver", "Find Us")}
               </a>
               <Link
                 to="/menu"

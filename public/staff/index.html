@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fr" translate="no">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="google" content="notranslate" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Madelina | Recettes</title>
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Allenoire';
+      src: url('../fonts/allenoire.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --terracotta: #A64B2A;
+      --navy: #2A2118;
+      --cream: #FAF7F4;
+      --white: #ffffff;
+      --border: #EAE3DA;
+      --text-muted: #7A6A5A;
+      --danger: #e05252;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--navy);
+      min-height: 100vh;
+    }
+
+    /* ── AUTH GATE ── */
+    #gate {
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .gate-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 24px;
+      padding: 48px 32px;
+      width: min(380px, calc(100vw - 32px));
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(42, 33, 24, 0.08);
+    }
+
+    .gate-logo {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      border: 1.5px solid rgba(166, 75, 42, 0.2);
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(166, 75, 42, 0.08);
+    }
+
+    .gate-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.45);
+    }
+
+    .gate-card h1 {
+      font-family: 'Allenoire', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--navy);
+      letter-spacing: 0.02em;
+      text-transform: lowercase;
+      margin-bottom: 4px;
+    }
+
+    .gate-card .gate-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .gate-card input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      outline: none;
+      background: var(--white);
+      transition: border-color 0.2s;
+      margin-bottom: 12px;
+      color: var(--navy);
+    }
+
+    .gate-card input:focus { border-color: var(--navy); }
+
+    .gate-card button.btn-login {
+      width: 100%;
+      padding: 14px;
+      background: var(--terracotta);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .gate-card button.btn-login:hover { background: #8f3e21; }
+
+    #gate-error {
+      color: var(--danger);
+      font-size: 12px;
+      margin-top: 12px;
+      min-height: 16px;
+    }
+
+    /* ── APP ── */
+    #app { display: none; }
+
+    /* ── HEADER ── */
+    .staff-header {
+      background: var(--white);
+      border-bottom: 1.5px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(42, 33, 24, 0.04);
+    }
+
+    .staff-header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .staff-header-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1.5px solid rgba(166,75,42,0.2);
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .staff-header-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.45);
+    }
+
+    .staff-header-brand h2 {
+      font-family: 'Allenoire', serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--terracotta);
+      text-transform: lowercase;
+    }
+
+    .staff-header-brand p {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .btn-logout {
+      padding: 8px 14px;
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-logout:hover { border-color: var(--danger); color: var(--danger); }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+
+    /* ── SEARCH ── */
+    .search-wrap {
+      margin-bottom: 20px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      outline: none;
+      transition: border-color 0.2s;
+      color: var(--navy);
+    }
+
+    .search-input:focus { border-color: var(--navy); }
+
+    /* ── CATEGORY TABS ── */
+    .cat-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 24px;
+      scrollbar-width: none;
+    }
+
+    .cat-tabs::-webkit-scrollbar { display: none; }
+
+    .cat-tab {
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      transition: all 0.18s;
+      background: var(--white);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .cat-tab.active {
+      background: var(--terracotta);
+      color: white;
+      border-color: var(--terracotta);
+    }
+
+    /* ── RECIPE CARDS ── */
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .recipe-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 2px 12px rgba(42,33,24,0.04);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .recipe-card:hover {
+      box-shadow: 0 8px 30px rgba(42,33,24,0.10);
+      transform: translateY(-2px);
+    }
+
+    .recipe-cat-tag {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--terracotta);
+      background: rgba(166,75,42,0.07);
+      border-radius: 20px;
+      padding: 3px 10px;
+      margin-bottom: 10px;
+      letter-spacing: 0.03em;
+    }
+
+    .recipe-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .recipe-base-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .recipe-ingredients {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .recipe-ingredients-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 6px;
+    }
+
+    .ing-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      gap: 8px;
+    }
+
+    .ing-name { color: var(--navy); font-weight: 500; }
+
+    .ing-qty {
+      font-weight: 700;
+      color: var(--terracotta);
+      white-space: nowrap;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      grid-column: 1 / -1;
+    }
+
+    .empty-state-icon { font-size: 42px; margin-bottom: 12px; }
+    .empty-state-title { font-size: 16px; font-weight: 700; color: var(--navy); }
+    .empty-state-desc { font-size: 13px; margin-top: 6px; }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 60px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 500px) {
+      .recipe-grid { grid-template-columns: 1fr; }
+      main { padding: 20px 14px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AUTH GATE -->
+  <div id="gate">
+    <div class="gate-card">
+      <div class="gate-logo">
+        <img src="../logos/logo_madelina-4.webp" alt="Madelina" />
+      </div>
+      <h1>madelina recettes</h1>
+      <p class="gate-sub">Accès réservé au personnel</p>
+      <input type="text" id="gate-user" placeholder="Nom d'utilisateur" autocomplete="username" onkeyup="if(event.key==='Enter') login()" />
+      <input type="password" id="gate-pass" placeholder="Mot de passe" autocomplete="current-password" onkeyup="if(event.key==='Enter') login()" />
+      <button class="btn-login" onclick="login()">Accéder</button>
+      <div id="gate-error"></div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app">
+    <header class="staff-header">
+      <div class="staff-header-brand">
+        <div class="staff-header-logo">
+          <img src="../logos/logo_madelina-4.webp" alt="Madelina" />
+        </div>
+        <div>
+          <h2>madelina</h2>
+          <p>Recettes internes</p>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="logout()">🔒 Déconnecter</button>
+    </header>
+
+    <main>
+      <div class="search-wrap">
+        <input class="search-input" type="search" placeholder="🔍  Rechercher une recette..." id="search-input" oninput="renderRecipes()" />
+      </div>
+      <div class="cat-tabs" id="cat-tabs"></div>
+      <div class="recipe-grid" id="recipe-grid">
+        <div class="loading">Chargement des recettes...</div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    let allRecipes = [];
+    let allCategories = [];
+    let activeCat = 'all';
+
+    async function login() {
+      const user = document.getElementById('gate-user').value.trim();
+      const pass = document.getElementById('gate-pass').value;
+      const errorEl = document.getElementById('gate-error');
+
+      if (!user || !pass) {
+        errorEl.textContent = 'Veuillez renseigner les deux champs';
+        return;
+      }
+      errorEl.textContent = 'Connexion...';
+
+      try {
+        const res = await fetch('/api/auth/staff-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: user, password: pass })
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('gate').style.display = 'none';
+          document.getElementById('app').style.display = 'block';
+          loadRecipes();
+        } else {
+          errorEl.textContent = data.error || 'Identifiant ou mot de passe incorrect';
+        }
+      } catch (e) {
+        errorEl.textContent = 'Erreur de connexion';
+      }
+    }
+
+    async function checkAuth() {
+      try {
+        const res = await fetch('/api/recipes');
+        if (res.ok) {
+          document.getElementById('gate').style.display = 'none';
+          document.getElementById('app').style.display = 'block';
+          const data = await res.json();
+          allRecipes = data.recipes || [];
+          allCategories = data.categories || [];
+          renderTabs();
+          renderRecipes();
+        }
+      } catch (e) {}
+    }
+
+    async function loadRecipes() {
+      try {
+        const res = await fetch('/api/recipes');
+        if (!res.ok) { logout(); return; }
+        const data = await res.json();
+        allRecipes = data.recipes || [];
+        allCategories = data.categories || [];
+        renderTabs();
+        renderRecipes();
+      } catch (e) {
+        document.getElementById('recipe-grid').innerHTML = '<div class="loading">Erreur de chargement.</div>';
+      }
+    }
+
+    async function logout() {
+      try { await fetch('/api/auth/staff-logout', { method: 'POST' }); } catch (e) {}
+      document.getElementById('app').style.display = 'none';
+      document.getElementById('gate').style.display = 'flex';
+      document.getElementById('gate-user').value = '';
+      document.getElementById('gate-pass').value = '';
+      document.getElementById('gate-error').textContent = '';
+    }
+
+    function setCategory(cat) {
+      activeCat = cat;
+      document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + cat).classList.add('active');
+      renderRecipes();
+    }
+
+    function renderTabs() {
+      const el = document.getElementById('cat-tabs');
+      el.innerHTML = `<button class="cat-tab active" id="tab-all" onclick="setCategory('all')">Tout</button>`;
+      allCategories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'cat-tab';
+        btn.id = 'tab-' + cat.id;
+        btn.textContent = cat.name;
+        btn.onclick = () => setCategory(cat.id);
+        el.appendChild(btn);
+      });
+    }
+
+    function renderRecipes() {
+      const query = (document.getElementById('search-input')?.value || '').toLowerCase();
+      const grid = document.getElementById('recipe-grid');
+
+      let filtered = allRecipes;
+      if (activeCat !== 'all') {
+        filtered = filtered.filter(r => r.category_id === activeCat);
+      }
+      if (query) {
+        filtered = filtered.filter(r =>
+          r.name.toLowerCase().includes(query) ||
+          (r.description || '').toLowerCase().includes(query) ||
+          (r.ingredients || []).some(i => i.name.toLowerCase().includes(query))
+        );
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📖</div>
+            <div class="empty-state-title">Aucune recette trouvée</div>
+            <div class="empty-state-desc">Essayez un autre filtre ou terme de recherche.</div>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(r => {
+        const ings = (r.ingredients || []).map(i =>
+          `<div class="ing-item">
+            <span class="ing-name">${escHtml(i.name)}</span>
+            <span class="ing-qty">${i.quantity} ${escHtml(i.unit)}</span>
+          </div>`
+        ).join('');
+
+        return `<div class="recipe-card">
+          <span class="recipe-cat-tag">${escHtml(r.category_name || '')}</span>
+          <div class="recipe-name">${escHtml(r.name)}</div>
+          ${r.base_description ? `<div class="recipe-base-desc">📐 ${escHtml(r.base_description)}</div>` : ''}
+          ${r.description ? `<div class="recipe-base-desc" style="margin-bottom:10px;">${escHtml(r.description)}</div>` : ''}
+          ${ings ? `<div class="recipe-ingredients">
+            <div class="recipe-ingredients-title">Ingrédients</div>
+            ${ings}
+          </div>` : ''}
+        </div>`;
+      }).join('');
+    }
+
+    function escHtml(str) {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    document.addEventListener('DOMContentLoaded', checkAuth);
+  </script>
+</body>
+</html>

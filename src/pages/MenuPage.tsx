@@ -2,97 +2,61 @@ import { useState, useEffect, useCallback, memo, useTransition } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
+import { useLanguage } from '../context/LanguageContext';
 
 interface MenuItem {
   id: string;
   category: string;
+  category_en?: string;
+  category_is_list?: boolean;
   title: string;
+  title_en?: string;
   price: number;
   image?: string;
   description?: string;
+  description_en?: string;
 }
 
-const ORDER = [
-  "☕ Boisson chaude",
-  "🧃 Boisson fraîche",
-  "🥐 Viennoiseries",
-  "🍰 Gâteaux et tartes",
-  "🍽️ Plats",
-  "✨ Autres"
-];
 
-// ── Parse menu-data.html fragment → MenuItem[] ──
-function parseMenuHTML(html: string): MenuItem[] {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(`<div>${html}</div>`, 'text/html');
-  const container = doc.querySelector('#menu-container');
-  if (!container) return [];
+const cleanDesc = (text: string | undefined) => {
+  if (!text) return '';
+  return text.replace(/\\n/g, ' ').replace(/\n+/g, ' ').trim();
+};
 
-  const items: MenuItem[] = [];
-  container.querySelectorAll('.menu-item').forEach(div => {
-    items.push({
-      id: div.id,
-      category: div.getAttribute('data-category') || '',
-      title: div.querySelector('.item-title')?.textContent || '',
-      price: parseFloat(div.querySelector('.item-price')?.textContent || '0') || 0,
-      image: div.querySelector('.item-image')?.getAttribute('src') || '',
-      description: div.querySelector('.item-description')?.textContent || '',
-    });
-  });
-  return items;
-}
-
+const renderFormattedModalDesc = (text: string | undefined) => {
+  if (!text) return null;
+  const raw = text.replace(/\\n/g, '\n');
+  const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+  if (lines.length > 1) {
+    return (
+      <div className="space-y-1 text-madelina-navy/75 leading-snug mb-3 text-xs sm:text-sm">
+        {lines.map((line, idx) => {
+          const isBullet = line.startsWith('-');
+          const cleanLine = isBullet ? line.replace(/^-\s*/, '') : line;
+          return (
+            <p key={idx} className={isBullet ? "pl-1.5 flex items-start gap-2" : "font-semibold text-madelina-navy mb-1"}>
+              {isBullet ? <span className="text-madelina-terracotta font-bold text-[10px] mt-1">●</span> : null}
+              <span>{cleanLine}</span>
+            </p>
+          );
+        })}
+      </div>
+    );
+  }
+  return <p className="text-madelina-navy/70 leading-snug mb-3 text-xs sm:text-sm line-clamp-4">{text}</p>;
+};
 
 // Memoized card components — avoid re-renders when category changes
-const DrinkCard = memo(({ item, onClick }: { item: MenuItem; onClick: () => void }) => (
+const DrinkCard = memo(({ item, title, description, t_details, onClick }: { item: MenuItem; title: string; description: string; t_details: string; onClick: () => void }) => (
   <div
-    className="group flex items-center bg-white border border-madelina-terracotta/10 rounded-2xl p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+    className="group flex items-center bg-white border border-madelina-terracotta/10 rounded-2xl sm:rounded-3xl p-3 sm:p-4 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-madelina-terracotta/25 hover:-translate-y-0.5"
     onClick={onClick}
   >
-    <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 mr-4">
+    <div className="relative flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden bg-madelina-cream/30 shadow-sm mr-4 sm:mr-5">
       {item.image ? (
-        <div className="w-full h-full bg-madelina-cream rounded-xl overflow-hidden">
-          <img
-            src={item.image}
-            alt={item.title}
-            className="w-full h-full object-cover rounded-xl"
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-            onLoad={e => (e.currentTarget.style.opacity = '1')}
-            style={{ opacity: 0, transition: 'opacity 0.3s ease' }}
-          />
-        </div>
-      ) : (
-        <div className="w-full h-full bg-madelina-navy/5 rounded-xl flex items-center justify-center">
-          <span className="text-xl">🍹</span>
-        </div>
-      )}
-    </div>
-    <div className="flex-grow min-w-0 pr-4">
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-1 gap-1">
-        <h3 className="text-base sm:text-lg font-display text-madelina-navy truncate">{item.title}</h3>
-        <span className="font-bold text-sm sm:text-base text-madelina-terracotta whitespace-nowrap">
-          {typeof item.price === 'number' ? item.price.toFixed(1) : item.price} DT
-        </span>
-      </div>
-      {item.description && (
-        <p className="text-madelina-navy/60 text-xs sm:text-sm line-clamp-2">{item.description}</p>
-      )}
-    </div>
-    <div className="flex-shrink-0 text-madelina-terracotta/30 group-hover:text-madelina-terracotta transition-colors ml-auto mr-2">
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-    </div>
-  </div>
-));
-
-const FoodCard = memo(({ item, onClick }: { item: MenuItem; onClick: () => void }) => (
-  <div className="group glass-card rounded-[1.75rem] sm:rounded-[2.5rem] overflow-hidden bg-white border border-madelina-terracotta/5 shadow-sm hover:shadow-2xl transition-shadow duration-300">
-    <div className="relative h-40 sm:h-72 overflow-hidden bg-madelina-cream">
-      {item.image && (
         <img
           src={item.image}
-          alt={item.title}
+          alt={title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="eager"
           fetchPriority="high"
@@ -100,29 +64,65 @@ const FoodCard = memo(({ item, onClick }: { item: MenuItem; onClick: () => void 
           onLoad={e => (e.currentTarget.style.opacity = '1')}
           style={{ opacity: 0, transition: 'opacity 0.3s ease' }}
         />
+      ) : (
+        <div className="w-full h-full bg-madelina-navy/5 flex items-center justify-center">
+          <span className="text-2xl">🍹</span>
+        </div>
       )}
-      <div className="absolute top-3 right-3 sm:top-6 sm:right-6 bg-white/90 backdrop-blur-md px-3 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-lg">
-        <span className="font-bold text-[13px] sm:text-base text-madelina-terracotta tracking-tight">
+    </div>
+    <div className="flex-grow min-w-0 pr-2">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-1 gap-1">
+        <h3 className="text-base sm:text-lg font-display text-madelina-navy group-hover:text-madelina-terracotta transition-colors break-words [overflow-wrap:anywhere] pr-2">{title}</h3>
+        <span className="font-bold text-sm sm:text-base text-madelina-terracotta whitespace-nowrap">
+          {typeof item.price === 'number' ? item.price.toFixed(1) : item.price} DT
+        </span>
+      </div>
+      {description && (
+        <p className="text-madelina-navy/65 text-xs sm:text-sm line-clamp-2 leading-relaxed break-words [overflow-wrap:anywhere] overflow-hidden">{cleanDesc(description)}</p>
+      )}
+    </div>
+    <div className="flex-shrink-0 text-madelina-terracotta/40 group-hover:text-madelina-terracotta transition-colors ml-auto mr-1 sm:mr-2">
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+    </div>
+  </div>
+));
+
+const FoodCard = memo(({ item, title, description, t_details, onClick }: { item: MenuItem; title: string; description: string; t_details: string; onClick: () => void }) => (
+  <div 
+    onClick={onClick}
+    className="group glass-card rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden bg-white border border-madelina-terracotta/10 shadow-sm hover:shadow-2xl transition-all duration-700 ease-out cursor-pointer hover:scale-[1.015] hover:-translate-y-1 flex flex-col"
+  >
+    <div className="relative aspect-square w-full overflow-hidden bg-madelina-cream/20">
+      {item.image && (
+        <img
+          src={item.image}
+          alt={title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          onLoad={e => (e.currentTarget.style.opacity = '1')}
+          style={{ opacity: 0, transition: 'opacity 0.3s ease' }}
+        />
+      )}
+      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full shadow-md z-10 border border-madelina-terracotta/10">
+        <span className="font-bold text-[13px] sm:text-base text-madelina-terracotta tracking-tight whitespace-nowrap">
           {typeof item.price === 'number' ? item.price.toFixed(1) : item.price} DT
         </span>
       </div>
     </div>
-    <div className="p-4 sm:p-8">
-      <h3 className="text-[17px] sm:text-2xl mb-1.5 sm:mb-3 font-display text-madelina-navy group-hover:text-madelina-terracotta transition-colors">{item.title}</h3>
-      <p className="text-madelina-navy/60 text-[13px] sm:text-sm mb-4 sm:mb-6 line-clamp-2 sm:line-clamp-3 leading-snug">{item.description}</p>
+    <div className="p-5 sm:p-7 flex flex-col flex-grow">
+      <h3 className="text-[17px] sm:text-2xl mb-1.5 sm:mb-2.5 font-display text-madelina-navy group-hover:text-madelina-terracotta transition-colors break-words [overflow-wrap:anywhere]">{title}</h3>
+      <p className="text-madelina-navy/65 text-[13px] sm:text-sm mb-4 sm:mb-5 line-clamp-2 sm:line-clamp-3 leading-relaxed break-words [overflow-wrap:anywhere] overflow-hidden">{cleanDesc(description)}</p>
       <button
-        onClick={onClick}
-        className="text-[10px] font-bold uppercase tracking-[0.2em] text-madelina-terracotta flex items-center gap-2 hover:gap-4 transition-all cursor-pointer"
+        className="text-[10px] font-bold uppercase tracking-[0.2em] text-madelina-terracotta flex items-center gap-2 hover:gap-4 transition-all cursor-pointer pointer-events-none mt-auto"
       >
-        Détails <span>→</span>
+        {t_details} <span>→</span>
       </button>
     </div>
   </div>
 ));
 
-// ── Local / GitHub Pages URL ──
-// We use the deployed file on GitHub Pages to avoid the 5-minute cache of raw.githubusercontent.com
-const MENU_RAW_URL = '/menu-data.html';
 
 const MenuPage = () => {
   const [plats, setPlats] = useState<MenuItem[]>([]);
@@ -131,6 +131,11 @@ const MenuPage = () => {
   const [activeTab, setActiveTab] = useState("");
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [, startTransition] = useTransition();
+  const { language, t } = useLanguage();
+
+  const getTranslatedText = useCallback((fr: string | undefined, en: string | undefined) => {
+    return language === 'en' && en ? en : (fr || '');
+  }, [language]);
 
   useEffect(() => {
     // ── Title ──
@@ -170,27 +175,17 @@ const MenuPage = () => {
     };
   }, []);
 
-  // Fetch menu-data.html from GitHub Raw API on mount
+  // Fetch from Cloudflare API
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        // Cache-busting: append timestamp to bypass CDN/browser cache
-        const res = await fetch(`${MENU_RAW_URL}?t=${Date.now()}`);
+        const res = await fetch(`/api/menu`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const html = await res.text();
-        const items = parseMenuHTML(html);
+        const items = await res.json() as MenuItem[];
         setPlats(items);
 
-        // Set initial category
-        const cats = Array.from(new Set(items.map(i => i.category)))
-          .sort((a, b) => {
-            const iA = ORDER.indexOf(a);
-            const iB = ORDER.indexOf(b);
-            if (iA === -1 && iB === -1) return a.localeCompare(b);
-            if (iA === -1) return 1;
-            if (iB === -1) return -1;
-            return iA - iB;
-          });
+        // Set initial category (the backend returns them in order)
+        const cats = Array.from(new Set(items.map((i: MenuItem) => i.category))) as string[];
         if (cats.length > 0) {
           setActiveCategory(cats[0]);
           setActiveTab(cats[0]);
@@ -204,16 +199,8 @@ const MenuPage = () => {
     fetchMenu();
   }, []);
 
-  // Compute categories from loaded items
-  const categories = (Array.from(new Set(plats.map(item => item.category))) as string[])
-    .sort((a, b) => {
-      const indexA = ORDER.indexOf(a);
-      const indexB = ORDER.indexOf(b);
-      if (indexA === -1 && indexB === -1) return a.localeCompare(b);
-      if (indexA === -1) return 1;
-      if (indexB === -1) return -1;
-      return indexA - indexB;
-    });
+  // Compute categories from loaded items (maintaining order from DB)
+  const categories = Array.from(new Set(plats.map(item => item.category))) as string[];
 
   // Prefetch first category eagerly, rest lazily during idle time
   useEffect(() => {
@@ -227,15 +214,29 @@ const MenuPage = () => {
         }
       });
     };
+    
+    let idleCallbackId: number;
+    let timeoutId: ReturnType<typeof setTimeout>;
+
     if ('requestIdleCallback' in window) {
-      (window as Window & typeof globalThis & { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(prefetch);
+      idleCallbackId = (window as any).requestIdleCallback(prefetch);
     } else {
-      setTimeout(prefetch, 1000);
+      timeoutId = setTimeout(prefetch, 1500);
     }
+
+    return () => {
+      if (idleCallbackId && 'cancelIdleCallback' in window) {
+        (window as any).cancelIdleCallback(idleCallbackId);
+      }
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [plats]);
 
   // We compute whether a category is drink-like to apply the correct grid structure per category.
-  const isCategoryDrinkLike = (cat: string) => cat.includes("Boisson") || cat.includes("Viennoiserie");
+  const isCategoryDrinkLike = (cat: string) => {
+    const firstItem = plats.find(p => p.category === cat);
+    return firstItem ? firstItem.category_is_list : false;
+  };
 
   // Instant switch — no blocking, images appear as they load
   const handleCategoryChange = useCallback((cat: string) => {
@@ -249,6 +250,27 @@ const MenuPage = () => {
   const openModal = useCallback((item: MenuItem) => setSelectedItem(item), []);
   const closeModal = useCallback(() => setSelectedItem(null), []);
 
+  // Prevent background scrolling when detail modal popup is open
+  useEffect(() => {
+    if (selectedItem) {
+      const originalBodyOverflow = document.body.style.overflow;
+      const originalHtmlOverflow = document.documentElement.style.overflow;
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      if (scrollBarWidth > 0) {
+        document.body.style.paddingRight = `${scrollBarWidth}px`;
+      }
+
+      return () => {
+        document.body.style.overflow = originalBodyOverflow;
+        document.documentElement.style.overflow = originalHtmlOverflow;
+        document.body.style.paddingRight = '';
+      };
+    }
+  }, [selectedItem]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col bg-white">
@@ -257,7 +279,7 @@ const MenuPage = () => {
           <div className="min-h-[50vh] flex items-center justify-center">
             <div className="flex flex-col items-center animate-fadeIn">
               <div className="w-8 h-8 border-4 border-madelina-terracotta/20 border-t-madelina-terracotta rounded-full animate-spin mb-4"></div>
-              <div className="font-display text-madelina-navy/40">Chargement...</div>
+              <div className="font-display text-madelina-navy/40">{t("Chargement...", "Loading...")}</div>
             </div>
           </div>
         </main>
@@ -283,19 +305,22 @@ const MenuPage = () => {
           {/* Categories Tab */}
           {categories.length > 0 && (
             <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 md:gap-3 mb-8 sm:mb-12 md:mb-16">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => handleCategoryChange(cat)}
-                  className={`relative px-4 py-2 sm:px-6 sm:py-2.5 md:px-8 md:py-3 rounded-full text-[10px] sm:text-[11px] md:text-[12px] font-bold uppercase tracking-widest transition-all duration-200 ${
-                    activeTab === cat 
-                      ? 'bg-madelina-navy text-white shadow-lg scale-105' 
-                      : 'bg-transparent text-madelina-navy hover:text-madelina-terracotta hover:bg-madelina-navy/5'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+              {categories.map((cat) => {
+                const displayCat = getTranslatedText(cat, plats.find(p => p.category === cat)?.category_en);
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => handleCategoryChange(cat)}
+                    className={`relative px-4 py-2 sm:px-6 sm:py-2.5 md:px-8 md:py-3 rounded-full text-[10px] sm:text-[11px] md:text-[12px] font-bold uppercase tracking-widest transition-all duration-200 ${
+                      activeTab === cat 
+                        ? 'bg-madelina-navy text-white shadow-lg scale-105' 
+                        : 'bg-transparent text-madelina-navy hover:text-madelina-terracotta hover:bg-madelina-navy/5'
+                    }`}
+                  >
+                    {displayCat}
+                  </button>
+                );
+              })}
             </div>
           )}
 
@@ -314,14 +339,69 @@ const MenuPage = () => {
                   >
                     {itemsInCat.map((item) =>
                       drinkLike ? (
-                        <DrinkCard key={item.id} item={item} onClick={() => openModal(item)} />
+                        <DrinkCard 
+                          key={item.id} 
+                          item={item} 
+                          title={getTranslatedText(item.title, item.title_en)}
+                          description={getTranslatedText(item.description, item.description_en)}
+                          t_details={t("Détails", "Details")}
+                          onClick={() => openModal(item)} 
+                        />
                       ) : (
-                        <FoodCard key={item.id} item={item} onClick={() => openModal(item)} />
+                        <FoodCard 
+                          key={item.id} 
+                          item={item} 
+                          title={getTranslatedText(item.title, item.title_en)}
+                          description={getTranslatedText(item.description, item.description_en)}
+                          t_details={t("Détails", "Details")}
+                          onClick={() => openModal(item)} 
+                        />
                       )
                     )}
                   </div>
                 );
               })}
+            </div>
+
+            {/* ── End of selection divider ── */}
+            <div className="flex items-center justify-center gap-4 my-12">
+              <div className="h-[1px] w-12 bg-madelina-terracotta/20" />
+              <span className="text-[10px] font-sans uppercase tracking-[0.25em] text-madelina-navy/40 font-semibold">
+                {t("Fin de la carte", "End of menu")}
+              </span>
+              <div className="h-[1px] w-12 bg-madelina-terracotta/20" />
+            </div>
+
+            {/* ── Google Reviews CTA (Compact & Premium, Yucca-inspired in Madelina style) ── */}
+            <div className="mt-6 mb-10 max-w-md mx-auto text-center px-6 py-9 bg-[#FAF7F4] border border-madelina-terracotta/15 rounded-3xl shadow-[0_4px_24px_rgba(166,75,42,0.04)]">
+              <div className="flex justify-center gap-1 text-madelina-terracotta mb-3">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i} className="text-lg">★</span>
+                ))}
+              </div>
+              <h3 className="font-display text-xl text-madelina-navy mb-2">
+                {t("Vous avez aimé l'expérience madélina ?", "Did you enjoy the madélina experience?")}
+              </h3>
+              <p className="font-sans text-xs sm:text-sm text-madelina-navy/70 max-w-[300px] mx-auto mb-6 leading-relaxed">
+                {t(
+                  "Partagez votre avis sur Google. Vos retours nous aident à perfectionner chaque détail de nos créations.",
+                  "Share your review on Google. Your feedback helps us perfect every detail of our creations."
+                )}
+              </p>
+              <a
+                href="https://search.google.com/local/writereview?placeid=ChIJu9ZHTgAf4xIRKQqG2XtpBMI"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 bg-madelina-navy hover:bg-madelina-terracotta text-white text-xs font-bold uppercase tracking-[0.15em] px-7 py-3.5 rounded-full transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
+              >
+                <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
+                  <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.9C6.2 7.2 8.9 5 12 5z"/>
+                  <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.6h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.9z"/>
+                  <path fill="#FBBC05" d="M5.3 14.7c-.2-.7-.4-1.5-.4-2.7s.1-2 .4-2.7L1.6 6.4C.6 8.3 0 10.6 0 12s.6 3.7 1.6 5.6l3.7-2.9z"/>
+                  <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5L1.6 16.2C3.5 20.4 7.4 23 12 23z"/>
+                </svg>
+                <span>{t("Donner mon avis", "Write a Review")}</span>
+              </a>
             </div>
           </div>
         </div>
@@ -331,50 +411,85 @@ const MenuPage = () => {
       <AnimatePresence>
         {selectedItem && (
           <motion.div
+            key="modal-backdrop-page"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-            className="fixed inset-0 z-[9999] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+            transition={{ duration: 0.22 }}
+            className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-md flex items-end sm:items-center justify-center sm:p-4 cursor-pointer"
             onClick={closeModal}
+            onPointerDown={closeModal}
+            onTouchMove={(e) => {
+              if (e.target === e.currentTarget) {
+                e.preventDefault();
+              }
+            }}
           >
             <motion.div
-              initial={{ opacity: 0, y: 16, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 16, scale: 0.97 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="bg-white rounded-[2rem] overflow-hidden max-w-lg w-full shadow-2xl"
+              key="modal-content-page"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 40 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="relative bg-white w-full sm:max-w-sm md:max-w-md rounded-t-[2.5rem] sm:rounded-[2.5rem] overflow-hidden shadow-2xl cursor-default border border-white/10 flex flex-col max-h-[92dvh] sm:max-h-[90vh] overflow-y-auto overscroll-contain"
               onClick={(e) => e.stopPropagation()}
+              onPointerDown={(e) => e.stopPropagation()}
             >
-              {selectedItem.image && (
-                <div className="h-64 overflow-hidden bg-madelina-cream">
+              {/* ── Full image hero ── */}
+              <div className="relative w-full aspect-square flex-shrink-0 overflow-hidden bg-madelina-navy/10">
+                {selectedItem.image ? (
                   <img
                     src={selectedItem.image}
-                    alt={selectedItem.title}
+                    alt={getTranslatedText(selectedItem.title, selectedItem.title_en)}
                     className="w-full h-full object-cover"
                     loading="eager"
                     decoding="async"
                     onLoad={e => (e.currentTarget.style.opacity = '1')}
-                    style={{ opacity: 0, transition: 'opacity 0.25s ease' }}
+                    style={{ opacity: 0, transition: 'opacity 0.3s ease' }}
                   />
-                </div>
-              )}
-              <div className="p-8">
-                <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-3xl font-display text-madelina-navy">{selectedItem.title}</h3>
-                  <span className="bg-madelina-terracotta/10 text-madelina-terracotta font-bold px-4 py-2 rounded-full text-sm whitespace-nowrap ml-4">
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <span className="text-6xl">🍽️</span>
+                  </div>
+                )}
+
+                {/* Subtle gradient just for depth */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+
+                {/* Close button */}
+                <button
+                  onClick={closeModal}
+                  className="absolute top-4 right-4 z-30 w-9 h-9 rounded-full bg-black/30 hover:bg-black/60 text-white flex items-center justify-center backdrop-blur-md transition-all cursor-pointer border border-white/20"
+                  aria-label="Close"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* ── Content below image ── */}
+              <div className="px-5 pt-4 pb-5 flex flex-col gap-2">
+                {/* Name + price row */}
+                <div className="flex items-start justify-between gap-3">
+                  <h3 className="text-madelina-navy font-display text-xl sm:text-2xl leading-tight break-words [overflow-wrap:anywhere] flex-1">
+                    {getTranslatedText(selectedItem.title, selectedItem.title_en)}
+                  </h3>
+                  <span className="bg-madelina-terracotta/10 text-madelina-terracotta font-bold text-sm px-3.5 py-1 rounded-full tracking-tight whitespace-nowrap flex-shrink-0 mt-0.5">
                     {typeof selectedItem.price === 'number' ? selectedItem.price.toFixed(1) : selectedItem.price} DT
                   </span>
                 </div>
-                <p className="text-sm text-madelina-navy/40 uppercase tracking-widest font-bold mb-4">{selectedItem.category}</p>
-                {selectedItem.description && (
-                  <p className="text-madelina-navy/70 leading-relaxed mb-6">{selectedItem.description}</p>
-                )}
+                {/* Category badge */}
+                <span className="text-[10px] text-madelina-navy/40 uppercase tracking-widest font-bold">
+                  {getTranslatedText(selectedItem.category, selectedItem.category_en)}
+                </span>
+                {/* Description */}
+                {renderFormattedModalDesc(getTranslatedText(selectedItem.description, selectedItem.description_en))}
                 <button
                   onClick={closeModal}
-                  className="w-full py-3 bg-madelina-navy text-white rounded-full text-xs font-bold uppercase tracking-widest hover:bg-madelina-terracotta transition-colors"
+                  className="w-full py-3 bg-madelina-navy text-white rounded-2xl text-xs font-bold uppercase tracking-[0.15em] hover:bg-madelina-terracotta transition-all duration-200 shadow-sm cursor-pointer mt-1"
                 >
-                  Fermer
+                  {t("Fermer", "Close")}
                 </button>
               </div>
             </motion.div>

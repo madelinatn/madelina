@@ -1,0 +1,327 @@
+  <!-- ══════════════════════════════════════════ -->
+  <!-- RECIPE ADD/EDIT MODAL                     -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="recipe-modal-overlay">
+    <div class="modal" style="max-width:620px;max-height:90vh;display:flex;flex-direction:column;">
+      <button type="button" class="modal-close-btn" onclick="closeRecipeModal()" aria-label="Fermer" title="Fermer">✕</button>
+      <div class="modal-pull-handle"></div>
+      <h3 id="recipe-modal-title" style="font-size:22px;margin-bottom:18px;">Nouvelle Recette</h3>
+      <form id="recipe-form" onsubmit="saveRecipe(event)" style="overflow-y:auto;padding-right:4px;flex:1;">
+        <input type="hidden" id="recipe-id" />
+
+        <div class="form-row">
+          <div class="form-group" style="flex:2;">
+            <label>NOM DE LA RECETTE</label>
+            <input type="text" id="r-name" required placeholder="Ex: Gâteau Chocolat Fondant" />
+          </div>
+          <div class="form-group" style="flex:1;">
+            <label>CATÉGORIE</label>
+            <select id="r-category" required></select>
+          </div>
+        </div>
+
+        <div class="card-title" style="margin-top:10px;margin-bottom:8px;font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.06em;">
+          TAILLE STANDARD & BASE DE CALCUL
+        </div>
+        <div style="background:#FAF7F4;border:1.5px solid var(--border);border-radius:14px;padding:12px;margin-bottom:16px;">
+          <div style="display:flex;gap:16px;margin-bottom:10px;align-items:center;">
+            <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="r-base-type" value="dimension" checked onchange="toggleRecipeBaseTypeInputs()" />
+              📐 Dimensions (Moule)
+            </label>
+            <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="radio" name="r-base-type" value="portion" onchange="toggleRecipeBaseTypeInputs()" />
+              🔢 Nombre de Portions
+            </label>
+          </div>
+
+          <div id="base-dim-inputs" class="form-row" style="margin-bottom:0;">
+            <div class="form-group">
+              <label>LARGEUR / DIAMÈTRE (CM)</label>
+              <input type="number" id="r-base-dim1" min="1" step="0.5" value="20" placeholder="20" />
+            </div>
+            <div class="form-group">
+              <label>LONGUEUR (CM, SI RECTANGLE)</label>
+              <input type="number" id="r-base-dim2" min="1" step="0.5" value="20" placeholder="20" />
+            </div>
+            <div class="form-group">
+              <label>PORTIONS ESTIMÉES</label>
+              <input type="number" id="r-base-portions" min="1" step="1" value="6" placeholder="6" />
+            </div>
+          </div>
+
+          <div id="base-portion-inputs" class="form-group" style="display:none;margin-bottom:0;">
+            <label>NOMBRE DE PORTIONS / PIÈCES DE BASE</label>
+            <input type="number" id="r-base-portions-only" min="1" step="1" value="1" placeholder="Ex: 12 pièces" />
+          </div>
+
+          <div class="form-group" style="margin-top:10px;margin-bottom:0;">
+            <label>DESCRIPTION SOMMAIRE DE LA BASE</label>
+            <input type="text" id="r-base-desc" placeholder="Ex: Gâteau carré 20cm × 20cm (6 portions)" />
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div class="card-title" style="margin:0;font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.06em;">
+            INGRÉDIENTS (POUR LA TAILLE DE BASE)
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="addIngredientRow()">+ Ingrédient</button>
+        </div>
+
+        <div id="recipe-ingredients-container">
+          <!-- Rows will be injected here -->
+        </div>
+
+        <div class="form-group" style="margin-top:14px;">
+          <label>INSTRUCTIONS DE PRÉPARATION & NOTES</label>
+          <textarea id="r-description" rows="3" placeholder="Étapes de préparation, temps de cuisson, température, conseils..."></textarea>
+        </div>
+
+        <div class="modal-actions" style="margin-top:20px;">
+          <button type="button" class="btn btn-secondary btn-lg" onclick="closeRecipeModal()">Annuler</button>
+          <button type="submit" class="btn btn-primary btn-lg" id="r-save-btn">Enregistrer la recette</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- RECIPE CATEGORIES MODAL                   -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="recipe-cat-overlay">
+    <div class="modal" style="max-width:480px;">
+      <button type="button" class="modal-close-btn" onclick="closeRecipeCatModal()" aria-label="Fermer" title="Fermer">✕</button>
+      <div class="modal-pull-handle"></div>
+      <div class="modal-header-title">
+        <span>📁</span> Catégories de Recettes
+      </div>
+      <div class="modal-subtitle">Organisez vos fiches par ateliers (Pâtisserie, Viennoiserie, Boissons...).</div>
+
+      <div id="recipe-cat-list" style="max-height:280px;overflow-y:auto;padding-right:4px;margin-bottom:16px;"></div>
+
+      <div class="new-cat-card">
+        <div class="card-title">NOUVELLE CATÉGORIE</div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <input type="text" id="new-recipe-cat-input" placeholder="Ex: 🥐 Viennoiserie" style="flex:1;" />
+          <button type="button" class="btn btn-primary" onclick="addRecipeCategory()">+ Ajouter</button>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top:20px;">
+        <button class="btn btn-secondary btn-lg" style="width:100%;" onclick="closeRecipeCatModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SMART SCALING CALCULATOR MODAL             -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="scaling-modal-overlay">
+    <div class="modal" style="max-width:680px;max-height:92vh;display:flex;flex-direction:column;">
+      <button type="button" class="modal-close-btn" onclick="closeScalingModal()" aria-label="Fermer" title="Fermer">✕</button>
+      <div class="modal-pull-handle"></div>
+      
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+        <span style="font-size:24px;">🧮</span>
+        <div>
+          <h3 id="calc-recipe-title" style="font-size:20px;font-weight:700;color:var(--navy);margin:0;">Calculatrice de Proportions</h3>
+          <div id="calc-recipe-base-badge" style="font-size:12px;color:var(--terracotta);font-weight:600;margin-top:2px;">Base standard : 20 × 20 cm</div>
+        </div>
+      </div>
+
+      <div style="overflow-y:auto;padding-right:4px;margin-top:14px;flex:1;">
+        <!-- MODE SELECTOR TABS -->
+        <div class="calc-mode-nav">
+          <button type="button" class="calc-mode-btn active" id="btn-scale-dim" onclick="setScalingMode('dimensions')">📐 Par Dimensions Moule</button>
+          <button type="button" class="calc-mode-btn" id="btn-scale-portion" onclick="setScalingMode('portions')">🔢 Par Portions</button>
+          <button type="button" class="calc-mode-btn" id="btn-scale-ingredient" onclick="setScalingMode('ingredient')">⚖️ Par Ingrédient Clé</button>
+          <button type="button" class="calc-mode-btn" id="btn-scale-direct" onclick="setScalingMode('direct')">✖️ Multiplicateur</button>
+        </div>
+
+        <!-- MODE CONTROLS BOX -->
+        <div class="calc-box">
+          <!-- 1. DIMENSIONS MODE -->
+          <div id="calc-panel-dimensions">
+            <div style="display:flex;gap:14px;align-items:center;margin-bottom:12px;">
+              <span style="font-size:11px;font-weight:700;color:var(--text-muted);">FORME DU MOULE :</span>
+              <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;cursor:pointer;">
+                <input type="radio" name="calc-shape" value="rect" checked onchange="calculateScale()" /> Carré / Rectangle
+              </label>
+              <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;cursor:pointer;">
+                <input type="radio" name="calc-shape" value="round" onchange="calculateScale()" /> Rond (Diamètre)
+              </label>
+            </div>
+            
+            <div class="form-row" style="margin-bottom:0;" id="calc-dim-rect-fields">
+              <div class="form-group">
+                <label>NOUVELLE LARGEUR (CM)</label>
+                <input type="number" id="calc-target-w" min="1" step="0.5" value="30" oninput="calculateScale()" />
+              </div>
+              <div class="form-group">
+                <label>NOUVELLE LONGUEUR (CM)</label>
+                <input type="number" id="calc-target-l" min="1" step="0.5" value="30" oninput="calculateScale()" />
+              </div>
+            </div>
+
+            <div class="form-group" style="display:none;margin-bottom:0;" id="calc-dim-round-fields">
+              <label>NOUVEAU DIAMÈTRE DÉSIRÉ (CM)</label>
+              <input type="number" id="calc-target-diam" min="1" step="0.5" value="26" oninput="calculateScale()" />
+            </div>
+          </div>
+
+          <!-- 2. PORTIONS MODE -->
+          <div id="calc-panel-portions" style="display:none;">
+            <div class="form-row" style="margin-bottom:0;">
+              <div class="form-group">
+                <label>PORTIONS INITIALES (BASE)</label>
+                <input type="number" id="calc-base-portions-val" disabled style="background:#ECE7E1;" />
+              </div>
+              <div class="form-group">
+                <label>NOUVELLES PORTIONS DÉSIRÉES</label>
+                <input type="number" id="calc-target-portions" min="1" step="1" value="12" oninput="calculateScale()" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. INGREDIENT MODE -->
+          <div id="calc-panel-ingredient" style="display:none;">
+            <div class="form-row" style="margin-bottom:0;">
+              <div class="form-group" style="flex:2;">
+                <label>CHOISIR L'INGRÉDIENT DISPONIBLE</label>
+                <select id="calc-ing-select" onchange="onCalcIngredientSelected()"></select>
+              </div>
+              <div class="form-group" style="flex:1;">
+                <label>QUANTITÉ EN STOCK</label>
+                <input type="number" id="calc-ing-target-qty" min="0.1" step="any" oninput="calculateScale()" />
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. DIRECT MULTIPLIER MODE -->
+          <div id="calc-panel-direct" style="display:none;">
+            <div style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:8px;">COEFFICIENT MULTIPLICATEUR :</div>
+            <div class="quick-scale-bar">
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(0.5)">0.5× (Demi)</button>
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(1.0)">1.0× (Base)</button>
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(1.5)">1.5×</button>
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(2.0)">2.0× (Double)</button>
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(3.0)">3.0× (Triple)</button>
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(4.0)">4.0×</button>
+              <button type="button" class="quick-scale-btn" onclick="setDirectMultiplier(5.0)">5.0×</button>
+            </div>
+          </div>
+
+          <!-- RATIO SUMMARY BANNER -->
+          <div class="calc-ratio-banner">
+            <div>
+              <span id="calc-ratio-text">Ratio calculé : surface augmentée de +125%</span>
+            </div>
+            <div class="calc-multiplier-pill" id="calc-factor-pill">× 2.25</div>
+          </div>
+        </div>
+
+        <!-- RECALCULATED INGREDIENTS TABLE -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div class="card-title" style="margin:0;font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.06em;">
+            INGRÉDIENTS RECALCULÉS POUR L'ATELIER
+          </div>
+          <span style="font-size:11px;color:var(--text-muted);" id="calc-items-count">5 ingrédients</span>
+        </div>
+
+        <div class="calc-table-wrap">
+          <table class="calc-table">
+            <thead>
+              <tr>
+                <th>INGRÉDIENT</th>
+                <th style="text-align:right;">BASE</th>
+                <th style="text-align:right;color:var(--terracotta);">NOUVELLE QUANTITÉ</th>
+                <th>UNITÉ</th>
+              </tr>
+            </thead>
+            <tbody id="calc-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <div id="calc-instructions-preview" style="background:#FFF9F5;border:1px solid #F3EAE3;border-radius:12px;padding:12px;margin-top:14px;font-size:12px;color:var(--navy);display:none;">
+          <strong style="color:var(--terracotta);display:block;margin-bottom:4px;">Instructions :</strong>
+          <span id="calc-instructions-text"></span>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top:18px;display:flex;justify-content:space-between;gap:10px;">
+        <button type="button" class="btn btn-secondary" onclick="closeScalingModal()">Fermer</button>
+        <button type="button" class="btn btn-primary" onclick="printRecipeSheet()">🖨️ Imprimer la Fiche Cuisine</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- USER ADD/EDIT MODAL (RBAC)                 -->
+  <!-- ══════════════════════════════════════════ -->
+  <div id="user-modal-overlay">
+    <div class="modal" style="max-width:520px;max-height:90vh;display:flex;flex-direction:column;">
+      <button type="button" class="modal-close-btn" onclick="closeUserModal()" aria-label="Fermer" title="Fermer">✕</button>
+      <div class="modal-pull-handle"></div>
+      <h3 id="user-modal-title" style="font-size:22px;margin-bottom:18px;">Nouvel Utilisateur</h3>
+      
+      <form id="user-form" onsubmit="saveUser(event)" style="overflow-y:auto;padding-right:4px;flex:1;">
+        <input type="hidden" id="u-id" />
+
+        <div class="form-group">
+          <label>NOM COMPLET (EX: AHMED BEN ALI)</label>
+          <input type="text" id="u-name" required placeholder="Chef Pâtissier Ahmed" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>NOM D'UTILISATEUR (IDENTIFIANT)</label>
+            <input type="text" id="u-username" required placeholder="ahmed" autocomplete="off" />
+          </div>
+          <div class="form-group">
+            <label id="u-pass-label">MOT DE PASSE</label>
+            <input type="password" id="u-password" placeholder="••••••••" autocomplete="new-password" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>RÔLE & ACCÈS GÉNÉRAL</label>
+          <select id="u-role" onchange="onUserRoleChange()">
+            <option value="staff">👨‍🍳 Équipe / Staff (Recettes & Calculatrice selon poste)</option>
+            <option value="admin">👑 Administrateur (Accès Total : Menu, Recettes, Utilisateurs)</option>
+          </select>
+        </div>
+
+        <div id="u-categories-box" style="background:#FAF7F4;border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.06em;margin-bottom:4px;">
+            CATÉGORIES DE RECETTES AUTORISÉES
+          </div>
+          <div style="font-size:11.5px;color:var(--text-muted);margin-bottom:10px;">
+            Exemple : Cochez uniquement "Pâtisserie" pour le pâtissier, ou "Boissons" pour le barista.
+          </div>
+          <div style="margin-bottom:8px;">
+            <label style="font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+              <input type="checkbox" id="u-cat-all" onchange="toggleAllCatCheckboxes(this.checked)" />
+              ⭐ Toutes les catégories
+            </label>
+          </div>
+          <div id="u-cat-checkboxes-list" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:6px;border-top:1px solid var(--border);">
+            <!-- Dynamically populated from recipe categories -->
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:10px;">
+          <label style="font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:8px;cursor:pointer;">
+            <input type="checkbox" id="u-is-active" checked />
+            Compte actif (autoriser la connexion)
+          </label>
+        </div>
+
+        <div class="modal-actions" style="margin-top:20px;">
+          <button type="button" class="btn btn-secondary btn-lg" onclick="closeUserModal()">Annuler</button>
+          <button type="submit" class="btn btn-primary btn-lg" id="u-save-btn">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>

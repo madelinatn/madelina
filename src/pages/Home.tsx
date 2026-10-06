@@ -1,13 +1,15 @@
-import { Hero }     from '../components/Hero';
+import { Hero } from '../components/Hero';
 import { OurStory } from '../components/OurStory';
-import { Menu }     from '../components/Menu';
-import { Reviews }  from '../components/Reviews';
+import { Menu } from '../components/Menu';
+import { Reviews } from '../components/Reviews';
 import { ContactForm } from '../components/ContactForm';
-import { Link }     from 'react-router-dom';
-import { motion }   from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 export const Home = () => {
+  const { t } = useLanguage();
   useEffect(() => {
     document.title = "madelina";
   }, []);
@@ -22,7 +24,7 @@ export const Home = () => {
       {/* ── Menu Preview ── */}
       <section
         id="menu"
-        style={{ background: '#FAF7F4', padding: '7rem 1.5rem', textAlign: 'center' }}
+        className="py-28 px-6 text-center bg-[#FAF7F4]"
       >
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -32,29 +34,31 @@ export const Home = () => {
             transition={{ duration: 0.6 }}
           >
             {/* label */}
-            <span style={{ fontFamily: '"Inter",sans-serif', fontSize: '0.65rem', letterSpacing: '0.3em', textTransform: 'uppercase', color: '#A64B2A', fontWeight: 500 }}>
-              Notre Menu
+            <span className="font-sans text-[0.65rem] tracking-[0.3em] uppercase text-madelina-terracotta font-medium">
+              {t("Notre Menu", "Our Menu")}
             </span>
 
             {/* heading */}
-            <h2 style={{ fontFamily: '"Playfair Display",Georgia,serif', fontSize: 'clamp(2rem,4.5vw,3.2rem)', color: '#2A2118', marginTop: '1rem', marginBottom: '1rem', lineHeight: 1.1 }}>
-              Découvrez notre Menu
+            <h2 className="font-display text-[clamp(2rem,4.5vw,3.2rem)] text-madelina-navy my-4 leading-[1.1]">
+              {t("Découvrez notre Menu", "Discover our Menu")}
             </h2>
 
             {/* arch line divider */}
             <div className="flex items-center justify-center gap-5 mb-10">
-              <span className="h-px w-16 bg-[#A64B2A] opacity-20" />
+              <span className="h-px w-16 bg-madelina-terracotta opacity-20" />
               <svg width="20" height="26" viewBox="0 0 100 130" fill="none" aria-hidden="true">
-                <path d="M10 130 V52 Q10 10 50 10 Q90 10 90 52 V130 Z" stroke="#A64B2A" strokeWidth="6" fill="none"/>
-                <line x1="10" y1="72" x2="90" y2="72" stroke="#A64B2A" strokeWidth="3"/>
-                <line x1="50" y1="72" x2="50" y2="130" stroke="#A64B2A" strokeWidth="3"/>
+                <path d="M10 130 V52 Q10 10 50 10 Q90 10 90 52 V130 Z" stroke="#A64B2A" strokeWidth="6" fill="none" />
+                <line x1="10" y1="72" x2="90" y2="72" stroke="#A64B2A" strokeWidth="3" />
+                <line x1="50" y1="72" x2="50" y2="130" stroke="#A64B2A" strokeWidth="3" />
               </svg>
-              <span className="h-px w-16 bg-[#A64B2A] opacity-20" />
+              <span className="h-px w-16 bg-madelina-terracotta opacity-20" />
             </div>
 
-            <p style={{ fontFamily: '"Inter",sans-serif', color: '#7A6A5A', maxWidth: '36rem', margin: '0 auto 3rem', lineHeight: 1.75, fontSize: '1.0625rem' }}>
-              Pâtisseries fines, café d'exception et brunchs gourmands.
-              Consultez notre menu complet en ligne.
+            <p className="font-sans text-[#7A6A5A] max-w-[36rem] mx-auto mb-12 leading-[1.75] text-[1.0625rem]">
+              {t(
+                "Pâtisseries fines, café d'exception et brunchs gourmands. Consultez notre menu complet en ligne.",
+                "Fine pastries, exceptional coffee, and gourmet brunches. Check out our full menu online."
+              )}
             </p>
           </motion.div>
 
@@ -68,7 +72,7 @@ export const Home = () => {
             className="mt-14"
           >
             <Link to="/menu" id="home-full-menu-btn" className="btn-primary inline-flex">
-              Voir le Menu Complet
+              {t("Voir le Menu Complet", "View the Full Menu")}
             </Link>
           </motion.div>
         </div>

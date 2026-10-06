@@ -1,0 +1,257 @@
+import fs from 'fs';
+
+const orig = fs.readFileSync('public/admin/index.html', 'utf8');
+
+// 1. EXTRACT HEAD & BASE CSS (up to </style>)
+const styleEndIdx = orig.indexOf('</style>');
+const headAndStyles = orig.substring(0, styleEndIdx);
+
+// Extra CSS to inject before </style>
+const additionalCSS = `
+    /* ── USER BADGE IN HEADER ── */
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: rgba(166,75,42,0.08);
+      border: 1px solid rgba(166,75,42,0.2);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    /* ── USER MANAGEMENT SECTION ── */
+    .user-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .user-table-wrap {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      overflow-x: auto;
+      box-shadow: 0 2px 12px rgba(42,33,24,0.04);
+    }
+    .user-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+    .user-table th {
+      background: #FDFBF8;
+      padding: 14px 18px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      border-bottom: 1.5px solid var(--border);
+      text-transform: uppercase;
+    }
+    .user-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      color: var(--navy);
+      vertical-align: middle;
+    }
+    .user-table tr:last-child td { border-bottom: none; }
+    .user-table tr:hover td { background: rgba(250, 247, 244, 0.6); }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .role-admin { background: #FDE8E1; color: var(--terracotta); border: 1px solid rgba(166,75,42,0.3); }
+    .role-staff { background: #E8F0FE; color: #1A73E8; border: 1px solid rgba(26,115,232,0.3); }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 12px;
+    }
+    .status-active { background: #E6F4EA; color: #137333; }
+    .status-inactive { background: #FCE8E6; color: #C5221F; }
+
+    .cat-chips-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .cat-chip {
+      font-size: 10.5px;
+      background: #F1ECE6;
+      color: var(--navy);
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-weight: 600;
+      border: 1px solid rgba(214,204,194,0.4);
+    }
+
+    /* ── SCALING CALCULATOR MODAL ── */
+    #scaling-modal-overlay,
+    #recipe-modal-overlay,
+    #recipe-cat-overlay,
+    #user-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(42, 33, 24, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    #scaling-modal-overlay.open,
+    #recipe-modal-overlay.open,
+    #recipe-cat-overlay.open,
+    #user-modal-overlay.open {
+      display: flex;
+    }
+
+    .calc-box {
+      background: #FAF7F4;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 18px;
+    }
+    .calc-mode-nav {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .calc-mode-btn {
+      padding: 7px 14px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--text-muted);
+      transition: all 0.15s;
+    }
+    .calc-mode-btn.active {
+      background: var(--terracotta);
+      color: white;
+      border-color: var(--terracotta);
+    }
+    .calc-ratio-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #FFF;
+      border: 1.5px solid #F3EAE3;
+      border-left: 4px solid var(--terracotta);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--navy);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .calc-multiplier-pill {
+      background: var(--terracotta);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .calc-table-wrap {
+      max-height: 280px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+    }
+    .calc-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .calc-table th {
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      padding: 10px 12px;
+      border-bottom: 1.5px solid var(--border);
+      background: #FDFBF8;
+      position: sticky;
+      top: 0;
+    }
+    .calc-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(234,227,218,0.6);
+      font-size: 13px;
+    }
+    .calc-qty-scaled {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--terracotta);
+    }
+    .quick-scale-bar {
+      display: flex;
+      gap: 6px;
+      margin-top: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .quick-scale-btn {
+      padding: 5px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: white;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--navy);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .quick-scale-btn:hover {
+      border-color: var(--terracotta);
+      color: var(--terracotta);
+    }
+
+    /* Print styles for Recipe Cards */
+    @media print {
+      body * { visibility: hidden !important; }
+      #print-recipe-container, #print-recipe-container * { visibility: visible !important; }
+      #print-recipe-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: white;
+        padding: 24px;
+        display: block !important;
+      }
+    }
+`;
+
+// Build and export
+fs.writeFileSync('scratch/additional-css.css', additionalCSS);
+console.log('Additional CSS prepared');
