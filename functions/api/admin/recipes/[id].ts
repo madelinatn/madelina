@@ -21,6 +21,7 @@ export async function onRequestPut(context: EventContext<Env, any, any>) {
       base_dim2?: number;
       base_portions?: number;
       base_unit?: string;
+      base_height?: number;
       parts?: any[] | null;
       ingredients: Array<{ id: string; name: string; quantity: number; unit: string; order_idx: number }>;
     }>();
@@ -29,7 +30,7 @@ export async function onRequestPut(context: EventContext<Env, any, any>) {
       name, category_id,
       description = '', base_description = '',
       base_type = 'dimension', base_dim1 = 20, base_dim2 = 20,
-      base_portions = 6, base_unit = 'cm',
+      base_portions = 6, base_unit = 'cm', base_height = 4.5,
       parts = null, ingredients = []
     } = body;
 
@@ -37,9 +38,9 @@ export async function onRequestPut(context: EventContext<Env, any, any>) {
 
     await context.env.DB.prepare(
       `UPDATE recipes
-       SET name = ?, category_id = ?, description = ?, base_description = ?, base_type = ?, base_dim1 = ?, base_dim2 = ?, base_portions = ?, base_unit = ?, parts = ?
+       SET name = ?, category_id = ?, description = ?, base_description = ?, base_type = ?, base_dim1 = ?, base_dim2 = ?, base_portions = ?, base_unit = ?, base_height = ?, parts = ?
        WHERE id = ?`
-    ).bind(name, category_id, description, base_description, base_type, base_dim1, base_dim2, base_portions, base_unit, partsJson, id).run();
+    ).bind(name, category_id, description, base_description, base_type, base_dim1, base_dim2, base_portions, base_unit, base_height, partsJson, id).run();
 
     // Replace all ingredients
     await context.env.DB.prepare('DELETE FROM recipe_ingredients WHERE recipe_id = ?').bind(id).run();

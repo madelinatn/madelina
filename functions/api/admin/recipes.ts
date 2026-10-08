@@ -81,6 +81,7 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
       base_dim2?: number;
       base_portions?: number;
       base_unit?: string;
+      base_height?: number;
       parts?: any[] | null;
       ingredients: Array<{ id: string; name: string; quantity: number; unit: string; order_idx: number }>;
     }>();
@@ -89,16 +90,16 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
       id, name, category_id,
       description = '', base_description = '',
       base_type = 'dimension', base_dim1 = 20, base_dim2 = 20,
-      base_portions = 6, base_unit = 'cm',
+      base_portions = 6, base_unit = 'cm', base_height = 4.5,
       parts = null, ingredients = []
     } = body;
 
     const partsJson = parts && parts.length > 0 ? JSON.stringify(parts) : '';
 
     await context.env.DB.prepare(
-      `INSERT INTO recipes (id, name, category_id, description, base_description, base_type, base_dim1, base_dim2, base_portions, base_unit, parts)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    ).bind(id, name, category_id, description, base_description, base_type, base_dim1, base_dim2, base_portions, base_unit, partsJson).run();
+      `INSERT INTO recipes (id, name, category_id, description, base_description, base_type, base_dim1, base_dim2, base_portions, base_unit, base_height, parts)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(id, name, category_id, description, base_description, base_type, base_dim1, base_dim2, base_portions, base_unit, base_height, partsJson).run();
 
     // Flatten all parts ingredients for recipe_ingredients table (backward compat + scaling)
     const allIngredients = parts && parts.length > 0

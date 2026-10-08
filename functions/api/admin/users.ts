@@ -1,4 +1,4 @@
-import { checkAuth, hashPassword } from '../auth/check';
+import { getAuthUser, hashPassword } from '../auth/check';
 import type { Env } from '../_types';
 
 async function ensurePlainPasswordColumn(db: D1Database) {
@@ -9,11 +9,12 @@ async function ensurePlainPasswordColumn(db: D1Database) {
   }
 }
 
-// GET /api/admin/users — list all users
+// GET /api/admin/users — list all users (Exclusive to Haifa)
 export async function onRequestGet(context: EventContext<Env, any, any>) {
-  if (!(await checkAuth(context.request, context.env))) {
-    return new Response(JSON.stringify({ error: 'Non autorisé' }), {
-      status: 401, headers: { 'Content-Type': 'application/json' }
+  const authUser = await getAuthUser(context.request, context.env);
+  if (!authUser || authUser.username.toLowerCase() !== 'haifa') {
+    return new Response(JSON.stringify({ error: 'Accès réservé exclusivement à Haifa' }), {
+      status: 403, headers: { 'Content-Type': 'application/json' }
     });
   }
 
@@ -41,11 +42,12 @@ export async function onRequestGet(context: EventContext<Env, any, any>) {
   }
 }
 
-// POST /api/admin/users — create a new user
+// POST /api/admin/users — create a new user (Exclusive to Haifa)
 export async function onRequestPost(context: EventContext<Env, any, any>) {
-  if (!(await checkAuth(context.request, context.env))) {
-    return new Response(JSON.stringify({ error: 'Non autorisé' }), {
-      status: 401, headers: { 'Content-Type': 'application/json' }
+  const authUser = await getAuthUser(context.request, context.env);
+  if (!authUser || authUser.username.toLowerCase() !== 'haifa') {
+    return new Response(JSON.stringify({ error: 'Seule Haifa peut créer des comptes d\'utilisateurs' }), {
+      status: 403, headers: { 'Content-Type': 'application/json' }
     });
   }
 
@@ -116,11 +118,12 @@ export async function onRequestPost(context: EventContext<Env, any, any>) {
   }
 }
 
-// PUT /api/admin/users — update a user
+// PUT /api/admin/users — update a user (Exclusive to Haifa)
 export async function onRequestPut(context: EventContext<Env, any, any>) {
-  if (!(await checkAuth(context.request, context.env))) {
-    return new Response(JSON.stringify({ error: 'Non autorisé' }), {
-      status: 401, headers: { 'Content-Type': 'application/json' }
+  const authUser = await getAuthUser(context.request, context.env);
+  if (!authUser || authUser.username.toLowerCase() !== 'haifa') {
+    return new Response(JSON.stringify({ error: 'Seule Haifa peut modifier des comptes d\'utilisateurs' }), {
+      status: 403, headers: { 'Content-Type': 'application/json' }
     });
   }
 
@@ -149,9 +152,9 @@ export async function onRequestPut(context: EventContext<Env, any, any>) {
       });
     }
 
-    // STRICT ADMIN PROTECTION: Nobody can change admin's password or details!
-    if (user.role === 'admin' || user.username.toLowerCase() === 'haifa' || user.username.toLowerCase() === 'admin') {
-      return new Response(JSON.stringify({ error: 'Le compte administrateur est strictement protégé et ne peut pas être modifié' }), {
+    // STRICT HAIFA PROTECTION: Only Haifa's account is protected from changes via this endpoint
+    if (user.username.toLowerCase() === 'haifa') {
+      return new Response(JSON.stringify({ error: 'Le compte de Haifa est strictement protégé et ne peut pas être modifié ici' }), {
         status: 403, headers: { 'Content-Type': 'application/json' }
       });
     }
@@ -196,11 +199,12 @@ export async function onRequestPut(context: EventContext<Env, any, any>) {
   }
 }
 
-// DELETE /api/admin/users — delete a user
+// DELETE /api/admin/users — delete a user (Exclusive to Haifa)
 export async function onRequestDelete(context: EventContext<Env, any, any>) {
-  if (!(await checkAuth(context.request, context.env))) {
-    return new Response(JSON.stringify({ error: 'Non autorisé' }), {
-      status: 401, headers: { 'Content-Type': 'application/json' }
+  const authUser = await getAuthUser(context.request, context.env);
+  if (!authUser || authUser.username.toLowerCase() !== 'haifa') {
+    return new Response(JSON.stringify({ error: 'Seule Haifa peut supprimer des utilisateurs' }), {
+      status: 403, headers: { 'Content-Type': 'application/json' }
     });
   }
 
@@ -219,9 +223,9 @@ export async function onRequestDelete(context: EventContext<Env, any, any>) {
       return new Response(JSON.stringify({ error: 'Utilisateur non trouvé' }), { status: 404 });
     }
 
-    // STRICT ADMIN PROTECTION: Nobody can delete an admin account!
-    if (user.role === 'admin' || user.username.toLowerCase() === 'haifa' || user.username.toLowerCase() === 'admin') {
-      return new Response(JSON.stringify({ error: 'Le compte administrateur est strictement protégé et ne peut pas être supprimé' }), {
+    // STRICT HAIFA PROTECTION: Only Haifa's account is protected from deletion
+    if (user.username.toLowerCase() === 'haifa') {
+      return new Response(JSON.stringify({ error: 'Le compte de Haifa est strictement protégé et ne peut pas être supprimé' }), {
         status: 403, headers: { 'Content-Type': 'application/json' }
       });
     }

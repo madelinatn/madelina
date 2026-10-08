@@ -813,9 +813,16 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Erreur lors de l\'ajustement');
 
+        // Instant optimistic update on local state & UI
+        const matchItem = (stockList || []).find(s => s.id === stockAdjustSelectedId);
+        if (matchItem) {
+          matchItem.stock_qty = (parseFloat(matchItem.stock_qty) || 0) + delta;
+          renderStockView();
+        }
+        closeStockAdjustModal();
+
         const deltaSign = delta >= 0 ? '+' : '';
         toast('✅ Stock mis à jour : ' + data.name + ' (' + deltaSign + delta.toLocaleString('fr-TN') + ' ' + (data.unit || '') + ')', 'success');
-        closeStockAdjustModal();
 
         await loadStock();
         if (activeStockView === 'history') {
@@ -2375,7 +2382,27 @@
         color: var(--danger) !important;
       }
 
-      /* ── MOBILE BOTTOM ACTION DOCK (NATIVE APP FEEL) ── */
+      /* ══════════════════════════════════════════════ */
+      /* ██  NATIVE APP MOBILE REDESIGN               ██ */
+      /* ══════════════════════════════════════════════ */
+
+      /* ── HEADER: compact, native-feel ── */
+      .admin-sticky-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: rgba(250,247,244,0.95);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+
+      .top-nav-bar {
+        background: transparent !important;
+        border-bottom: 1px solid var(--border) !important;
+        box-shadow: none !important;
+      }
+
+      /* ── BOTTOM TAB BAR (iOS-style) ── */
       .mobile-bottom-dock {
         display: none !important;
         position: fixed;
@@ -2383,14 +2410,14 @@
         left: 0;
         right: 0;
         z-index: 999;
-        background: rgba(255, 255, 255, 0.94);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-top: 1px solid var(--border);
-        box-shadow: 0 -4px 20px rgba(42, 33, 24, 0.08);
-        padding: 10px 16px;
-        padding-bottom: max(12px, env(safe-area-inset-bottom));
-        gap: 12px;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: saturate(180%) blur(20px);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        border-top: 0.5px solid rgba(0,0,0,0.12);
+        box-shadow: 0 -1px 0 rgba(0,0,0,0.06), 0 -8px 24px rgba(42,33,24,0.07);
+        padding: 8px 20px;
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+        gap: 10px;
         align-items: center;
       }
 
@@ -2398,51 +2425,54 @@
         display: flex !important;
       }
 
+      /* Dock buttons — full-pill native style */
       .mobile-dock-btn {
-        height: 48px;
-        border-radius: 14px;
+        height: 46px;
+        border-radius: 13px;
         border: none;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 7px;
         cursor: pointer;
         font-family: 'Inter', sans-serif;
-        transition: transform 0.15s, background 0.15s;
+        font-weight: 600;
+        font-size: 13.5px;
+        transition: transform 0.12s cubic-bezier(0.34,1.56,0.64,1), opacity 0.12s;
+        -webkit-tap-highlight-color: transparent;
       }
 
       .mobile-dock-btn:active {
-        transform: scale(0.97);
+        transform: scale(0.94);
+        opacity: 0.85;
       }
 
       .dock-btn-cat {
         flex: 1;
-        background: var(--white);
+        background: #F2EDE8;
         color: var(--navy);
-        border: 1.5px solid var(--border);
-        font-size: 13.5px;
+        font-size: 13px;
         font-weight: 600;
-        box-shadow: 0 1px 4px rgba(42, 33, 24, 0.04);
       }
 
       .dock-btn-cat:hover {
-        border-color: var(--navy);
+        background: #EAE3DA;
       }
 
       .dock-btn-add {
-        flex: 1.4;
-        background: var(--navy);
+        flex: 1.5;
+        background: var(--terracotta);
         color: white;
         font-size: 14px;
         font-weight: 700;
-        box-shadow: 0 4px 14px rgba(42, 33, 24, 0.22);
+        box-shadow: 0 4px 16px rgba(166,75,42,0.32);
       }
 
       .dock-btn-add:hover {
-        background: #1f1812;
+        background: #9A3E25;
       }
 
-      /* ── MODALS ON MOBILE (NATIVE BOTTOM SHEET) ── */
+      /* ── MODALS: full native bottom sheet ── */
       #modal-overlay,
       #category-overlay,
       #rename-cat-overlay,
@@ -2459,36 +2489,52 @@
       #cook-modal-overlay {
         align-items: flex-end !important;
         padding: 0 !important;
-        background: rgba(26, 35, 50, 0.5) !important;
-        backdrop-filter: blur(6px) !important;
-        -webkit-backdrop-filter: blur(6px) !important;
+        background: rgba(0, 0, 0, 0.45) !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
       }
 
       .modal {
         width: 100% !important;
         max-width: 100% !important;
-        max-height: 90vh !important;
-        border-radius: 26px 26px 0 0 !important;
-        padding: 20px 18px calc(24px + env(safe-area-inset-bottom)) !important;
-        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2) !important;
-        animation: slideUpSheet 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+        max-height: 92vh !important;
+        border-radius: 28px 28px 0 0 !important;
+        padding: 22px 18px calc(28px + env(safe-area-inset-bottom)) !important;
+        box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.22) !important;
+        animation: slideUpSheet 0.28s cubic-bezier(0.16, 1, 0.3, 1);
         overflow-y: auto !important;
       }
 
       @keyframes slideUpSheet {
-        from { transform: translateY(100%); }
-        to { transform: translateY(0); }
+        from { transform: translateY(100%); opacity: 0.7; }
+        to { transform: translateY(0); opacity: 1; }
       }
 
-      /* ── RECIPE GRID & CARDS ON MOBILE ── */
+      /* Pull handle larger, more grabbable */
+      .modal-pull-handle {
+        width: 40px !important;
+        height: 5px !important;
+        background: rgba(0,0,0,0.14) !important;
+        border-radius: 10px !important;
+        margin: -10px auto 18px !important;
+      }
+
+      /* ── RECIPE GRID: single col, bigger cards ── */
       .recipe-grid {
         grid-template-columns: 1fr !important;
-        gap: 12px !important;
+        gap: 10px !important;
       }
 
       .recipe-card {
-        padding: 16px !important;
+        padding: 15px !important;
         border-radius: 18px !important;
+        border: 1px solid var(--border) !important;
+        box-shadow: 0 2px 8px rgba(42,33,24,0.04) !important;
+        transition: transform 0.12s cubic-bezier(0.34,1.56,0.64,1) !important;
+      }
+
+      .recipe-card:active {
+        transform: scale(0.985) !important;
       }
 
       .recipe-card-header {
@@ -2496,15 +2542,23 @@
       }
 
       .recipe-card-actions .btn-icon {
-        width: 36px !important;
-        height: 36px !important;
+        width: 38px !important;
+        height: 38px !important;
         border-radius: 10px !important;
-        border: 1.5px solid var(--border) !important;
+        border: 1px solid var(--border) !important;
         background: var(--white) !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
         font-size: 14px !important;
+      }
+
+      /* Calc button: bigger tap target */
+      .recipe-calc-btn {
+        height: 38px !important;
+        padding: 0 14px !important;
+        font-size: 12.5px !important;
+        border-radius: 10px !important;
       }
 
       /* ── USER TABLE RESPONSIVE CARDS ON MOBILE ── */
@@ -4679,45 +4733,53 @@
     }
 
     .calc-box {
-      background: #FAF7F4;
-      border: 1.5px solid var(--border);
-      border-radius: 16px;
+      background: #FAFAF9;
+      border: 1px solid var(--border);
+      border-radius: 14px;
       padding: 16px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
     .calc-mode-nav {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-bottom: 16px;
+      background: #F2EDE8;
+      border-radius: 10px;
+      padding: 3px;
     }
     .calc-mode-btn {
-      padding: 7px 14px;
-      border-radius: 12px;
+      padding: 8px 6px;
+      border-radius: 8px;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
-      border: 1.5px solid var(--border);
-      background: var(--white);
+      border: none;
+      background: transparent;
       color: var(--text-muted);
-      transition: all 0.15s;
+      transition: all 0.18s;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .calc-mode-btn.active {
-      background: var(--terracotta);
-      color: white;
-      border-color: var(--terracotta);
+      background: #FFFFFF;
+      color: var(--navy);
+      font-weight: 700;
+      box-shadow: 0 1px 4px rgba(42,33,24,0.12);
     }
     .calc-ratio-banner {
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: #FFF;
-      border: 1.5px solid #F3EAE3;
-      border-left: 4px solid var(--terracotta);
-      border-radius: 12px;
-      padding: 10px 14px;
+      border: 1px solid #EDE6DF;
+      border-left: 3px solid var(--terracotta);
+      border-radius: 10px;
+      padding: 9px 13px;
       margin-top: 12px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       color: var(--navy);
       flex-wrap: wrap;
@@ -4726,16 +4788,16 @@
     .calc-multiplier-pill {
       background: var(--terracotta);
       color: white;
-      padding: 4px 12px;
+      padding: 3px 10px;
       border-radius: 20px;
-      font-weight: 800;
-      font-size: 13px;
+      font-weight: 700;
+      font-size: 12px;
     }
     .calc-table-wrap {
-      max-height: 280px;
+      max-height: 260px;
       overflow-y: auto;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 10px;
       background: white;
     }
     .calc-table {
@@ -4744,40 +4806,40 @@
     }
     .calc-table th {
       text-align: left;
-      font-size: 11px;
+      font-size: 10.5px;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.07em;
       color: var(--text-muted);
-      padding: 10px 12px;
-      border-bottom: 1.5px solid var(--border);
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border);
       background: #FDFBF8;
       position: sticky;
       top: 0;
     }
     .calc-table td {
-      padding: 10px 12px;
-      border-bottom: 1px solid rgba(234,227,218,0.6);
+      padding: 9px 12px;
+      border-bottom: 1px solid rgba(234,227,218,0.5);
       font-size: 13px;
     }
     .calc-qty-scaled {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
       color: var(--terracotta);
     }
     .quick-scale-bar {
       display: flex;
-      gap: 6px;
+      gap: 5px;
       margin-top: 10px;
       align-items: center;
       flex-wrap: wrap;
     }
     .quick-scale-btn {
-      padding: 5px 12px;
-      border-radius: 8px;
+      padding: 5px 11px;
+      border-radius: 7px;
       border: 1px solid var(--border);
       background: white;
-      font-size: 11.5px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 600;
       color: var(--navy);
       cursor: pointer;
       transition: all 0.15s;
@@ -7035,7 +7097,7 @@
             </div>
 
             <!-- Fields for Rect -->
-            <div id="r-dim-rect-fields" class="form-row" style="margin-bottom:0;">
+            <div id="r-dim-rect-fields" class="form-row" style="margin-bottom:0;display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:10px;">
               <div class="form-group">
                 <label>LARGEUR (CM)</label>
                 <input type="number" id="r-base-dim1" min="1" step="0.5" value="20" placeholder="20" />
@@ -7045,18 +7107,26 @@
                 <input type="number" id="r-base-dim2" min="1" step="0.5" value="20" placeholder="20" />
               </div>
               <div class="form-group">
+                <label>HAUTEUR (CM)</label>
+                <input type="number" id="r-base-height-rect" min="0.5" step="0.5" value="4.5" placeholder="4.5" />
+              </div>
+              <div class="form-group">
                 <label>PORTIONS ESTIMÉES</label>
                 <input type="number" id="r-base-portions" min="1" step="1" value="6" placeholder="6" />
               </div>
             </div>
 
             <!-- Fields for Round -->
-            <div id="r-dim-round-fields" class="form-row" style="display:none;margin-bottom:0;">
-              <div class="form-group" style="flex:1;">
+            <div id="r-dim-round-fields" class="form-row" style="display:none;margin-bottom:0;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:10px;">
+              <div class="form-group">
                 <label>DIAMÈTRE DU MOULE (CM)</label>
                 <input type="number" id="r-base-diam" min="1" step="0.5" value="22" placeholder="22" />
               </div>
-              <div class="form-group" style="flex:1;">
+              <div class="form-group">
+                <label>HAUTEUR (CM)</label>
+                <input type="number" id="r-base-height-round" min="0.5" step="0.5" value="4.5" placeholder="4.5" />
+              </div>
+              <div class="form-group">
                 <label>PORTIONS ESTIMÉES</label>
                 <input type="number" id="r-base-portions-round" min="1" step="1" value="6" placeholder="6" />
               </div>
@@ -7160,200 +7230,156 @@
   </div>
 
   <!-- ══════════════════════════════════════════ -->
-  <!-- SMART SCALING CALCULATOR MODAL             -->
-  <!-- ══════════════════════════════════════════ -->
+  <!-- SMART SCALING CALCULATOR MODAL -->
   <div id="scaling-modal-overlay">
-    <div class="modal" style="max-width:680px;max-height:92vh;display:flex;flex-direction:column;">
+    <div class="modal" style="max-width:640px;max-height:92vh;display:flex;flex-direction:column;border-radius:20px;">
       <button type="button" class="modal-close-btn" onclick="closeScalingModal()" aria-label="Fermer" title="Fermer">✕</button>
       <div class="modal-pull-handle"></div>
-      
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
-        <div style="width:40px;height:40px;border-radius:12px;background:#FAF0E8;border:1px solid rgba(166,75,42,0.25);display:flex;align-items:center;justify-content:center;color:var(--terracotta);flex-shrink:0;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg>
+
+      <!-- Header -->
+      <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;">
+        <div style="width:36px;height:36px;border-radius:10px;background:#F3EDE8;border:1px solid rgba(166,75,42,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--terracotta)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path></svg>
         </div>
-        <div>
-          <h3 id="calc-recipe-title" style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin:0;">Calculatrice de Proportions</h3>
-          <div id="calc-recipe-base-badge" style="font-size:12px;color:var(--terracotta);font-weight:600;margin-top:2px;">Base standard : 20 × 20 cm</div>
+        <div style="flex:1;min-width:0;">
+          <h3 id="calc-recipe-title" style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--navy);margin:0;line-height:1.3;">Calculatrice de Proportions</h3>
+          <div id="calc-recipe-base-badge" style="font-size:11.5px;color:var(--terracotta);font-weight:600;margin-top:2px;">Base standard : 20 × 20 cm</div>
         </div>
       </div>
 
-      <div style="overflow-y:auto;padding-right:4px;margin-top:14px;flex:1;">
-        <!-- MODE SELECTOR TABS -->
+      <div style="overflow-y:auto;padding-right:2px;flex:1;">
+
+        <!-- MODE TABS — equal width, pill style -->
         <div class="calc-mode-nav">
-          <button type="button" class="calc-mode-btn active" id="btn-scale-dimensions" onclick="setScalingMode('dimensions')">Dimensions Moule</button>
-          <button type="button" class="calc-mode-btn" id="btn-scale-portions" onclick="setScalingMode('portions')">Nombre de Portions</button>
-          <button type="button" class="calc-mode-btn" id="btn-scale-direct" onclick="setScalingMode('direct')">Facteur Direct</button>
+          <button type="button" class="calc-mode-btn active" id="btn-scale-dimensions" onclick="setScalingMode('dimensions')">Dimensions</button>
+          <button type="button" class="calc-mode-btn" id="btn-scale-portions" onclick="setScalingMode('portions')">Portions</button>
+          <button type="button" class="calc-mode-btn" id="btn-scale-direct" onclick="setScalingMode('direct')">Facteur</button>
         </div>
 
-        <!-- MODE CONTROLS BOX -->
-        <div class="calc-box">
-          <!-- 1. DIMENSIONS MODE (Conversion Précise Moule Initial ➔ Moule Cible) -->
-          <div id="calc-panel-dimensions">
-            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:12px;margin-bottom:6px;">
-              <!-- SECTION A: MOULE INITIAL (RECETTE DE BASE) -->
-              <div style="background:#FFFFFF;border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                  <span style="font-size:11px;font-weight:800;color:var(--navy);letter-spacing:0.04em;">1. MOULE INITIAL (BASE)</span>
-                  <span id="calc-src-area-badge" style="font-size:10.5px;font-weight:700;color:var(--terracotta);background:rgba(166,75,42,0.1);padding:2px 7px;border-radius:6px;">-- cm²</span>
+        <!-- PANEL 1 : DIMENSIONS -->
+        <div class="calc-box" id="calc-panel-dimensions">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+            <!-- Moule Initial (fixe) -->
+            <div style="background:#F7F4F1;border:1px solid #E8E1D9;border-radius:12px;padding:13px 14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <span style="font-size:10px;font-weight:800;color:var(--text-muted);letter-spacing:0.06em;text-transform:uppercase;">Base fixe</span>
+                <span id="calc-src-area-badge" style="font-size:10.5px;font-weight:700;color:var(--text-muted);background:#EDE6DF;padding:2px 8px;border-radius:5px;">-- cm²</span>
+              </div>
+              <div id="calc-src-summary-shape" style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:3px;">Moule Rond Ø22 cm</div>
+              <div id="calc-src-summary-height" style="font-size:11px;color:var(--text-muted);">Hauteur : 4.5 cm</div>
+              <div style="margin-top:10px;font-size:10.5px;color:var(--text-muted);font-style:italic;">Dimensions de la recette originale</div>
+              <input type="hidden" id="calc-src-shape-val" value="round" />
+              <input type="hidden" id="calc-src-diam" value="22" />
+              <input type="hidden" id="calc-src-w" value="20" />
+              <input type="hidden" id="calc-src-l" value="20" />
+              <input type="hidden" id="calc-src-h" value="4.5" />
+            </div>
+
+            <!-- Nouveau Moule (cible) -->
+            <div style="background:#FFFFFF;border:1.5px solid var(--terracotta);border-radius:12px;padding:13px 14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <span style="font-size:10px;font-weight:800;color:var(--terracotta);letter-spacing:0.06em;text-transform:uppercase;">Nouveau moule</span>
+                <span id="calc-target-area-badge" style="font-size:10.5px;font-weight:700;color:#1E6091;background:rgba(30,96,145,0.08);padding:2px 8px;border-radius:5px;">-- cm²</span>
+              </div>
+
+              <!-- Shape toggle -->
+              <div style="display:flex;gap:10px;margin-bottom:10px;">
+                <label style="font-size:11.5px;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:pointer;color:var(--navy);">
+                  <input type="radio" name="calc-target-shape" value="round" checked onchange="onCalcTargetShapeChange()" style="accent-color:var(--terracotta);" /> Rond
+                </label>
+                <label style="font-size:11.5px;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:pointer;color:var(--navy);">
+                  <input type="radio" name="calc-target-shape" value="rect" onchange="onCalcTargetShapeChange()" style="accent-color:var(--terracotta);" /> Carré / Rect
+                </label>
+              </div>
+
+              <!-- Round -->
+              <div id="calc-target-round-fields" class="form-group" style="margin-bottom:8px;">
+                <label style="font-size:10px;font-weight:700;">DIAMÈTRE (CM)</label>
+                <input type="number" id="calc-target-diam" min="1" step="0.5" value="26" oninput="calculateScale()" style="padding:6px 10px;font-size:14px;font-weight:700;color:var(--terracotta);" />
+              </div>
+
+              <!-- Rect -->
+              <div id="calc-target-rect-fields" class="form-row" style="margin-bottom:8px;display:none;gap:8px;">
+                <div class="form-group" style="margin-bottom:0;flex:1;">
+                  <label style="font-size:10px;font-weight:700;">LARGEUR (CM)</label>
+                  <input type="number" id="calc-target-w" min="1" step="0.5" value="25" oninput="calculateScale()" style="padding:6px 8px;font-size:13px;font-weight:700;color:var(--terracotta);" />
                 </div>
-                <div style="display:flex;gap:12px;align-items:center;margin-bottom:10px;">
-                  <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:pointer;">
-                    <input type="radio" name="calc-src-shape" value="round" checked onchange="onCalcSrcShapeChange()" /> ⭕ Rond
-                  </label>
-                  <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:pointer;">
-                    <input type="radio" name="calc-src-shape" value="rect" onchange="onCalcSrcShapeChange()" /> ⬛ Carré / Rect
-                  </label>
-                </div>
-                <!-- Initial Round -->
-                <div id="calc-src-round-fields" class="form-group" style="margin-bottom:0;">
-                  <label style="font-size:10.5px;">DIAMÈTRE D1 (CM)</label>
-                  <input type="number" id="calc-src-diam" min="1" step="0.5" value="22" oninput="calculateScale()" style="padding:6px 10px;font-size:13px;font-weight:600;" />
-                </div>
-                <!-- Initial Rect -->
-                <div id="calc-src-rect-fields" class="form-row" style="margin-bottom:0;display:none;">
-                  <div class="form-group">
-                    <label style="font-size:10.5px;">LARGEUR a1 (CM)</label>
-                    <input type="number" id="calc-src-w" min="1" step="0.5" value="20" oninput="calculateScale()" style="padding:6px 8px;font-size:13px;font-weight:600;" />
-                  </div>
-                  <div class="form-group">
-                    <label style="font-size:10.5px;">LONGUEUR b1 (CM)</label>
-                    <input type="number" id="calc-src-l" min="1" step="0.5" value="20" oninput="calculateScale()" style="padding:6px 8px;font-size:13px;font-weight:600;" />
-                  </div>
+                <div class="form-group" style="margin-bottom:0;flex:1;">
+                  <label style="font-size:10px;font-weight:700;">LONGUEUR (CM)</label>
+                  <input type="number" id="calc-target-l" min="1" step="0.5" value="25" oninput="calculateScale()" style="padding:6px 8px;font-size:13px;font-weight:700;color:var(--terracotta);" />
                 </div>
               </div>
 
-              <!-- SECTION B: MOULE CIBLE (NOUVELLE FORME DÉSIRÉE) -->
-              <div style="background:#FFFFFF;border:1.5px solid var(--terracotta);border-radius:12px;padding:12px 14px;box-shadow:0 3px 10px rgba(166,75,42,0.06);">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                  <span style="font-size:11px;font-weight:800;color:var(--terracotta);letter-spacing:0.04em;">2. NOUVEAU MOULE (CIBLE)</span>
-                  <span id="calc-target-area-badge" style="font-size:10.5px;font-weight:700;color:#1E6091;background:rgba(30,96,145,0.1);padding:2px 7px;border-radius:6px;">-- cm²</span>
-                </div>
-                <div style="display:flex;gap:12px;align-items:center;margin-bottom:10px;">
-                  <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:pointer;">
-                    <input type="radio" name="calc-target-shape" value="round" checked onchange="onCalcTargetShapeChange()" /> ⭕ Rond
-                  </label>
-                  <label style="font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;cursor:pointer;">
-                    <input type="radio" name="calc-target-shape" value="rect" onchange="onCalcTargetShapeChange()" /> ⬛ Carré / Rect
-                  </label>
-                </div>
-                <!-- Target Round -->
-                <div id="calc-target-round-fields" class="form-group" style="margin-bottom:0;">
-                  <label style="font-size:10.5px;">NOUVEAU DIAMÈTRE D2 (CM)</label>
-                  <input type="number" id="calc-target-diam" min="1" step="0.5" value="26" oninput="calculateScale()" style="padding:6px 10px;font-size:13px;font-weight:700;color:var(--terracotta);" />
-                </div>
-                <!-- Target Rect -->
-                <div id="calc-target-rect-fields" class="form-row" style="margin-bottom:0;display:none;">
-                  <div class="form-group">
-                    <label style="font-size:10.5px;">LARGEUR a2 (CM)</label>
-                    <input type="number" id="calc-target-w" min="1" step="0.5" value="25" oninput="calculateScale()" style="padding:6px 8px;font-size:13px;font-weight:700;color:var(--terracotta);" />
-                  </div>
-                  <div class="form-group">
-                    <label style="font-size:10.5px;">LONGUEUR b2 (CM)</label>
-                    <input type="number" id="calc-target-l" min="1" step="0.5" value="25" oninput="calculateScale()" style="padding:6px 8px;font-size:13px;font-weight:700;color:var(--terracotta);" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- OPTION HAUTEUR / VOLUME (REMARQUE 1 : POUR MOULES DE HAUTEURS DIFFÉRENTES) -->
-            <div style="margin-top:10px;padding:9px 12px;background:#FAF7F4;border:1px dashed var(--border);border-radius:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-              <label style="display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--navy);cursor:pointer;margin:0;">
-                <input type="checkbox" id="calc-enable-height" onchange="toggleCalcHeight()" style="accent-color:var(--terracotta);width:15px;height:15px;cursor:pointer;" />
-                <span>📏 Ajuster aussi la hauteur / épaisseur (Volume)</span>
-              </label>
-              <span style="font-size:11px;color:var(--text-muted);font-style:italic;">Optionnel (standard si même hauteur)</span>
-            </div>
-
-            <!-- CHAMPS HAUTEURS CACHÉS PAR DÉFAUT -->
-            <div id="calc-height-panel" style="display:none;margin-top:8px;padding:10px 14px;background:#FFFFFF;border:1.5px solid var(--border);border-radius:12px;">
-              <div class="form-row" style="margin-bottom:0;">
-                <div class="form-group" style="margin-bottom:0;">
-                  <label style="font-size:10.5px;font-weight:700;color:var(--text-muted);">HAUTEUR INITIALE h1 (CM)</label>
-                  <input type="number" id="calc-src-h" min="0.5" step="0.5" value="4.5" oninput="calculateScale()" style="padding:6px 10px;font-size:13px;font-weight:600;" />
-                </div>
-                <div class="form-group" style="margin-bottom:0;">
-                  <label style="font-size:10.5px;font-weight:700;color:var(--terracotta);">NOUVELLE HAUTEUR h2 (CM)</label>
-                  <input type="number" id="calc-target-h" min="0.5" step="0.5" value="4.5" oninput="calculateScale()" style="padding:6px 10px;font-size:13px;font-weight:700;color:var(--terracotta);" />
-                </div>
+              <!-- Height -->
+              <div class="form-group" style="margin-bottom:0;">
+                <label style="font-size:10px;font-weight:700;color:var(--navy);">HAUTEUR (CM)</label>
+                <input type="number" id="calc-target-h" min="0.5" step="0.5" value="4.5" oninput="calculateScale()" style="padding:6px 10px;font-size:13px;font-weight:700;color:var(--navy);" />
               </div>
             </div>
 
-            <!-- DÉTAILS DE LA FORMULE ET PRÉCISION π (REMARQUE 2) -->
-            <div id="calc-formula-detail-tag" style="font-size:11px;color:var(--text-muted);margin-top:8px;padding:6px 10px;background:rgba(42,33,24,0.03);border-radius:8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
-              <div style="display:flex;align-items:center;gap:6px;">
-                <span>📐 <strong>Formule :</strong></span>
-                <span id="calc-formula-text" style="font-weight:600;color:var(--navy);">Facteur = Surface Cible / Surface Initiale</span>
-              </div>
-              <span style="font-size:10px;color:var(--terracotta);font-weight:600;">(Haute précision π = 3.14159...)</span>
-            </div>
           </div>
+        </div>
 
-          <!-- 2. PORTIONS MODE -->
-          <div id="calc-panel-portions" style="display:none;">
-            <div class="form-row" style="margin-bottom:0;">
-              <div class="form-group">
-                <label>PORTIONS INITIALES (BASE)</label>
-                <input type="number" id="calc-base-portions-val" disabled style="background:#ECE7E1;" />
-              </div>
-              <div class="form-group">
-                <label>NOUVELLES PORTIONS DÉSIRÉES</label>
-                <input type="number" id="calc-target-portions" min="1" step="1" value="12" oninput="calculateScale()" />
-              </div>
+        <!-- PANEL 2 : PORTIONS -->
+        <div class="calc-box" id="calc-panel-portions" style="display:none;">
+          <div class="form-row" style="margin-bottom:0;">
+            <div class="form-group">
+              <label>PORTIONS DE BASE</label>
+              <input type="number" id="calc-base-portions-val" disabled style="background:#ECE7E1;" />
             </div>
-          </div>
-
-          <!-- 3. DIRECT MULTIPLIER MODE -->
-          <div id="calc-panel-direct" style="display:none;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
-              <span style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.04em;">COEFFICIENT MULTIPLICATEUR :</span>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <label for="calc-direct-input" style="font-size:11px;font-weight:700;color:var(--navy);margin:0;">Valeur libre :</label>
-                <div style="position:relative;width:95px;">
-                  <input type="number" id="calc-direct-input" min="0.01" step="0.05" value="1.00" placeholder="1.00" oninput="onDirectInputChange()" style="padding:6px 22px 6px 10px;font-size:13px;font-weight:700;border:1.5px solid var(--border);border-radius:8px;width:100%;text-align:center;color:var(--terracotta);background:#FFFFFF;" />
-                  <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:var(--text-muted);pointer-events:none;">×</span>
-                </div>
-              </div>
-            </div>
-            <div class="quick-scale-bar" style="margin-top:2px;">
-              <button type="button" class="quick-scale-btn" data-factor="0.5" onclick="setDirectMultiplier(0.5)">0.5× (Demi)</button>
-              <button type="button" class="quick-scale-btn active" data-factor="1.0" onclick="setDirectMultiplier(1.0)">1.0× (Base)</button>
-              <button type="button" class="quick-scale-btn" data-factor="1.5" onclick="setDirectMultiplier(1.5)">1.5×</button>
-              <button type="button" class="quick-scale-btn" data-factor="2.0" onclick="setDirectMultiplier(2.0)">2.0× (Double)</button>
-              <button type="button" class="quick-scale-btn" data-factor="3.0" onclick="setDirectMultiplier(3.0)">3.0× (Triple)</button>
-              <button type="button" class="quick-scale-btn" data-factor="4.0" onclick="setDirectMultiplier(4.0)">4.0×</button>
-              <button type="button" class="quick-scale-btn" data-factor="5.0" onclick="setDirectMultiplier(5.0)">5.0×</button>
+            <div class="form-group">
+              <label>NOUVELLES PORTIONS</label>
+              <input type="number" id="calc-target-portions" min="1" step="1" value="12" oninput="calculateScale()" />
             </div>
           </div>
         </div>
 
-        <!-- RECALCULATED INGREDIENTS TABLE -->
+        <!-- PANEL 3 : FACTEUR DIRECT -->
+        <div class="calc-box" id="calc-panel-direct" style="display:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+            <span style="font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:0.04em;">COEFFICIENT ×</span>
+            <div style="position:relative;width:90px;">
+              <input type="number" id="calc-direct-input" min="0.01" step="0.05" value="1.00" placeholder="1.00" oninput="onDirectInputChange()" style="padding:6px 20px 6px 10px;font-size:14px;font-weight:700;border:1.5px solid var(--border);border-radius:8px;width:100%;text-align:center;color:var(--terracotta);background:#FFFFFF;" />
+              <span style="position:absolute;right:7px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:var(--text-muted);pointer-events:none;">×</span>
+            </div>
+          </div>
+          <div class="quick-scale-bar">
+            <button type="button" class="quick-scale-btn" data-factor="0.5" onclick="setDirectMultiplier(0.5)">× 0.5</button>
+            <button type="button" class="quick-scale-btn active" data-factor="1.0" onclick="setDirectMultiplier(1.0)">× 1</button>
+            <button type="button" class="quick-scale-btn" data-factor="1.5" onclick="setDirectMultiplier(1.5)">× 1.5</button>
+            <button type="button" class="quick-scale-btn" data-factor="2.0" onclick="setDirectMultiplier(2.0)">× 2</button>
+            <button type="button" class="quick-scale-btn" data-factor="3.0" onclick="setDirectMultiplier(3.0)">× 3</button>
+            <button type="button" class="quick-scale-btn" data-factor="4.0" onclick="setDirectMultiplier(4.0)">× 4</button>
+            <button type="button" class="quick-scale-btn" data-factor="5.0" onclick="setDirectMultiplier(5.0)">× 5</button>
+          </div>
+        </div>
+
+        <!-- INGREDIENTS TABLE -->
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <div class="card-title" style="margin:0;font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.06em;">
-            INGRÉDIENTS RECALCULÉS POUR L'ATELIER
-          </div>
-          <span style="font-size:11px;color:var(--text-muted);" id="calc-items-count">5 ingrédients</span>
+          <span style="font-size:10.5px;font-weight:700;color:var(--navy);letter-spacing:0.06em;text-transform:uppercase;">Ingrédients recalculés</span>
+          <span style="font-size:11px;color:var(--text-muted);" id="calc-items-count">—</span>
         </div>
-
         <div class="calc-table-wrap">
           <table class="calc-table">
             <thead>
               <tr>
-                <th>INGRÉDIENT</th>
-                <th style="text-align:right;">BASE</th>
-                <th style="text-align:right;color:var(--terracotta);">NOUVELLE QUANTITÉ</th>
-                <th>UNITÉ</th>
+                <th>Ingrédient</th>
+                <th style="text-align:right;">Base</th>
+                <th style="text-align:right;color:var(--terracotta);">Nouvelle quantité</th>
+                <th>Unité</th>
               </tr>
             </thead>
-            <tbody id="calc-tbody">
-              <!-- Dynamically populated -->
-            </tbody>
+            <tbody id="calc-tbody"></tbody>
           </table>
         </div>
+
       </div>
 
-      <div class="modal-actions" style="margin-top:18px;display:flex;justify-content:space-between;gap:10px;">
+      <div class="modal-actions" style="margin-top:16px;display:flex;justify-content:space-between;gap:10px;">
         <button type="button" class="btn btn-secondary" onclick="closeScalingModal()">Fermer</button>
         <button type="button" class="btn btn-primary" onclick="openCookModeFromCalc()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px;"><path d="M2 12h20"></path><path d="M20 12v8H4v-8"></path><path d="M6 8a4 4 0 0 1 8 0v4H6V8z"></path><line x1="10" y1="4" x2="10" y2="2"></line></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px;"><path d="M2 12h20"></path><path d="M20 12v8H4v-8"></path><path d="M6 8a4 4 0 0 1 8 0v4H6V8z"></path></svg>
           Voir la recette
         </button>
       </div>
@@ -7444,7 +7470,7 @@
               <span id="stk-total-preview" style="font-size:11px;font-weight:700;color:var(--terracotta);white-space:nowrap;"></span>
             </div>
             <div style="display:flex;align-items:center;gap:6px;">
-              <input type="number" id="stk-qty" required min="0" step="0.01" placeholder="ex: 1000" oninput="updateStockQtyCalc()" style="flex:1;height:43px;box-sizing:border-box;" />
+              <input type="number" id="stk-qty" required step="0.01" placeholder="ex: 1000" oninput="updateStockQtyCalc()" style="flex:1;height:43px;box-sizing:border-box;" />
               <div style="display:flex;align-items:center;background:#FAF7F4;border:1.5px solid var(--border);border-radius:12px;padding:0 8px;height:43px;gap:2px;box-sizing:border-box;" title="Multiplicateur (ex: 10 pour 10 paquets)">
                 <span style="font-weight:800;color:var(--navy);font-size:13px;">×</span>
                 <input type="number" id="stk-multiplier" min="1" step="1" value="1" oninput="updateStockQtyCalc()" style="width:40px;border:none;background:transparent;font-weight:800;font-size:13.5px;color:var(--terracotta);padding:0;text-align:center;outline:none;" />
@@ -7937,6 +7963,9 @@
             </div>
           </div>
         `;
+      }
+
+      if (isAdmin && (currentUser?.username || '').toLowerCase() === 'haifa') {
         html += `
           <div class="yucca-card" onclick="switchView('users')" role="button" tabindex="0">
             <div>
@@ -7978,13 +8007,15 @@
         userBadge.innerHTML = `◈ <strong>${escHtml(currentUser.name || currentUser.username)}</strong>`;
       }
 
-      // Hide admin tabs in subnav if staff
+      const isHaifa = (currentUser.username || '').toLowerCase() === 'haifa';
+
+      // Hide admin tabs in subnav if staff, and users tab only for Haifa
       const subMenu = document.getElementById('subnav-menu');
       const subStock = document.getElementById('subnav-stock');
       const subUsers = document.getElementById('subnav-users');
       if (subMenu) subMenu.style.display = isAdm ? 'inline-flex' : 'none';
       if (subStock) subStock.style.display = isAdm ? 'inline-flex' : 'none';
-      if (subUsers) subUsers.style.display = isAdm ? 'inline-flex' : 'none';
+      if (subUsers) subUsers.style.display = isHaifa ? 'inline-flex' : 'none';
 
       buildDashboardCards();
     }
@@ -8036,8 +8067,13 @@
         loadRecipes();
       } else if (view === 'stock') {
         loadStock();
-      } else if (view === 'users' && currentUser?.role === 'admin') {
-        loadUsers();
+      } else if (view === 'users') {
+        if ((currentUser?.username || '').toLowerCase() === 'haifa') {
+          loadUsers();
+        } else {
+          toast('🔒 Accès réservé exclusivement à Haifa', 'error');
+          switchView('menu');
+        }
       }
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -8088,10 +8124,14 @@
       const container = document.getElementById('recipe-filter-tabs');
       if (!container) return;
 
-      let html = `<button class="filter-tab ${activeRecipeFilter === 'all' ? 'active' : ''}" onclick="filterRecipes('all')">Tous (${recipesList.length})</button>`;
+      // For staff: only show categories that have accessible recipes
+      const isAdmin = currentUser?.role === 'admin';
+      let html = `<button class="filter-tab ${activeRecipeFilter === 'all' ? 'active' : ''}" onclick="filterRecipes('all')">Tout (${recipesList.length})</button>`;
       recipeCategories.forEach(cat => {
         const count = recipesList.filter(r => r.category_id === cat.id).length;
-        html += `<button class="filter-tab ${activeRecipeFilter === cat.id ? 'active' : ''}" onclick="filterRecipes('${cat.id}')">${cat.name} (${count})</button>`;
+        // Staff: skip categories with 0 recipes (they have no access to them)
+        if (!isAdmin && count === 0) return;
+        html += `<button class="filter-tab ${activeRecipeFilter === cat.id ? 'active' : ''}" onclick="filterRecipes('${cat.id}')">${cat.name}${isAdmin ? ' (' + count + ')' : ''}</button>`;
       });
       container.innerHTML = html;
     }
@@ -8485,6 +8525,11 @@
         document.getElementById('r-base-dim1').value = recipe.base_dim1 || 20;
         document.getElementById('r-base-dim2').value = recipe.base_dim2 || 20;
         document.getElementById('r-base-diam').value = recipe.base_dim1 || 22;
+        const bHeight = recipe.base_height || 4.5;
+        const hRectInp = document.getElementById('r-base-height-rect');
+        const hRoundInp = document.getElementById('r-base-height-round');
+        if (hRectInp) hRectInp.value = bHeight;
+        if (hRoundInp) hRoundInp.value = bHeight;
         document.getElementById('r-base-portions').value = recipe.base_portions || 6;
         document.getElementById('r-base-portions-round').value = recipe.base_portions || 6;
         document.getElementById('r-base-portions-only').value = recipe.base_portions || 1;
@@ -8505,6 +8550,10 @@
         document.getElementById('r-base-dim1').value = 20;
         document.getElementById('r-base-dim2').value = 20;
         document.getElementById('r-base-diam').value = 22;
+        const hRectInpNew = document.getElementById('r-base-height-rect');
+        const hRoundInpNew = document.getElementById('r-base-height-round');
+        if (hRectInpNew) hRectInpNew.value = 4.5;
+        if (hRoundInpNew) hRoundInpNew.value = 4.5;
         document.getElementById('r-base-portions').value = 6;
         document.getElementById('r-base-portions-round').value = 6;
         document.getElementById('r-base-portions-only').value = 1;
@@ -8926,6 +8975,7 @@
 
       let dim1 = 20;
       let dim2 = 20;
+      let baseHeight = 4.5;
       let portions = 6;
       let unit = 'rect';
 
@@ -8933,11 +8983,13 @@
         if (shape === 'round') {
           dim1 = parseFloat(document.getElementById('r-base-diam').value) || 22;
           dim2 = 0;
+          baseHeight = parseFloat(document.getElementById('r-base-height-round')?.value) || 4.5;
           portions = parseInt(document.getElementById('r-base-portions-round').value) || 6;
           unit = 'round';
         } else {
           dim1 = parseFloat(document.getElementById('r-base-dim1').value) || 20;
           dim2 = parseFloat(document.getElementById('r-base-dim2').value) || 20;
+          baseHeight = parseFloat(document.getElementById('r-base-height-rect')?.value) || 4.5;
           portions = parseInt(document.getElementById('r-base-portions').value) || 6;
           unit = 'rect';
         }
@@ -9026,6 +9078,7 @@
         base_type: baseType,
         base_dim1: dim1,
         base_dim2: dim2,
+        base_height: baseHeight,
         base_portions: portions,
         base_unit: unit,
         parts: parts,
@@ -9212,35 +9265,50 @@
 
       // (ingredient mode removed)
 
-      // Set initial shape & dims from recipe
-      const srcShapeRadios = document.getElementsByName('calc-src-shape');
-      srcShapeRadios.forEach(r => r.checked = (r.value === (isRound ? 'round' : 'rect')));
-
-      const targetShapeRadios = document.getElementsByName('calc-target-shape');
-      targetShapeRadios.forEach(r => r.checked = (r.value === (isRound ? 'round' : 'rect')));
-
-      // Source Base values
+      // Set initial Fixed Base Mold values from recipe
+      const baseShape = isRound ? 'round' : 'rect';
       const baseW = rec.base_dim1 || 20;
       const baseL = (rec.base_dim2 && Number(rec.base_dim2) > 0) ? Number(rec.base_dim2) : baseW;
       const baseDiam = rec.base_dim1 || 22;
+      const baseH = rec.base_height || 4.5;
       const baseP = rec.base_portions || 6;
 
+      const srcShapeVal = document.getElementById('calc-src-shape-val');
       const srcDiamInp = document.getElementById('calc-src-diam');
       const srcWInp = document.getElementById('calc-src-w');
       const srcLInp = document.getElementById('calc-src-l');
+      const srcHInp = document.getElementById('calc-src-h');
+      if (srcShapeVal) srcShapeVal.value = baseShape;
       if (srcDiamInp) srcDiamInp.value = baseDiam;
       if (srcWInp) srcWInp.value = baseW;
       if (srcLInp) srcLInp.value = baseL;
+      if (srcHInp) srcHInp.value = baseH;
 
-      // Target Initial values (start matching base)
+      // Update summary card for fixed base mold
+      const srcSummaryShape = document.getElementById('calc-src-summary-shape');
+      const srcSummaryHeight = document.getElementById('calc-src-summary-height');
+      if (srcSummaryShape) {
+        srcSummaryShape.textContent = isRound
+          ? ('Moule Rond Ø ' + baseDiam + ' cm')
+          : ((baseW === baseL) ? ('Moule Carré ' + baseW + ' × ' + baseL + ' cm') : ('Moule Rectangle ' + baseW + ' × ' + baseL + ' cm'));
+      }
+      if (srcSummaryHeight) {
+        srcSummaryHeight.textContent = 'Hauteur initiale de base : ' + baseH + ' cm';
+      }
+
+      // Target initial values (defaults matching base)
+      const targetShapeRadios = document.getElementsByName('calc-target-shape');
+      targetShapeRadios.forEach(r => r.checked = (r.value === baseShape));
+
       const targetDiamInp = document.getElementById('calc-target-diam');
       const targetWInp = document.getElementById('calc-target-w');
       const targetLInp = document.getElementById('calc-target-l');
+      const targetHInp = document.getElementById('calc-target-h');
       if (targetDiamInp) targetDiamInp.value = baseDiam;
       if (targetWInp) targetWInp.value = baseW;
       if (targetLInp) targetLInp.value = baseL;
+      if (targetHInp) targetHInp.value = baseH;
 
-      onCalcSrcShapeChange();
       onCalcTargetShapeChange();
 
       document.getElementById('calc-base-portions-val').value = baseP;
@@ -9250,15 +9318,6 @@
       if (directInput) directInput.value = '1.00';
       currentFactor = 1.0;
       updateQuickButtons(1.0);
-
-      const heightChk = document.getElementById('calc-enable-height');
-      if (heightChk) heightChk.checked = false;
-      const heightPanel = document.getElementById('calc-height-panel');
-      if (heightPanel) heightPanel.style.display = 'none';
-      const srcHInp = document.getElementById('calc-src-h');
-      const targetHInp = document.getElementById('calc-target-h');
-      if (srcHInp) srcHInp.value = '4.5';
-      if (targetHInp) targetHInp.value = '4.5';
 
       // Default mode
       if (rec.base_type === 'portion') {
@@ -9289,13 +9348,6 @@
       const rectFields = document.getElementById('calc-target-rect-fields');
       if (roundFields) roundFields.style.display = (targetShape === 'round') ? 'block' : 'none';
       if (rectFields) rectFields.style.display = (targetShape === 'rect') ? 'grid' : 'none';
-      calculateScale();
-    }
-
-    function toggleCalcHeight() {
-      const chk = document.getElementById('calc-enable-height');
-      const panel = document.getElementById('calc-height-panel');
-      if (panel) panel.style.display = chk && chk.checked ? 'block' : 'none';
       calculateScale();
     }
 
@@ -9357,28 +9409,29 @@
       let ratioText = '';
 
       if (scalingMode === 'dimensions') {
-        const srcShape = document.querySelector('input[name="calc-src-shape"]:checked')?.value || 'round';
+        const srcShape = document.getElementById('calc-src-shape-val')?.value || (rec.base_unit === 'round' ? 'round' : 'rect');
         const targetShape = document.querySelector('input[name="calc-target-shape"]:checked')?.value || 'round';
 
         let s1 = 0; // Surface moule initial (cm²)
         let s2 = 0; // Surface moule cible (cm²)
         let srcLabel = '';
         let targetLabel = '';
-        let formulaLabel = '';
 
-        // 1. Calcul Surface Initiale (S1)
+        // 1. Calcul Surface & Volume Initiale FIXE (S1, V1)
+        const h1 = parseFloat(document.getElementById('calc-src-h')?.value) || (rec.base_height || 4.5);
         if (srcShape === 'round') {
-          const d1 = parseFloat(document.getElementById('calc-src-diam')?.value) || 22;
+          const d1 = parseFloat(document.getElementById('calc-src-diam')?.value) || (rec.base_dim1 || 22);
           s1 = Math.PI * Math.pow(d1 / 2, 2);
           srcLabel = 'Rond Ø' + d1 + ' cm';
         } else {
-          const a1 = parseFloat(document.getElementById('calc-src-w')?.value) || 20;
-          const b1 = parseFloat(document.getElementById('calc-src-l')?.value) || a1;
+          const a1 = parseFloat(document.getElementById('calc-src-w')?.value) || (rec.base_dim1 || 20);
+          const b1 = parseFloat(document.getElementById('calc-src-l')?.value) || ((rec.base_dim2 && Number(rec.base_dim2) > 0) ? Number(rec.base_dim2) : a1);
           s1 = a1 * b1;
           srcLabel = (a1 === b1) ? ('Carré ' + a1 + '×' + b1 + ' cm') : ('Rect ' + a1 + '×' + b1 + ' cm');
         }
 
-        // 2. Calcul Surface Cible (S2)
+        // 2. Calcul Surface & Volume Cible (S2, V2)
+        const h2 = parseFloat(document.getElementById('calc-target-h')?.value) || h1;
         if (targetShape === 'round') {
           const d2 = parseFloat(document.getElementById('calc-target-diam')?.value) || 26;
           s2 = Math.PI * Math.pow(d2 / 2, 2);
@@ -9390,57 +9443,25 @@
           targetLabel = (a2 === b2) ? ('Carré ' + a2 + '×' + b2 + ' cm') : ('Rect ' + a2 + '×' + b2 + ' cm');
         }
 
-        // Vérifier si l'utilisateur prend en compte la hauteur (Volume)
-        const useHeight = document.getElementById('calc-enable-height')?.checked;
-        const h1 = useHeight ? (parseFloat(document.getElementById('calc-src-h')?.value) || 4.5) : 1;
-        const h2 = useHeight ? (parseFloat(document.getElementById('calc-target-h')?.value) || 4.5) : 1;
-        const v1 = s1 * h1; // Volume initial (cm³) si actif, sinon = surface
-        const v2 = s2 * h2; // Volume cible (cm³) si actif, sinon = surface
+        const v1 = s1 * h1;
+        const v2 = s2 * h2;
 
-        // 3. Formule de conversion selon les 4 cas exacts :
-        // - Men Rond (D1) l-Rond (D2) : Facteur = (D2/D1)² * (h2/h1)
-        // - Men Carré/Rect (a1*b1) l-Carré/Rect (a2*b2) : Facteur = (a2*b2)/(a1*b1) * (h2/h1)
-        // - Men Rond (D) l-Carré/Rect (a*b) : Facteur = (a*b)/(π * (D/2)²) * (h2/h1)
-        // - Men Carré/Rect (a*b) l-Rond (D) : Facteur = (π * (D/2)²)/(a*b) * (h2/h1)
-        if (srcShape === 'round' && targetShape === 'round') {
-          const d1 = parseFloat(document.getElementById('calc-src-diam')?.value) || 22;
-          const d2 = parseFloat(document.getElementById('calc-target-diam')?.value) || 26;
-          const baseRatio = (d1 > 0) ? Math.pow(d2 / d1, 2) : 1.0;
-          factor = useHeight ? (baseRatio * (h2 / (h1 || 1))) : baseRatio;
-          formulaLabel = useHeight
-            ? ('Men Rond l Rond (Volume) : (' + d2 + '/' + d1 + ')² × (' + h2 + '/' + h1 + ')')
-            : ('Men Rond l Rond : (D2 / D1)² = (' + d2 + ' / ' + d1 + ')²');
-        } else if (srcShape === 'rect' && targetShape === 'rect') {
-          factor = (v1 > 0) ? (v2 / v1) : 1.0;
-          formulaLabel = useHeight
-            ? 'Men Carré/Rect l Carré/Rect (Volume) : (a2×b2×h2) / (a1×b1×h1)'
-            : 'Men Carré/Rect l Carré/Rect : (a2 × b2) / (a1 × b1)';
-        } else if (srcShape === 'round' && targetShape === 'rect') {
-          factor = (v1 > 0) ? (v2 / v1) : 1.0;
-          formulaLabel = useHeight
-            ? 'Men Rond l Carré/Rect (Volume) : (a×b×h2) / [π×(D/2)²×h1]'
-            : 'Men Rond l Carré/Rect : (a × b) / [π × (D/2)²]';
-        } else {
-          factor = (v1 > 0) ? (v2 / v1) : 1.0;
-          formulaLabel = useHeight
-            ? 'Men Carré/Rect l Rond (Volume) : [π×(D/2)²×h2] / (a×b×h1)'
-            : 'Men Carré/Rect l Rond : [π × (D/2)²] / (a × b)';
-        }
+        // Facteur exact = (Surface Cible / Surface Initiale) * (Hauteur Cible / Hauteur Initiale)
+        const surfaceRatio = (s1 > 0) ? (s2 / s1) : 1.0;
+        const heightRatio = (h1 > 0) ? (h2 / h1) : 1.0;
+        factor = surfaceRatio * heightRatio;
 
         // Mise à jour des badges de surfaces / volumes
         const srcBadge = document.getElementById('calc-src-area-badge');
         const targetBadge = document.getElementById('calc-target-area-badge');
-        const formulaTag = document.getElementById('calc-formula-text');
-        if (srcBadge) srcBadge.textContent = useHeight ? (Math.round(s1) + ' cm² · ' + Math.round(v1) + ' cm³') : (Math.round(s1) + ' cm²');
-        if (targetBadge) targetBadge.textContent = useHeight ? (Math.round(s2) + ' cm² · ' + Math.round(v2) + ' cm³') : (Math.round(s2) + ' cm²');
-        if (formulaTag) formulaTag.textContent = formulaLabel;
+        if (srcBadge) srcBadge.textContent = Math.round(s1) + ' cm²' + (h1 ? (' · ' + Math.round(v1) + ' cm³') : '');
+        if (targetBadge) targetBadge.textContent = Math.round(s2) + ' cm²' + (h2 ? (' · ' + Math.round(v2) + ' cm³') : '');
 
         const percentChange = Math.round((factor - 1) * 100);
         const sign = percentChange > 0 ? '+' : '';
-        const unitMeasure = useHeight ? 'cm³' : 'cm²';
-        const val1 = useHeight ? Math.round(v1) : Math.round(s1);
-        const val2 = useHeight ? Math.round(v2) : Math.round(s2);
-        ratioText = srcLabel + ' (' + val1 + ' ' + unitMeasure + ') ➔ ' + targetLabel + ' (' + val2 + ' ' + unitMeasure + ') : ' + sign + percentChange + '%';
+        const hText1 = h1 ? (' (h: ' + h1 + ' cm)') : '';
+        const hText2 = h2 ? (' (h: ' + h2 + ' cm)') : '';
+        ratioText = srcLabel + hText1 + ' ➔ ' + targetLabel + hText2 + ' : ' + sign + percentChange + '%';
 
       } else if (scalingMode === 'portions') {
         const baseP = rec.base_portions || 6;
@@ -10413,8 +10434,8 @@
               <div class="user-cats-content">${catHtml}</div>
             </td>
             <td class="user-td-actions">
-              ${isAdm ? `
-                <span class="badge-protected" title="Compte administrateur protégé — aucune modification autorisée">Protégé</span>
+              ${(u.username && u.username.toLowerCase() === 'haifa') ? `
+                <span class="badge-protected" title="Compte principal de Haifa protégé — aucune modification autorisée">Protégé</span>
               ` : `
                 <div class="user-actions-group">
                   <button class="btn-user-action btn-user-edit" title="Modifier" onclick="openUserModal('${u.id}')">Modifier</button>
@@ -10460,18 +10481,17 @@
       const container = document.getElementById('u-cat-checkboxes-list');
       container.innerHTML = recipeCategories.map(c => `
         <label class="user-cat-check-label">
-          <input type="checkbox" class="u-cat-checkbox" value="${c.id}" />
+          <input type="checkbox" class="u-cat-checkbox" value="${c.id}" onchange="onIndividualCatChange()" />
           ${c.name}
         </label>
       `).join('');
-
       if (userId) {
         const u = usersList.find(x => x.id === userId);
         if (!u) return;
 
-        // Block editing any admin account completely!
-        if (u.role === 'admin' || u.username.toLowerCase() === 'haifa' || u.username.toLowerCase() === 'admin') {
-          toast('🔒 Le compte administrateur est strictement protégé et ne peut pas être modifié.', 'error');
+        // Only Haifa's account is strictly protected from being edited here!
+        if (u.username.toLowerCase() === 'haifa') {
+          toast('🔒 Le compte principal de Haifa est strictement protégé et ne peut pas être modifié.', 'error');
           return;
         }
 
@@ -10553,6 +10573,14 @@
       });
     }
 
+    // Called on each individual category checkbox change
+    function onIndividualCatChange() {
+      const all = [...document.querySelectorAll('.u-cat-checkbox')];
+      const allChecked = all.length > 0 && all.every(cb => cb.checked);
+      const allChk = document.getElementById('u-cat-all');
+      if (allChk) allChk.checked = allChecked;
+    }
+
     async function saveUser(e) {
       e.preventDefault();
       const id = document.getElementById('u-id').value;
@@ -10620,8 +10648,8 @@
 
     async function deleteUser(userId) {
       const u = usersList.find(x => x.id === userId);
-      if (u && (u.role === 'admin' || u.username.toLowerCase() === 'haifa' || u.username.toLowerCase() === 'admin')) {
-        toast('🔒 Impossible de supprimer le compte administrateur.', 'error');
+      if (u && u.username.toLowerCase() === 'haifa') {
+        toast('🔒 Impossible de supprimer le compte principal de Haifa.', 'error');
         return;
       }
 
@@ -11327,12 +11355,12 @@ let menuItems = [];
       }
     }
 
-    function toast(msg, type = 'success') {
+    function toast(msg, type = 'success', duration = 3500) {
       const el = document.getElementById('toast');
       el.textContent = msg;
       el.className = `show ${type}`;
       clearTimeout(el._t);
-      el._t = setTimeout(() => el.className = '', 3500);
+      el._t = setTimeout(() => el.className = '', duration);
     }
 
     // ══════════════════════════════════════════
@@ -12282,7 +12310,7 @@ let menuItems = [];
         const qtyDisplay = isInfinite
           ? '<span class="stock-qty-cell infinite"><span>∞</span> Illimité</span>'
           : (isNegative
-              ? '<span class="stock-qty-cell negative" style="color:#DC2626;font-weight:800;background:rgba(220,38,38,0.08);padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;">' + qty.toLocaleString('fr-TN') + ' ' + escHtml(item.unit) + ' <small style="font-size:10px;background:#DC2626;color:white;padding:1px 5px;border-radius:4px;font-weight:700;">Déficit</small></span>'
+              ? '<span class="stock-qty-cell negative" style="color:#DC2626;font-weight:800;background:rgba(220,38,38,0.08);padding:3px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:4px;">' + qty.toLocaleString('fr-TN') + ' ' + escHtml(item.unit) + '</span>'
               : '<span class="stock-qty-cell ' + qtyClass + '">' + qty.toLocaleString('fr-TN') + ' ' + escHtml(item.unit) + '</span>');
         const catBadge = item.category ? '<span class="stock-cat-badge">' + escHtml(item.category) + '</span>' : '<span style="color:var(--text-muted);font-size:12px;">—</span>';
         const priceLabel = getStockUnitLabel(item.unit);
@@ -12324,7 +12352,7 @@ let menuItems = [];
         const mobileQtyDisplay = isInfinite
           ? '<span class="stock-qty-cell infinite" style="font-size:12px;">∞ Illimité</span>'
           : (isNegative
-              ? ('<span style="color:#DC2626;font-weight:800;">' + qty.toLocaleString('fr-TN') + ' <span class="stock-stat-unit" style="color:#DC2626;">' + escHtml(item.unit) + '</span></span> <span style="font-size:10px;background:#DC2626;color:white;padding:1px 5px;border-radius:4px;font-weight:700;margin-left:3px;">Déficit</span>')
+              ? ('<span style="color:#DC2626;font-weight:800;background:rgba(220,38,38,0.08);padding:2px 6px;border-radius:5px;">' + qty.toLocaleString('fr-TN') + ' <span class="stock-stat-unit" style="color:#DC2626;">' + escHtml(item.unit) + '</span></span>')
               : (qty.toLocaleString('fr-TN') + ' <span class="stock-stat-unit">' + escHtml(item.unit) + '</span>'));
         const priceLabel = getStockUnitLabel(item.unit);
         const priceFmt = price >= 0 ? (price.toLocaleString('fr-TN', { minimumFractionDigits: 0, maximumFractionDigits: 3 }) + ' TND') : '—';
@@ -12509,6 +12537,10 @@ let menuItems = [];
         closeStockModal();
         toast(id ? '✅ Ingrédient mis à jour' : '✅ Ingrédient ajouté au stock', 'success');
         await loadStock();
+        if (id) {
+          // Reload recipes too to reflect cascaded name/unit/price changes
+          if (typeof loadRecipes === 'function') await loadRecipes();
+        }
         refreshRecipeIngredientDropdowns();
         updateRecipeFormCostPreview();
       } catch (ex) {
@@ -12527,6 +12559,11 @@ let menuItems = [];
           method: 'DELETE'
         });
         const data = await res.json();
+        if (res.status === 409) {
+          // Ingredient used in recipes — show which ones
+          toast('⚠️ ' + (data.error || 'Cet ingrédient est utilisé dans une ou plusieurs recettes.'), 'error', 6000);
+          return;
+        }
         if (!res.ok) throw new Error(data.error || 'Erreur');
         toast('🗑️ Ingrédient supprimé', 'success');
         loadStock();
@@ -12791,9 +12828,14 @@ let menuItems = [];
       }
 
       const confirmBtn = document.getElementById('cdm-confirm-btn');
+      const mainDeductBtn = document.getElementById('cook-final-deduct-btn');
       if (confirmBtn) {
         confirmBtn.disabled = true;
         confirmBtn.textContent = 'Déduction en cours...';
+      }
+      if (mainDeductBtn) {
+        mainDeductBtn.disabled = true;
+        mainDeductBtn.textContent = 'Déduction en cours...';
       }
 
       const factorText = currentCookFactor !== 1.0 ? (' (Facteur ×' + currentCookFactor.toFixed(2) + ')') : '';
@@ -12819,6 +12861,13 @@ let menuItems = [];
 
       let deductedCount = 0;
 
+      // Instant optimistic local stock update
+      batchItems.forEach(b => {
+        const item = (stockData || []).find(s => s.id === b.ingredient_id);
+        if (item) item.stock_qty = (parseFloat(item.stock_qty) || 0) + b.delta;
+      });
+      renderStockView();
+
       if (batchItems.length > 0) {
         try {
           const res = await fetch('/api/admin/stock-adjust', {
@@ -12834,13 +12883,13 @@ let menuItems = [];
         }
       }
 
-      // Reload stock and history in parallel
+      closeCookDeductModal();
+
+      // Reload stock and history in parallel to guarantee sync
       await Promise.all([
         loadStock(),
         activeStockView === 'history' ? loadStockHistory() : Promise.resolve()
       ]);
-
-      closeCookDeductModal();
 
       const btn = document.getElementById('cook-final-deduct-btn');
       if (btn) {
